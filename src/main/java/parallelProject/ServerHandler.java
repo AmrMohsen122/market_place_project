@@ -74,7 +74,10 @@ public class ServerHandler {
                 //item name
                 String itemName= input.readLine();
                 //TODO call the search function
-
+                break;
+            case "viewHistory":
+                ((Customer)client).loadOrders(conn);
+                break;
         }
 
         return "";

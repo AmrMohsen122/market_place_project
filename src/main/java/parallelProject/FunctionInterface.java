@@ -39,6 +39,9 @@ class Customer extends User{
         public void addUser(Connection conn) {
 
         }
+        public void loadOrders(Connection conn){
+
+        }
         public static boolean isCustomer(String user_name, Connection conn){
                 return false;
         }
