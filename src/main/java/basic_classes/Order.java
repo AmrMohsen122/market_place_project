@@ -7,9 +7,14 @@ public class Order {
     private Date ODate;
     private double totalPrice;
 
-    //CONSTRUCTORS
     public Order(int OID, Date ODate, double totalPrice) {
         this.OID = OID;
+        this.ODate = ODate;
+        this.totalPrice = totalPrice;
+    }
+
+    //CONSTRUCTORS
+    public Order(Date ODate, double totalPrice) {
         this.ODate = ODate;
         this.totalPrice = totalPrice;
     }
