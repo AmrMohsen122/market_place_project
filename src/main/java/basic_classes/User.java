@@ -4,6 +4,8 @@ package basic_classes;
 import java.sql.*;
 import java.time.LocalDate;
 
+
+//ABSTRACT CLASS BECAUSE NO USER SHOULD EXIST UNLESS IT IS AN INSTANCE OF ITS SUBCLASSES
 public abstract class User {
     protected static final boolean debug = true;
     protected boolean isAdmin = false;
@@ -34,7 +36,7 @@ public abstract class User {
         this.user_name = user_name;
         this.password = password;
         this.email = email;
-        this.bdate = LocalDate.now();
+        this.bdate = null;
     }
 
     //GETTERS
@@ -113,7 +115,12 @@ public abstract class User {
         try{
 
             String query;
-            query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
+            if(bdate != null){
+                query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
+            }
+            else{
+                query  = "insert into USER_ACC (USERNAME , PASS_WORD , EMAIL) values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email) + ")";
+            }
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
         }
@@ -125,11 +132,6 @@ public abstract class User {
         }
     }
 
-    /*
-     * PRE_CONDITIONS: user_name EXISTS IN DATABASE
-     * POST_CONDITIONS: RETRIEVES ALL USER INFO
-     */
-    public abstract void getUserInfo(String user_name, Connection conn);
 
 
     //UTILITY FUNCTION USED TO RETURN A QUOTED STRING
