@@ -62,20 +62,23 @@ public class ServerHandler {
     }
     public static void login(String type, String username, String password, Connection c) {
         User a;
-        if(type.equals("Admin"))
-            if(Admin.isAdmin(username, c))
-                a = Admin.getUserInfo(username,c);
-        else if(type.equals("Customer"))
-            if(Customer.isCustomer(username, c))
+        if(FunctionInterface.userExists(username, c)!=-1) {
+            if (type.equals("Admin"))
+                a = Admin.getUserInfo(username, c);
+            else if (type.equals("Customer"))
                 a = Customer.getUserInfo(username, c);
-
+        }
         if (a!=null)
             if(!User.getPassword().equals(password)){
-                //Print error message to user
+                //TODO Print error message "Invalid password"
             }
             else{
-                // transfer user to new homescreen
+                //TODO transfer user to new homescreen
             }
+        else{
+            //TODO print Admin or Customer doesn't exist error message
+
+        }
 
 
     }
