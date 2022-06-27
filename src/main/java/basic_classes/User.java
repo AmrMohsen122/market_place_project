@@ -87,7 +87,7 @@ public abstract class User {
 
     /*
     * PRE_CONDITIONS: USER EXISTS IN DATABASE
-    * POST_CONDITIONS: RETURNS THE PASSWORD OF THAT USER
+    * POST_CONDITIONS: RETURNS THE PASSWORD OF THAT USER, RETURNS NULL IF AN SQL ERROR OCCURED
     */
     public static String getPassword(String user_name, Connection conn){
         try {
@@ -103,7 +103,7 @@ public abstract class User {
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
             }
-            return "SQL ERR";
+            return null;
         }
     }
 
