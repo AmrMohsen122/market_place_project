@@ -2,6 +2,7 @@ package basic_classes;
 
 import database.manager.DatabaseManager;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Vector;
 
 public class Customer extends User{
@@ -125,20 +126,38 @@ public class Customer extends User{
         }
     }
 
+    /*
+        PRE_CONDITIONS: THE USER EXISTS IN DATABASE
+        POST_CONDITIONS: AN ORDER IS PLACED UNDER THE USERNAME
+     */
+    public void makeOrder(Order o , Connection conn) throws SQLException {
+        try {
+            conn.setAutoCommit(false);
+            String query = "insert into CUST_ORDER (ODATE , TOTAL_PRICE , USERNAME) values (" + insertQuotations(o.getODate().toString()) + "," + o.getTotalPrice() + "," + insertQuotations(user_name) + ")" ;
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+            query = "update CUSTOMER_ACC SET CURRENT_BALANCE = CURRENT_BALANCE - " + o.getTotalPrice() + " where USERNAME = " + insertQuotations(user_name);
+            stmt.executeUpdate(query);
+            conn.commit();
+            conn.setAutoCommit(true);
+        }
+        catch(SQLException e){
+            if(debug){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+            conn.rollback();
+        }
+    }
+
     @Override
     public String toString(){
        return "***************** CUSTOMER *****************\n" + super.toString() + "\nCurrent balance = " + current_balance + "\nAddress: " + address + "\nMobile number: " + mobile_number;
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-        User u1 = Customer.getUserInfo("Ahmed", conn);
-        ((Customer)u1).loadOrders(conn);
-        for (Order o: ((Customer) u1).orders) {
-            System.out.println(o);
-
-        }
     }
 }
