@@ -1,39 +1,50 @@
 package parallelProject;
 
-import basic_classes.Admin;
-import basic_classes.Customer;
-import basic_classes.User;
-import database.manager.DatabaseManager;
+
 
 import java.sql.*;
 import java.time.LocalDate;
+class Admin{
+        public static Admin getUserInfo(String user_name, Connection conn){
+                return null;
 
+        }
+        public void addUser(Connection conn) {
+
+        }
+}
+class Customer{
+        public static Customer getUserInfo(String user_name, Connection conn){
+                Customer c = new Customer();
+                return c;
+        }
+        public void addUser(Connection conn) {
+
+        }
+}
 public class FunctionInterface {
          /*
             PRE_CONDITIONS: user_name EXISTS IN DATABASE
             POST_CONDITIONS: RETURNS WHETHER THE USERNAME PASSED IS ASSOCIATED WITH AN ADMIN ACCOUNT
          */
         private static boolean isAdmin(String user_name, Connection conn){
+                return false;
             }
 
         /*
            PRE_CONDITIONS: user_name EXISTS IN DATABASE
            POST_CONDITIONS: RETURN AN ADMIN OBJECT WITH RECORD FOUND, RETURN NULL IF THERE IS NO USER WITH PASSED USERNAME OR IF THE USERNAME DOESN'T HAVE ADMIN PRIVILEGES
          */
-        public static basic_classes.Admin getUserInfo(String user_name, Connection conn){
-            }
+
 
         /*
             PRE_CONDITIONS: THE USERNAME DOESN'T EXIST IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
             POST_CONDITIONS: THE USER IS ADDED TO DATABASE WITH ADMIN PRIVILEGES
          */
-        @Override
-        public void addUser(Connection conn){
 
-        }
         //SETTERS AND GETTERS
         public double getCurrent_balance() {
-
+                return 0.00;
         }
 
         public void setCurrent_balance(double current_balance) {
@@ -41,7 +52,7 @@ public class FunctionInterface {
         }
 
         public String getAddress() {
-
+                return "ah yana";
         }
 
         public void setAddress(String address) {
@@ -49,7 +60,7 @@ public class FunctionInterface {
         }
 
         public String getMobile_number() {
-
+                return null;
         }
 
         public void setMobile_number(String mobile_number) {
@@ -60,17 +71,15 @@ public class FunctionInterface {
             PRE_CONDITIONS: USER DOESN'T EXIST IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
             POST_CONDITIONS: ADD USER TO CUSTOMER TABLE
          */
-        @Override
-        public void addUser(Connection conn) {
 
-        }
+
 
         /*
             PRE_CONDITIONS: USER EXISTS IN DATABASE
             POST_CONDITIONS: RETURNS THE CUSTOMER OBJECT WITH DETAILS ASSOCIATED WITH PROVIDED USERNAME
          */
-        public static basic_classes.Customer getUserInfo(String user_name, Connection conn){
-            }
+
+
 
     /*
         PRE_CONDITIONS: USER EXISTS
@@ -79,19 +88,20 @@ public class FunctionInterface {
 
         //GETTERS
         public String getUsername() {
+                return null;
 
         }
 
         public String getPassword() {
-
+        return null;
         }
 
         public String getEmail() {
-
+        return null;
         }
 
         public Date getBdate() {
-
+        return null;
         }
 
         //TODO THREAD SYNCHRONIZATION
@@ -102,7 +112,7 @@ public class FunctionInterface {
          * NOTES: EACH THREAD SHALL HAVE ITS OWN CONNECTION WHICH IS PASSED TO FUNCTIONS TO EXECUTE QUERIES ON
          */
         public static int userExists(String user_name , Connection conn){
-
+                return 0;
         }
 
         /*
@@ -110,7 +120,7 @@ public class FunctionInterface {
          * POST_CONDITIONS: RETURNS THE PASSWORD OF THAT USER, RETURNS NULL IF AN SQL ERROR OCCURED
          */
         public static String getPassword(String user_name, Connection conn){
-
+                return null;
         }
 
 
@@ -118,13 +128,13 @@ public class FunctionInterface {
          * PRE_CONDITIONS: CURRENT USERNAME DOESN'T EXISTS IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
          * POST_CONDITIONS: ADDS THE CURRENT USER OBJECT TO DATABASE
          */
-        public void addUser(Connection conn){
-                 }
+
 
 
 
         //UTILITY FUNCTION USED TO RETURN A QUOTED STRING
         protected static String insertQuotations(String str){
+                return null;
 
         }
 
