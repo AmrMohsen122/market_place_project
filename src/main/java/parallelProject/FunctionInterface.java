@@ -4,7 +4,20 @@ package parallelProject;
 
 import java.sql.*;
 import java.time.LocalDate;
-class Admin{
+class User {public String getPassword() {
+        return null;
+}
+
+        public String getEmail() {
+                return null;
+        }
+
+        public Date getBdate() {
+                return null;
+        }
+
+}
+class Admin extends User{
         public static Admin getUserInfo(String user_name, Connection conn){
                 return null;
 
@@ -12,8 +25,11 @@ class Admin{
         public void addUser(Connection conn) {
 
         }
+        private static boolean isAdmin(String user_name, Connection conn){
+                return false;
+        }
 }
-class Customer{
+class Customer extends User{
         public static Customer getUserInfo(String user_name, Connection conn){
                 Customer c = new Customer();
                 return c;
@@ -21,15 +37,16 @@ class Customer{
         public void addUser(Connection conn) {
 
         }
+        private static boolean isCustomer(String user_name, Connection conn){
+                return false;
+        }
 }
 public class FunctionInterface {
          /*
             PRE_CONDITIONS: user_name EXISTS IN DATABASE
             POST_CONDITIONS: RETURNS WHETHER THE USERNAME PASSED IS ASSOCIATED WITH AN ADMIN ACCOUNT
          */
-        private static boolean isAdmin(String user_name, Connection conn){
-                return false;
-            }
+
 
         /*
            PRE_CONDITIONS: user_name EXISTS IN DATABASE
@@ -87,22 +104,12 @@ public class FunctionInterface {
      */
 
         //GETTERS
-        public String getUsername() {
+        public static String getUsername() {
                 return null;
 
         }
 
-        public String getPassword() {
-        return null;
-        }
 
-        public String getEmail() {
-        return null;
-        }
-
-        public Date getBdate() {
-        return null;
-        }
 
         //TODO THREAD SYNCHRONIZATION
 
