@@ -84,9 +84,9 @@ public class ServerHandler {
         User a = null;
         if(FunctionInterface.userExists(username, c)!=0) {
             if (type.equals("Admin"))
-                a = Admin.getUserInfo(username, c);
+                a = (Admin)Admin.getUserInfo(username, c);
             else if (type.equals("Customer"))
-                a = Customer.getUserInfo(username, c);
+                a = (Customer)Customer.getUserInfo(username, c);
         }
         if (a!=null)
             if(!User.getPassword().equals(password)){
