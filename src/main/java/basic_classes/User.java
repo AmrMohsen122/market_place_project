@@ -112,7 +112,15 @@ public abstract class User {
      */
     public void addUser(Connection conn){
         try{
-            String query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
+            String query;
+            if(bdate != null){
+                query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
+
+            }
+            else{
+                query  = "insert into USER_ACC (USERNAME , PASS_WORD , EMAIL)values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+")";
+
+            }
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
         }
