@@ -36,7 +36,7 @@ public class ServerHandler {
 
     }
 
-    public static String parse(BufferedReader input, Connection conn) throws IOException {
+    public static String parse(BufferedReader input, Connection conn, User client) throws IOException {
 
         switch(input.readLine()){
 // login returns String on the following format:
@@ -52,7 +52,7 @@ public class ServerHandler {
                 String username = input.readLine();
                 String password = input.readLine();
 
-                login(type, username, password,conn );
+                client = login(type, username, password,conn );
                 break;
 
             case "signUp":
@@ -79,9 +79,10 @@ public class ServerHandler {
 
         return "";
     }
-    public static void login(String type, String username, String password, Connection c) {
-        User a;
-        if(FunctionInterface.userExists(username, c)!=-1) {
+
+    public static User login(String type, String username, String password, Connection c) {
+        User a = null;
+        if(FunctionInterface.userExists(username, c)!=0) {
             if (type.equals("Admin"))
                 a = Admin.getUserInfo(username, c);
             else if (type.equals("Customer"))
@@ -90,12 +91,15 @@ public class ServerHandler {
         if (a!=null)
             if(!User.getPassword().equals(password)){
                 //TODO Print error message "Invalid password"
+                return null;
             }
             else{
                 //TODO transfer user to new homescreen
+                return a;
             }
         else{
             //TODO print Admin or Customer doesn't exist error message
+            return null;
 
         }
 
@@ -111,13 +115,15 @@ public class ServerHandler {
 
         FunctionInterface.loadDriver();
         FunctionInterface.initConnection(100);
+
         try {
             ServerHandler server = new ServerHandler();
             while (true) {
+                User client = null;
                 server.listen(server.port);
                 Connection conn = FunctionInterface.requestConnection();
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                parse(input, conn);
+                parse(input, conn, client);
 
             }
         }
