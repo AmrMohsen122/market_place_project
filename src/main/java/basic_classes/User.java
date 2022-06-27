@@ -4,12 +4,13 @@ package basic_classes;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class User {
-    private static final boolean debug = true;
-    private String user_name;
-    private  String password;
-    private String email;
-    private LocalDate bdate;
+public abstract class User {
+    protected static final boolean debug = true;
+    protected boolean isAdmin = false;
+    protected String user_name;
+    protected String password;
+    protected String email;
+    protected LocalDate bdate;
 
     //CONSTRUCTORS
 
@@ -27,6 +28,7 @@ public class User {
         this.email = email;
         this.bdate = bdate;
     }
+    //TODO NULL CONSTRUCTOR
     //CREATE A USER WHERE DATE MAY NOT BE SPECIFIED AND IS SET TO DEFAULT VALUE OF CURRENT DATE
     public User(String user_name , String password , String email){
         this.user_name = user_name;
@@ -127,26 +129,11 @@ public class User {
      * PRE_CONDITIONS: user_name EXISTS IN DATABASE
      * POST_CONDITIONS: RETRIEVES ALL USER INFO
      */
-    public static User getUserInfo(String user_name, Connection conn){
-        try {
-            String query = "select * from USER_ACC where USERNAME = " + insertQuotations(user_name);
-            Statement stmt = conn.createStatement();
-            ResultSet queryResult= stmt.executeQuery(query);
-            queryResult.next();
-            return new User(queryResult.getString(queryResult.findColumn("USERNAME")) , queryResult.getString(queryResult.findColumn("PASS_WORD")) , queryResult.getString(queryResult.findColumn("EMAIL")) , LocalDate.parse(queryResult.getString(queryResult.findColumn("BDATE"))));
-        }
-        catch(SQLException e){
-            if(debug){
-                System.out.println("SQLException: " + e.getMessage());
-                System.out.println("SQLState: " + e.getSQLState());
-            }
-        }
-        return null;
-    }
+    public abstract void getUserInfo(String user_name, Connection conn);
 
 
     //UTILITY FUNCTION USED TO RETURN A QUOTED STRING
-    private static String insertQuotations(String str){
+    protected static String insertQuotations(String str){
         return "\"" + str + "\"" ;
     }
 
