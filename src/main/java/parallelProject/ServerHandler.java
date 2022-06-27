@@ -54,6 +54,7 @@ public class ServerHandler {
 
                 login(type, username, password,conn );
                 break;
+
             case "signUp":
                 //signUp returns string on the following format:
                 //username
@@ -68,6 +69,12 @@ public class ServerHandler {
                 String mobileNumber= input.readLine();
                 signUp(newUserName,newPassword,email,address,mobileNumber,conn);
                 break;
+
+            case "search":
+                //item name
+                String itemName= input.readLine();
+                //TODO call the search function
+
         }
 
         return "";
