@@ -1,6 +1,7 @@
 package parallelProject;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
@@ -34,7 +35,7 @@ public class ServerHandler {
 
     }
 
-    public static String parse(BufferedReader input) throws IOException {
+    public static String parse(BufferedReader input, Connection conn) throws IOException {
 
         switch(input.readLine()){
 // login returns String on the following format:
@@ -49,8 +50,8 @@ public class ServerHandler {
                 String type = input.readLine();
                 String username = input.readLine();
                 String password = input.readLine();
-                Connection c;  //hnassign hena connection ll user
-                login(type, username, password,c );
+
+                login(type, username, password,conn );
                 break;
 
 
@@ -58,7 +59,7 @@ public class ServerHandler {
 
         return "";
     }
-    public void login(String type, String username, String password, Connection c) {
+    public static void login(String type, String username, String password, Connection c) {
         User a;
         if(type.equals("Admin"))
             if(Admin.isAdmin(username, c))
@@ -79,13 +80,15 @@ public class ServerHandler {
     }
 
     public static void main(String[] args) {
+
+
         try {
             ServerHandler server = new ServerHandler();
             while (true) {
                 server.listen(server.port);
-
+                Connection conn = FunctionInterface.requestConnection();
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                parse(input);
+                parse(input, conn);
 
             }
         }

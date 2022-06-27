@@ -4,6 +4,7 @@ package parallelProject;
 
 import java.sql.*;
 import java.time.LocalDate;
+
 class User {
         public static String getPassword() {
         return null;
@@ -145,6 +146,12 @@ public class FunctionInterface {
                 return null;
 
         }
+
+        public static Connection requestConnection(){
+                return null;
+        }
+        public static void initConnection(){};
+        public static void loadDriver(){};
 
 
     }
