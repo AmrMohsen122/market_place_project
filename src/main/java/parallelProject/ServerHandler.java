@@ -5,27 +5,33 @@ import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import parallelProject.FunctionInterface;
 
-public class ServerHandler {
+public class ServerHandler implements Runnable{
     private int port = 2022;
-    private static Socket socket = null;
+    private  Socket socket = null;
     private ServerSocket server = null;
-    private static BufferedReader input = null;
+    public static BufferedReader input = null;
     private BufferedWriter output = null;
+    public Connection conn=null;
+    public User client = null;
 
-    public void listen(int port) {
+    public ServerHandler(Socket socket){
+        this.socket=socket;
 
+    }
+    @Override
+    public void run(){
         try {
-            server = new ServerSocket(port);
-            socket = server.accept();
+            parse(input,conn,client);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //Create thread for user
-        catch (IOException io) {
-            System.out.println(io);
-        }
+
     }
 
     public void terminate() throws IOException {
@@ -78,6 +84,7 @@ public class ServerHandler {
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
                 break;
+
         }
 
         return "";
@@ -114,24 +121,4 @@ public class ServerHandler {
         //  TODO check the password and confirm password are the same
         }
 
-    public static void main(String[] args) {
-
-        FunctionInterface.loadDriver();
-        FunctionInterface.initConnection(100);
-
-        try {
-            ServerHandler server = new ServerHandler();
-            while (true) {
-                User client = null;
-                server.listen(server.port);
-                Connection conn = FunctionInterface.requestConnection();
-                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                parse(input, conn, client);
-
-            }
-        }
-        catch(IOException io){
-            System.out.println(io);
-        }
-    }
 }
