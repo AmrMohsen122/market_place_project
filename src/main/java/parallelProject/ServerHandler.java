@@ -54,8 +54,20 @@ public class ServerHandler {
 
                 login(type, username, password,conn );
                 break;
-
-
+            case "signUp":
+                //signUp returns string on the following format:
+                //username
+                //password
+                //email
+                //address
+                //mobile number
+                String newUserName= input.readLine();
+                String newPassword=input.readLine();
+                String email=input.readLine();
+                String address= input.readLine();
+                String mobileNumber= input.readLine();
+                signUp(newUserName,newPassword,email,address,mobileNumber,conn);
+                break;
         }
 
         return "";
@@ -79,6 +91,11 @@ public class ServerHandler {
 
 
     }
+    public static void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) {
+        Customer newUser= new Customer();
+        newUser.addUser(conn);
+        //  TODO check the password and confirm password are the same
+        }
 
     public static void main(String[] args) {
 
