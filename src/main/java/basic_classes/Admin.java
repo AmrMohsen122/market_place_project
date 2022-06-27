@@ -1,14 +1,13 @@
 package basic_classes;
 
 import java.sql.*;
-import java.time.LocalDate;
 
 public class Admin extends User{
 
     public Admin(){
         super();
     }
-    public Admin(String user_name , String password , String email, LocalDate bdate){
+    public Admin(String user_name , String password , String email, Date bdate){
         super(user_name , password , email , bdate);
     }
     public Admin(String user_name , String password , String email){
@@ -46,7 +45,7 @@ public class Admin extends User{
                 Statement stmt = conn.createStatement();
                 ResultSet queryResult = stmt.executeQuery(query);
                 if(queryResult.next()) {
-                    return new Admin(queryResult.getString(queryResult.findColumn("USERNAME")), queryResult.getString(queryResult.findColumn("PASS_WORD")), queryResult.getString(queryResult.findColumn("EMAIL")), LocalDate.parse(queryResult.getString(queryResult.findColumn("BDATE"))));
+                    return new Admin(queryResult.getString(queryResult.findColumn("USERNAME")), queryResult.getString(queryResult.findColumn("PASS_WORD")), queryResult.getString(queryResult.findColumn("EMAIL")), queryResult.getDate(queryResult.findColumn("BDATE")));
                 }
                 else{
                     return null;
@@ -62,7 +61,7 @@ public class Admin extends User{
     }
 
     /*
-        PRE_CONDITIONS: THE USERNAME DOESN'T EXIST IN DATABASE
+        PRE_CONDITIONS: THE USERNAME DOESN'T EXIST IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
         POST_CONDITIONS: THE USER IS ADDED TO DATABASE WITH ADMIN PRIVILEGES
      */
     @Override
@@ -82,4 +81,9 @@ public class Admin extends User{
         }
     }
 
+
+    @Override
+    public String toString(){
+        return "***************** ADMIN *****************\n" + super.toString();
+    }
 }

@@ -1,6 +1,7 @@
 package basic_classes;
 
 
+
 import java.sql.*;
 import java.time.LocalDate;
 
@@ -8,11 +9,10 @@ import java.time.LocalDate;
 //ABSTRACT CLASS BECAUSE NO USER SHOULD EXIST UNLESS IT IS AN INSTANCE OF ITS SUBCLASSES
 public abstract class User {
     protected static final boolean debug = true;
-    protected boolean isAdmin = false;
     protected String user_name;
     protected String password;
     protected String email;
-    protected LocalDate bdate;
+    protected Date bdate;
 
     //CONSTRUCTORS
 
@@ -21,10 +21,10 @@ public abstract class User {
         this.user_name = "test";
         this.password = "test";
         this.email = "test@example.com";
-        this.bdate = LocalDate.now();
+        this.bdate = Date.valueOf(LocalDate.now());
     }
     //CREATES A USER WITH ALL FIELDS SPECIFIED BY ARGUMENTS OF CONSTRUCTOR
-    public User(String user_name , String password , String email, LocalDate bdate){
+    public User(String user_name , String password , String email, Date bdate){
         this.user_name = user_name;
         this.password = password;
         this.email = email;
@@ -52,11 +52,12 @@ public abstract class User {
         return email;
     }
 
-    public LocalDate getBdate() {
+    public Date getBdate() {
         return bdate;
     }
 
     //TODO THREAD SYNCHRONIZATION
+
     /*
     * PRE_CONDITIONS: DATABASE EXISTS
     * POST_CONDITIONS: RETURNS 0 IF USER DOESN'T EXIST, 1 IF USER EXISTS, -1 IF A SQL ERROR OCCURRED
@@ -108,19 +109,12 @@ public abstract class User {
 
 
     /*
-     * PRE_CONDITIONS: CURRENT USERNAME DOESN'T EXISTS IN DATABASE
+     * PRE_CONDITIONS: CURRENT USERNAME DOESN'T EXISTS IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
      * POST_CONDITIONS: ADDS THE CURRENT USER OBJECT TO DATABASE
      */
     public void addUser(Connection conn){
         try{
-
-            String query;
-            if(bdate != null){
-                query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
-            }
-            else{
-                query  = "insert into USER_ACC (USERNAME , PASS_WORD , EMAIL) values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email) + ")";
-            }
+            String query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + bdate + ")";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
         }
@@ -141,7 +135,7 @@ public abstract class User {
 
     @Override
     public String toString(){
-        return "Username: " + user_name + "\n" +"Password: "+ password + "\n" + email + "\n" + bdate;
+        return "Username: " + user_name + "\n" +"Password: "+ password + "\n" + "Email: "+ email + "\n" + "Birth date: " + bdate;
     }
 
 }
