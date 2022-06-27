@@ -1,9 +1,7 @@
 package database.manager;
-import basic_classes.User;
 
 import java.sql.*;
 import java.util.LinkedList;
-import java.util.Vector;
 
 public class DatabaseManager {
     //the username and password used to access the database server
@@ -59,62 +57,4 @@ public class DatabaseManager {
     }
 }
 
-//FOR TESTING THREADS
-class DBThreads extends Thread{
-    private Connection conn = null;
-    private static int threadCount = 0;
-    private int TID;
-    public DBThreads(){
-        incrementID();
-        TID = threadCount;
-    }
-    public void setConn(Connection conn){
-        this.conn = conn;
-    }
-    public void run(){
-        incrementID();
-        System.out.println("Thread#" + TID);
-        conn = DatabaseManager.requestConnection();
-        for (int i = 0; i < 10 ; i++) {
-            System.out.println("iter: " + i + " " + User.getPassword("Amr Mohsen" ,conn));
-        }
-        DatabaseManager.releaseConnection(conn);
-        conn = null;
-    }
-    public static synchronized void incrementID(){
-        threadCount++;
-    }
-}
-
-//FOR TESTING, SHOULD BE DELETED LATER
-class Main {
-    public static void main(String[] args) throws SQLException {
-        DatabaseManager.initConnection(10);
-        Vector<DBThreads> threads = new Vector<DBThreads>();
-        DBThreads t1;
-
-        for(int i = 0 ; i < 5 ; i++) {
-            t1 = new DBThreads();
-            threads.add(t1);
-
-        }
-        long start_time = System.currentTimeMillis();
-        for (DBThreads thread:threads) {
-            thread.start();
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println("Elapsed Time: " +  (System.currentTimeMillis() - start_time)/1000.0);
-        //10k queries ---> 12.326 sec ----> on 1 connection
-        //10k queries ---> 11.687 sec ----> on 1 connection
-
-        //10k queries ---> 10.236 sec ----> on 10 connection
-
-
-    }
-}
 
