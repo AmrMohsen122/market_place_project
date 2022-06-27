@@ -3,6 +3,8 @@ package parallelProject;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+
 import parallelProject.FunctionInterface;
 
 public class ServerHandler {
@@ -32,7 +34,7 @@ public class ServerHandler {
 
     }
 
-    public String parse(BufferedReader input) throws IOException {
+    public static String parse(BufferedReader input) throws IOException {
 
         switch(input.readLine()){
 // login returns String on the following format:
@@ -47,26 +49,30 @@ public class ServerHandler {
                 String type = input.readLine();
                 String username = input.readLine();
                 String password = input.readLine();
-                 login(type, username, password);
+                Connection c;  //hnassign hena connection ll user
+                login(type, username, password,c );
+                break;
 
 
         }
 
         return "";
     }
-    public void login(String type,String username, String password) {
+    public void login(String type, String username, String password, Connection c) {
         User a;
         if(type.equals("Admin"))
-            a = Admin.isAdmin(input.readLine(), /*Connection*/);
+            if(Admin.isAdmin(username, c))
+                a = Admin.getUserInfo(username,c);
         else if(type.equals("Customer"))
-            a = Customer.isCustomer(input.readLine(), /*Connection*/);
+            if(Customer.isCustomer(username, c))
+                a = Customer.getUserInfo(username, c);
 
         if (a!=null)
-            if(!User.getPassword().equals(input.readLine())){
+            if(!User.getPassword().equals(password)){
                 //Print error message to user
             }
             else{
-
+                // transfer user to new homescreen
             }
 
 
@@ -79,6 +85,7 @@ public class ServerHandler {
                 server.listen(server.port);
 
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                parse(input);
 
             }
         }

@@ -4,7 +4,8 @@ package parallelProject;
 
 import java.sql.*;
 import java.time.LocalDate;
-class User {public String getPassword() {
+class User {
+        public static String getPassword() {
         return null;
 }
 
@@ -25,7 +26,7 @@ class Admin extends User{
         public void addUser(Connection conn) {
 
         }
-        private static boolean isAdmin(String user_name, Connection conn){
+        public static boolean isAdmin(String user_name, Connection conn){
                 return false;
         }
 }
@@ -37,7 +38,7 @@ class Customer extends User{
         public void addUser(Connection conn) {
 
         }
-        private static boolean isCustomer(String user_name, Connection conn){
+        public static boolean isCustomer(String user_name, Connection conn){
                 return false;
         }
 }
