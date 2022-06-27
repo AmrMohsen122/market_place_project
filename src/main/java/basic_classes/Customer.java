@@ -2,11 +2,13 @@ package basic_classes;
 
 import database.manager.DatabaseManager;
 import java.sql.*;
+import java.util.Vector;
 
 public class Customer extends User{
     double current_balance;
     String address;
     String mobile_number;
+    Vector<Order> orders = new Vector<Order>();
 
     //CONSTRUCTORS
     public Customer(){
@@ -101,11 +103,27 @@ public class Customer extends User{
         return null;
     }
 
-    /*
-        PRE_CONDITIONS: USER EXISTS
-        POST_CONDITIONS: RETURN THE USER CURRENT BALANCE
-     */
 
+    /*
+        PRE_CONDITIONS: NONE
+        POST_CONDITIONS: THE ORDER LIST OF USER IS FILLED WITH ORDERS HE MADE BEFORE
+     */
+    public void loadOrders(Connection conn){
+        try{
+            String query = "select OID , ODATE, TOTAL_PRICE from CUSTOMER_ACC natural join CUST_ORDER where USERNAME = " + insertQuotations(user_name);
+            Statement stmt = conn.createStatement();
+            ResultSet queryResult = stmt.executeQuery(query);
+            while(queryResult.next()){
+                orders.add(new Order(queryResult.getInt(queryResult.findColumn("OID")) , queryResult.getDate(queryResult.findColumn("ODATE"))
+                           ,queryResult.getDouble(queryResult.findColumn("TOTAL_PRICE"))));
+            }
+        }catch(SQLException e){
+            if(debug){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+        }
+    }
 
     @Override
     public String toString(){
@@ -116,6 +134,11 @@ public class Customer extends User{
     public static void main(String[] args) {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-        System.out.println(Customer.getUserInfo("ahmed" , conn));
+        User u1 = Customer.getUserInfo("Ahmed", conn);
+        ((Customer)u1).loadOrders(conn);
+        for (Order o: ((Customer) u1).orders) {
+            System.out.println(o);
+
+        }
     }
 }

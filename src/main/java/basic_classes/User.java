@@ -30,7 +30,6 @@ public abstract class User {
         this.email = email;
         this.bdate = bdate;
     }
-    //TODO NULL CONSTRUCTOR
     //CREATE A USER WHERE DATE MAY NOT BE SPECIFIED AND IS SET TO DEFAULT VALUE OF CURRENT DATE
     public User(String user_name , String password , String email){
         this.user_name = user_name;
@@ -56,7 +55,6 @@ public abstract class User {
         return bdate;
     }
 
-    //TODO THREAD SYNCHRONIZATION
 
     /*
     * PRE_CONDITIONS: DATABASE EXISTS
