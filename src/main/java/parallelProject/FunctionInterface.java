@@ -150,7 +150,7 @@ public class FunctionInterface {
         public static Connection requestConnection(){
                 return null;
         }
-        public static void initConnection(){};
+        public static void initConnection(final int connectionNo){};
         public static void loadDriver(){};
 
 

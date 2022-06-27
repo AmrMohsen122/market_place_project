@@ -5,6 +5,7 @@ import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.util.function.Function;
 
 import parallelProject.FunctionInterface;
 
@@ -81,7 +82,8 @@ public class ServerHandler {
 
     public static void main(String[] args) {
 
-
+        FunctionInterface.loadDriver();
+        FunctionInterface.initConnection(100);
         try {
             ServerHandler server = new ServerHandler();
             while (true) {
