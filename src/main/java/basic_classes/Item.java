@@ -176,6 +176,10 @@ public class Item {
         return"Not Found";
     }
 
+    /*
+     * PRE_CONDITIONS: category exists in the database
+     * POST_CONDITIONS: retrieve items by category
+     */
     public static Vector<Item> search_by_category(String category, Connection conn){
         try {
             Vector<Item> items = new Vector<Item>();
@@ -195,6 +199,10 @@ public class Item {
         return null;
     }
 
+    /*
+     * PRE_CONDITIONS: item_name exists in the database
+     * POST_CONDITIONS: retrieve items by name
+     */
     public static Vector<Item> search_by_name(String item_name, Connection conn){
         try {
             Vector<Item> items = new Vector<Item>();
