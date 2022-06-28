@@ -45,45 +45,4 @@ public class loginpageController {
         stage.setScene(scene);
         stage.show();
     }
-
- /*   public void switchToSignUp() throws IOException {
-        Stage stage = (Stage) signup.getScene().getWindow();
-        stage.close();
-        Stage PrimaryStage = new Stage();
-        try {
-            Parent parent = FXMLLoader.load(getClass().getResource("signup.fxml"));
-            Scene scene = new Scene(parent);
-            PrimaryStage.setTitle("Sign_Up");
-            PrimaryStage.setScene(scene);
-            PrimaryStage.show();
-        }catch(IOException ex) {
-        }
-    }*/
-
-
-
-   /* @FXML
-    public void initialize() {
-        imView.setImage(
-                new Image("@../../java/parallelProject/image/bag.jpeg")
-        );
-    }*/
-    /*private void switchToSignUp(ActionEvent event) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("signup.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(parent);
-        stage.setTitle("Sign_Up");
-        stage.setScene(scene);
-        stage.show();
-    }*/
-
-    /*private void switchToLogin(ActionEvent event) throws IOException {
-        Parent parent = FXMLLoader.load(getClass().getResource("signup.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(parent);
-        stage.setTitle("Sign_Up");
-        stage.setScene(scene);
-        stage.show();
-    }*/
-
 }
