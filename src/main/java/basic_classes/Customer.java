@@ -153,7 +153,8 @@ public class Customer extends User{
     }
 
     //TODO CHECK STOCK BEFORE DECREMENTING
-    //TODO WE NEED TO GET AUTO-INCREMENTED OID AND INSERT ITEMS USING IT
+    //TODO CHECK IF THE ORDER ADDS UP TO TOTAL PRICE
+    //TODO KHALY MO2MEN Y7OTHA
     /*
         PRE_CONDITIONS: THE USER EXISTS IN DATABASE, ITEMS CONTAINED IN ORDER MUST ALREADY EXIST IN DATABASE
         POST_CONDITIONS: AN ORDER IS PLACED UNDER THE USERNAME
@@ -161,9 +162,13 @@ public class Customer extends User{
     public void makeOrder(Order o , Connection conn) throws SQLException {
         try {
             conn.setAutoCommit(false);
-            String query = "insert into CUST_ORDER (ODATE , TOTAL_PRICE , USERNAME) values (" + insertQuotations(o.getODate().toString()) + "," + o.getTotalPrice() + "," + insertQuotations(user_name) + ")" ;
             Statement stmt = conn.createStatement();
+            String query = "insert into CUST_ORDER (ODATE , TOTAL_PRICE , USERNAME) values (" + insertQuotations(o.getODate().toString()) + "," + o.getTotalPrice() + "," + insertQuotations(user_name) + ")" ;
             stmt.executeUpdate(query);
+            query = "Select last_insert_id()";
+            ResultSet resultSet = stmt.executeQuery(query);
+            resultSet.next();
+            int currentOID = resultSet.getInt(1);
             query = "update CUSTOMER_ACC SET CURRENT_BALANCE = CURRENT_BALANCE - " + o.getTotalPrice() + " where USERNAME = " + insertQuotations(user_name);
             stmt.executeUpdate(query);
             String insertContain = "insert into CONTAIN (ITEM_QUANTITY , OID , IID) values (?,?,?)";
@@ -172,7 +177,7 @@ public class Customer extends User{
             PreparedStatement prepstmt2 = conn.prepareStatement(updateStock);
             for(Item i : o.getItems()){
                 prepStmt.setInt(1 , i.getItemQuantity());
-                prepStmt.setInt(2 , o.getOID());
+                prepStmt.setInt(2 , currentOID);
                 prepStmt.setInt(3 , i.getIid());
                 prepstmt2.setInt(1 , i.getItemQuantity());
                 prepstmt2.setString(2 , i.getItem_name());
@@ -214,7 +219,7 @@ public class Customer extends User{
     public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-        Order o1 = new Order(Date.valueOf("2022-06-28") , 300);
+        Order o1 = new Order(Date.valueOf("2022-06-28") , 350);
         Item i1 = Item.getItemInfo("Desert Shoes",conn);
         i1.setItemQuantity(1);
         Item i2 = Item.getItemInfo("Desert white sneakers" , conn);
