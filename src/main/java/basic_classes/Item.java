@@ -2,9 +2,10 @@ package basic_classes;
 import database.manager.DatabaseManager;
 
 import java.sql.*;
-import java.util.Locale;
 import java.util.Vector;
 
+//TODO ADD AUTO_INCREMENT TO ITEMS
+//TODO SPECIFY ITEM QUANTITY OF EACH ITEM IN ORDER
 public class Item {
     private static final boolean debug = true;
 
@@ -14,8 +15,27 @@ public class Item {
     private String seller_name;
     private int stock;
     private String category;
+    private int itemQuantity = - 1;
 
     // Constructors
+
+    public int getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public Item(int iid, double price, String item_name, String seller_name, int stock, String category, int itemQuantity) {
+        this.iid = iid;
+        this.price = price;
+        this.item_name = item_name;
+        this.seller_name = seller_name;
+        this.stock = stock;
+        this.category = category;
+        this.itemQuantity = itemQuantity;
+    }
+
+    public void setItemQuantity(int itemQuantity) {
+        this.itemQuantity = itemQuantity;
+    }
 
     public Item(int iid, double price, String item_name, String seller_name, int stock, String category){
         this.iid = iid;
@@ -228,7 +248,7 @@ public class Item {
 
     @Override
     public String toString(){
-        return "iid: " + iid + "\nprice: " + price + "\nitem_name: " + item_name + "\nseller_name: " + seller_name + "\nstock: " + stock + "\ncategory: " + category;
+        return "iid: " + iid + "\nprice: " + price + "\nitem_name: " + item_name + "\nseller_name: " + seller_name + "\nstock: " + stock + "\ncategory: " + category + "\nItem Quantity: " + itemQuantity;
     }
     public static void main(String[] args) {
         DatabaseManager.initConnection(10);
