@@ -4,7 +4,13 @@ package parallelProject;
 
 import java.sql.*;
 import java.time.LocalDate;
+class DataBaseManager{
+        public static Connection requestConnection(){
 
+                return null;
+                }
+         public static void releaseConnection(Connection connect){};
+        }
 class User {
         public static String getPassword() {
         return null;
@@ -150,9 +156,7 @@ public class FunctionInterface {
 
         }
 
-        public static Connection requestConnection(){
-                return null;
-        }
+
         public static void initConnection(final int connectionNo){};
         public static void loadDriver(){};
 

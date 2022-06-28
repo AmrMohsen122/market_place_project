@@ -27,7 +27,12 @@ public class ServerHandler implements Runnable{
     @Override
     public void run(){
         try {
+
+            this.conn = DataBaseManager.requestConnection();
             parse(input,conn,client);
+            DataBaseManager.releaseConnection(this.conn);
+            //momken acall el terminate hena badal m a3mlha case lw7dha fe el parse
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +47,7 @@ public class ServerHandler implements Runnable{
 
     }
 
-    public static String parse(BufferedReader input, Connection conn, User client) throws IOException {
+    public String parse(BufferedReader input, Connection conn, User client) throws IOException {
 
         switch(input.readLine()){
 // login returns String on the following format:
@@ -83,6 +88,10 @@ public class ServerHandler implements Runnable{
                 break;
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
+                break;
+            case "exit":
+                this.terminate();
+                //ana khalet el parse non-static hena
                 break;
 
         }

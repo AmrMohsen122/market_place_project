@@ -27,7 +27,7 @@ public class Server {
                 Socket socket=server.serverSocket.accept();
                 ServerHandler serverHandler=new ServerHandler(socket);
                 serverHandler.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                serverHandler.conn=FunctionInterface.requestConnection();
+
                 threadPool.execute(serverHandler);
             }
         }
