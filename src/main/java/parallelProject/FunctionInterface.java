@@ -15,6 +15,10 @@ class Item{
         public static Vector<Item> search_by_name(String itemName) {
                 return null;
         }
+
+        public static Vector<Item> search_by_catgory(String categoryName, Connection conn) {
+                return null;
+        }
 }
 class DataBaseManager{
         public static Connection requestConnection(){
@@ -22,6 +26,8 @@ class DataBaseManager{
                 return null;
                 }
          public static void releaseConnection(Connection connect){};
+        public static void initConnection(final int connectionNo){};
+        public static void loadDriver(){};
         }
 class User {
         public static String getPassword() {
@@ -36,6 +42,9 @@ class User {
                 return null;
         }
 
+        public double getCurrentBalance() {
+                return -1;
+        }
 }
 class Admin extends User{
         public static Admin getUserInfo(String user_name, Connection conn){
@@ -170,8 +179,7 @@ public class FunctionInterface {
         }
 
 
-        public static void initConnection(final int connectionNo){};
-        public static void loadDriver(){};
+
 
 
     }

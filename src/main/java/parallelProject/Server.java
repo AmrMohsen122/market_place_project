@@ -18,8 +18,8 @@ public class Server {
     public static void main(String[] args) {
         try {
             Server server = new Server(2022);
-            FunctionInterface.loadDriver();
-            FunctionInterface.initConnection(100);
+            DataBaseManager.loadDriver();
+            DataBaseManager.initConnection(100);
             ExecutorService threadPool = Executors.newFixedThreadPool(50);
 
 
