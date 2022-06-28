@@ -51,6 +51,7 @@ class Customer extends User{
         public static boolean isCustomer(String user_name, Connection conn){
                 return false;
         }
+        public void rechargeBalance(double amount, Connection co){};
 }
 public class FunctionInterface {
          /*

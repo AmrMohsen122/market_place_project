@@ -89,6 +89,16 @@ public class ServerHandler implements Runnable{
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
                 break;
+
+            case "rechargeBalance":
+            /*Input on following format
+            * rechargeBalance
+            * amount
+            * */
+                double amount = Double.parseDouble(input.readLine());
+                ((Customer)client).rechargeBalance(amount, conn);
+                break;
+
             case "exit":
                 this.terminate();
                 //ana khalet el parse non-static hena
