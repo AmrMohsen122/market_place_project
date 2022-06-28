@@ -1,5 +1,7 @@
 package parallelProject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,10 +19,14 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
-    }
+
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("loginpage.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setTitle("Login Page");
+            stage.setScene(scene);
+            stage.show();
+        }
+
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
