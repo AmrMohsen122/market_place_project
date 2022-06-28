@@ -26,9 +26,6 @@ public class loginpageController {
 
             Parent root = FXMLLoader.load(getClass().getResource("signup.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      // stage.setHeight(420);
-      // stage.setWidth(604);
-       //     stage.setResizable(false);
             stage.setTitle("SignUp Page");
             Scene scene = new Scene(root);
             stage.setScene(scene);
