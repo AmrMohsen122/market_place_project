@@ -3,7 +3,19 @@ package parallelProject;
 
 
 import java.sql.*;
+import java.util.Vector;
 import java.time.LocalDate;
+class Item{
+
+
+        public static int itemExists(String itemName, Connection conn) {
+                return -1;
+        }
+
+        public static Vector<Item> search_by_name(String itemName) {
+                return null;
+        }
+}
 class DataBaseManager{
         public static Connection requestConnection(){
 

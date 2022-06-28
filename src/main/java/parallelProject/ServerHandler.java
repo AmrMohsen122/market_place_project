@@ -5,6 +5,7 @@ import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.util.Vector;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.concurrent.ExecutorService;
@@ -81,11 +82,7 @@ public class ServerHandler implements Runnable{
                 signUp(newUserName,newPassword,email,address,mobileNumber,conn);
                 break;
 
-            case "search":
-                //item name
-                String itemName= input.readLine();
-                //TODO call the search function
-                break;
+
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
                 break;
@@ -97,7 +94,20 @@ public class ServerHandler implements Runnable{
             * */
                 double amount = Double.parseDouble(input.readLine());
                 ((Customer)client).rechargeBalance(amount, conn);
+                // TODO display message "Successful balance recharge"
                 break;
+            case "searchByName":
+                /*Input Format
+                * searchByName
+                * itemName
+                * */
+                Vector<Item> items;
+                String itemName = input.readLine();
+                if(Item.itemExists(itemName, conn)!=0)
+                     items = Item.search_by_name(itemName);
+                // TODO return item details to GUI
+                break;
+
 
             case "exit":
                 this.terminate();
