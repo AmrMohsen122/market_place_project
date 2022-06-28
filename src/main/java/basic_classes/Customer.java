@@ -150,6 +150,20 @@ public class Customer extends User{
         }
     }
 
+    public void rechargeBalance(double amount, Connection conn){
+        try {
+            Statement stmt = conn.createStatement();
+            String query = "update CUSTOMER_ACC SET CURRENT_BALANCE = CURRENT_BALANCE + " + amount + " where USERNAME = " + insertQuotations(user_name);
+            stmt.executeUpdate(query);
+        }
+        catch(SQLException e){
+            if(debug){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+        }
+    }
+
     @Override
     public String toString(){
        return "***************** CUSTOMER *****************\n" + super.toString() + "\nCurrent balance = " + current_balance + "\nAddress: " + address + "\nMobile number: " + mobile_number;
@@ -159,5 +173,8 @@ public class Customer extends User{
     public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
+
+        User u1 = new Customer("Moa" , "123" , "moa@example.com");
+        ((Customer) u1).rechargeBalance(100, conn);
     }
 }
