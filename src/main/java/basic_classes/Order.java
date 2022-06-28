@@ -8,13 +8,20 @@ public class Order {
     protected static final boolean debug = true;
     private Date ODate;
     private double totalPrice;
+    private Vector<Item> items = new Vector<Item>();
+
 
     public Vector<Item> getItems() {
         return items;
     }
-
-    private Vector<Item> items = new Vector<Item>();
-
+    public void printOrderItem(){
+        for (Item i: items) {
+            System.out.println(i);
+        }
+    }
+    public void addItemToOrder(Item item){
+        items.add(item);
+    }
     public Order(int OID, Date ODate, double totalPrice) {
         this.OID = OID;
         this.ODate = ODate;
