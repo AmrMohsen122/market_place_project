@@ -54,12 +54,12 @@ public class ServerHandler implements Runnable{
 
     public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
         Vector<Item> items;
-        String in = input.readLine();
+        String in = input.readUTF();
         if(in == null){
             System.out.println("in is null");
         }
         System.out.println(in);
-        switch(input.readLine()){
+        switch(in){
 // login returns String on the following format:
             /*
             * login

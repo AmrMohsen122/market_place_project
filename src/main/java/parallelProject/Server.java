@@ -1,9 +1,7 @@
 package parallelProject;
 import database.manager.DatabaseManager;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -28,7 +26,7 @@ public class Server {
                 Socket socket=server.serverSocket.accept();
                 System.out.println("Connection accepted");
                 ServerHandler serverHandler = new ServerHandler(socket);
-                serverHandler.input = new DataInputStream(socket.getInputStream());
+                serverHandler.input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
                 threadPool.execute(serverHandler);
             }
