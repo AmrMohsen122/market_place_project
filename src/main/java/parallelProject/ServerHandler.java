@@ -130,7 +130,11 @@ public class ServerHandler implements Runnable{
                 this.terminate();
                 //ana khalet el parse non-static hena
                 break;
+            case "confirmCard":
+            //TODO pass the object contains the order in the make order funcn
 
+                ((Customer)client).makeOrder(,conn);
+                break;
 
 
         }

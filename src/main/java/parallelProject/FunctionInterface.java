@@ -69,6 +69,9 @@ class Customer extends User{
         public void loadOrders(Connection conn){
 
         }
+        public void makeOrder(Order o , Connection conn) throws SQLException {
+
+        }
         public static boolean isCustomer(String user_name, Connection conn){
                 return false;
         }
