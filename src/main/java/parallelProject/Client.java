@@ -2,7 +2,7 @@ package parallelProject;
 
 import java.io.*;
 import java.net.Socket;
-
+import java.util.Vector;
 public class Client {
 
     private Socket socket = null;
@@ -14,10 +14,11 @@ public class Client {
 
     public Client(String address, int port) {
 
+
         try {
 
             socket = new Socket(address, port);
-            System.out.println("Connection established");
+//            System.out.println("Connection established");
             input = new DataInputStream(System.in);
             serverinput = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
@@ -61,6 +62,13 @@ public class Client {
             socket.close();
         } catch (IOException i) {
             System.out.println(i);
+        }
+    }
+    public void send(Vector<String> text ) throws IOException {
+
+        for (int i = 0; i < text.size() ; i++) {
+            output.writeUTF(text.get(i));
+
         }
     }
     public static void main (String [] args){

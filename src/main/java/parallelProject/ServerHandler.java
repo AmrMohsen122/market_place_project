@@ -60,6 +60,7 @@ public class ServerHandler implements Runnable{
         }
         System.out.println(in);
         switch(in){
+
 // login returns String on the following format:
             /*
             * login
@@ -67,6 +68,7 @@ public class ServerHandler implements Runnable{
             * username
             * password
             * */
+
             case "login":
                 System.out.println("i am here");
                 String type = input.readLine();
@@ -110,6 +112,7 @@ public class ServerHandler implements Runnable{
                 ((Customer)client).rechargeBalance(amount, conn);
                 // TODO display message "Successful balance recharge"
                 break;
+
             case "searchByName":
                 /*Input Format
                 * searchByName
