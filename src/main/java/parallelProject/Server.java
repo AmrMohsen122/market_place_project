@@ -1,10 +1,11 @@
 package parallelProject;
-
+import database.manager.DatabaseManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,8 +19,8 @@ public class Server {
     public static void main(String[] args) {
         try {
             Server server = new Server(2022);
-            DataBaseManager.loadDriver();
-            DataBaseManager.initConnection(100);
+            DatabaseManager.loadDriver();
+            DatabaseManager.initConnection(100);
             ExecutorService threadPool = Executors.newFixedThreadPool(50);
 
 
@@ -33,6 +34,8 @@ public class Server {
         }
         catch (IOException e){
             System.out.println(e);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

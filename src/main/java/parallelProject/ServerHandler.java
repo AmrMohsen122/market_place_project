@@ -1,16 +1,16 @@
 package parallelProject;
-
 import java.io.*;
-import java.net.ConnectException;
-import java.net.ServerSocket;
+
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Vector;
-import java.util.concurrent.Executor;
-import java.util.function.Function;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import parallelProject.FunctionInterface;
+
+import java.sql.Date;
+import basic_classes.*;
+
+import database.manager.*;
+
 
 public class ServerHandler implements Runnable{
     private int port = 2022;
@@ -29,12 +29,14 @@ public class ServerHandler implements Runnable{
     public void run(){
         try {
 
-            this.conn = DataBaseManager.requestConnection();
+            this.conn = DatabaseManager.requestConnection();
             parse(input,conn,client);
-            DataBaseManager.releaseConnection(this.conn);
+            DatabaseManager.releaseConnection(this.conn);
             //momken acall el terminate hena badal m a3mlha case lw7dha fe el parse
 
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -48,7 +50,7 @@ public class ServerHandler implements Runnable{
 
     }
 
-    public String parse(BufferedReader input, Connection conn, User client) throws IOException {
+    public String parse(BufferedReader input, Connection conn, User client) throws IOException, SQLException {
         Vector<Item> items;
         switch(input.readLine()){
 // login returns String on the following format:
@@ -66,7 +68,7 @@ public class ServerHandler implements Runnable{
 
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
-                    double current_balance = client.getCurrentBalance();
+                    double current_balance = ((Customer)client).getCurrent_balance();
                     // TODO asend el current balance ll GUI
                 }
                 break;
@@ -109,7 +111,7 @@ public class ServerHandler implements Runnable{
                 // TODO azwd fe el GUI eno ycall searchByName bas lw feh 7aga maktoba gowa el Search Box
                 String itemName = input.readLine();
                 if(Item.itemExists(itemName, conn)!=0)
-                     items = Item.search_by_name(itemName);
+                     items = Item.search_by_name(itemName, conn);
                 // TODO return item details to GUI
                 break;
 
@@ -122,7 +124,7 @@ public class ServerHandler implements Runnable{
                 //Category already exists since it is chosen from a menu
 
                 String categoryName = input.readLine();
-                items = Item.search_by_catgory(categoryName, conn);
+                items = Item.search_by_category(categoryName, conn);
                 // TODO return item details to GUI
                 break;
 
@@ -130,10 +132,28 @@ public class ServerHandler implements Runnable{
                 this.terminate();
                 //ana khalet el parse non-static hena
                 break;
-            case "confirmCard":
-            //TODO pass the object contains the order in the make order funcn
+            case "confirmCart":
+                /*Input format
+                *orderDate
+                *totalPrice
+                *item1 details (iid, price, item_name, seller_name, stock, category, itemQuantity)
+                *item2 details
+                *-------
+                *end
+                * */
+            // TODO pass the object contains the order in the make order funcn
+                Date oDate = Date.valueOf(input.readLine());
+                double tPrice = Double.parseDouble(input.readLine());
+                Order o = new Order(oDate, tPrice);
+                String nextItem = input.readLine();
 
-                ((Customer)client).makeOrder(,conn);
+                while(!nextItem.equals("end")) {
+
+                    o.addItemToOrder(parseItems(nextItem));
+                    nextItem = input.readLine();
+                }
+
+                ((Customer)client).makeOrder(o,conn);
                 break;
 
 
@@ -142,17 +162,24 @@ public class ServerHandler implements Runnable{
         return "";
     }
 
-    public static User login(String type, String username, String password, Connection c) {
+
+    public Item parseItems(String str){
+        String[] itemD = str.split(",");
+        Item i = new Item(Integer.parseInt(itemD[0]),Double.parseDouble(itemD[1]),itemD[2],itemD[3],Integer.parseInt(itemD[4]),itemD[5],Integer.parseInt(itemD[6]));
+        return i;
+    }
+    public User login(String type, String username, String password, Connection c) {
         User a = null;
         double balance = -1;
-        if(FunctionInterface.userExists(username, c)!=0) {
+        if(User.userExists(username, c)!=0) {
             if (type.equals("Admin"))
                 a = (Admin)Admin.getUserInfo(username, c);
             else if (type.equals("Customer"))
                 a = (Customer)Customer.getUserInfo(username, c);
         }
         if (a!=null) {
-            if (!User.getPassword().equals(password)) {
+            String str = User.getPassword(username, conn);
+            if (!str.equals(password)) {
                 //TODO Print error message "Invalid password"
                 return null;
             } else {
