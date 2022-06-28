@@ -15,6 +15,7 @@ public class Item {
     private String seller_name;
     private int stock;
     private String category;
+    //-1 to check if this item belongs to an order or not
     private int itemQuantity = - 1;
 
     // Constructors
