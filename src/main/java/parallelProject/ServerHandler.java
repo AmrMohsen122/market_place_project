@@ -15,7 +15,7 @@ import parallelProject.FunctionInterface;
 public class ServerHandler implements Runnable{
     private int port = 2022;
     private  Socket socket = null;
-    private ServerSocket server = null;
+
     public static BufferedReader input = null;
     private BufferedWriter output = null;
     public Connection conn=null;
@@ -84,6 +84,7 @@ public class ServerHandler implements Runnable{
                 String address= input.readLine();
                 String mobileNumber= input.readLine();
                 signUp(newUserName,newPassword,email,address,mobileNumber,conn);
+                // TODO check en el password w el confirm password text boxes contain same password
                 break;
 
 
