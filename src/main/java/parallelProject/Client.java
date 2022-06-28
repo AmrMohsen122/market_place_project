@@ -7,10 +7,10 @@ public class Client {
 
     private Socket socket = null;
 
-    private BufferedReader input = null;
-    private PrintWriter output = null;
+    private DataInputStream input = null;
+    private DataOutputStream output = null;
 
-    private BufferedReader serverinput = null;
+    private DataInputStream serverinput = null;
 
     public Client(String address, int port) {
 
@@ -18,9 +18,9 @@ public class Client {
 
             socket = new Socket(address, port);
             System.out.println("Connection established");
-            input = new BufferedReader(new InputStreamReader(System.in));
-            serverinput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            output = new PrintWriter(socket.getOutputStream());
+            input = new DataInputStream(System.in);
+            serverinput = new DataInputStream(socket.getInputStream());
+            output = new DataOutputStream(socket.getOutputStream());
 
 
         } catch (IOException i) {
@@ -36,9 +36,10 @@ public class Client {
                 request = input.readLine();
                 System.out.println("Input taken from user");
 
-                output.println(request);
+                output.writeUTF(request);
 
-                System.out.println("Request sent to sever");
+
+                System.out.println("Request sent to sever " );
                 System.out.println("Waiting for Request to be done");
                 response = serverinput.readLine();
                 while (!response.equals("exit"))
@@ -64,7 +65,8 @@ public class Client {
     }
     public static void main (String [] args){
 
-        Client client = new Client("127.0.0.1", 2000);
+
+        Client client = new Client("127.0.0.1", 2022);
 
 
     }

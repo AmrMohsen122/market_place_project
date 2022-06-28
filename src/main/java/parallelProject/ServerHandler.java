@@ -16,8 +16,8 @@ public class ServerHandler implements Runnable{
     private int port = 2022;
     private  Socket socket = null;
 
-    public static BufferedReader input = null;
-    private BufferedWriter output = null;
+    public DataInputStream input = null;
+    private DataOutputStream output = null;
     public Connection conn=null;
     public User client = null;
 
@@ -30,6 +30,8 @@ public class ServerHandler implements Runnable{
         try {
 
             this.conn = DatabaseManager.requestConnection();
+            System.out.println(conn);
+            System.out.println(this.input);
             parse(input,conn,client);
             DatabaseManager.releaseConnection(this.conn);
             //momken acall el terminate hena badal m a3mlha case lw7dha fe el parse
@@ -50,8 +52,13 @@ public class ServerHandler implements Runnable{
 
     }
 
-    public String parse(BufferedReader input, Connection conn, User client) throws IOException, SQLException {
+    public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
         Vector<Item> items;
+        String in = input.readLine();
+        if(in == null){
+            System.out.println("in is null");
+        }
+        System.out.println(in);
         switch(input.readLine()){
 // login returns String on the following format:
             /*
@@ -61,16 +68,16 @@ public class ServerHandler implements Runnable{
             * password
             * */
             case "login":
-
+                System.out.println("i am here");
                 String type = input.readLine();
                 String username = input.readLine();
                 String password = input.readLine();
-
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
                     double current_balance = ((Customer)client).getCurrent_balance();
                     // TODO asend el current balance ll GUI
                 }
+                System.out.println("Username: " + username + "\n password: " + password);
                 break;
 
             case "signUp":
