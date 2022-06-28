@@ -7,6 +7,7 @@ import java.util.Vector;
 //TODO ADD AUTO_INCREMENT TO ITEMS
 //TODO SPECIFY ITEM QUANTITY OF EACH ITEM IN ORDER
 public class Item {
+
     private static final boolean debug = true;
 
     private int iid;

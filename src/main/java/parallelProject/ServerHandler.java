@@ -71,9 +71,13 @@ public class ServerHandler implements Runnable{
 
             case "login":
                 System.out.println("i am here");
-                String type = input.readLine();
-                String username = input.readLine();
-                String password = input.readLine();
+
+                String type = input.readUTF();
+                String username = input.readUTF();
+                String password = input.readUTF();
+
+                System.out.println("Ana 3adet");
+
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
                     double current_balance = ((Customer)client).getCurrent_balance();
@@ -146,11 +150,12 @@ public class ServerHandler implements Runnable{
                 /*Input format
                 *orderDate
                 *totalPrice
-                *item1 details (iid, price, item_name, seller_name, stock, category, itemQuantity)
+                *item1 details (iid,price,item_name,seller_name,stock,category,itemQuantity)
                 *item2 details
                 *-------
                 *end
                 * */
+             // TODO send "Item Not Found"
             // TODO pass the object contains the order in the make order funcn
                 Date oDate = Date.valueOf(input.readLine());
                 double tPrice = Double.parseDouble(input.readLine());
@@ -193,13 +198,13 @@ public class ServerHandler implements Runnable{
                 //TODO Print error message "Invalid password"
                 return null;
             } else {
-                // TODO transfer user to new homescreen w lw el user Customer call getBalance
+                // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
 
                 return a;
             }
         }
         else{
-            //TODO print Admin or Customer doesn't exist error message
+            //TODO print Admin or Customer doesn't exist error message "Invalid Username"
             return null;
 
         }
