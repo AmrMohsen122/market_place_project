@@ -53,7 +53,8 @@ public class ServerHandler implements Runnable{
     }
 
     public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
-        Vector<Item> items;
+        Vector<Item> items=null;
+        Vector <String>itemsFound=null;
         String in = input.readUTF();
         if(in == null){
             System.out.println("in is null");
@@ -140,8 +141,15 @@ public class ServerHandler implements Runnable{
                 // TODO azwd fe el GUI eno ycall searchByName bas lw feh 7aga maktoba gowa el Search Box
                 String itemName = input.readLine();
                 if(Item.itemExists(itemName, conn)!=0)
+
                      items = Item.search_by_name(itemName, conn);
+
+                itemsFound=loadItems(items);
+                for (int i = 0; i < itemsFound.size(); i++) {
+                    this.output.writeUTF(itemsFound.get(i));
+                }
                 // TODO return item details to GUI
+
                 break;
 
             case "searchByCategory":
@@ -155,6 +163,11 @@ public class ServerHandler implements Runnable{
                 String categoryName = input.readLine();
                 items = Item.search_by_category(categoryName, conn);
                 // TODO return item details to GUI
+
+                itemsFound=loadItems(items);
+                for (int i = 0; i < 3; i++) {
+                    this.output.writeUTF(itemsFound.get(i));
+                }
                 break;
 
             case "exit":
@@ -236,9 +249,9 @@ public class ServerHandler implements Runnable{
             this.output.writeUTF("Invalid");
         //  TODO check the password and confirm password are the same
         }
-    public Vector<String> loadItems(Order order){
-        Vector<Item>items=order.getItems();
-        Vector<String>itemDet=new Vector<String>();
+    public Vector<String> loadItems(Vector <Item>items) {
+
+        Vector<String> itemDet = new Vector<String>();
         for (int i = 0; i < items.size(); i++) {
             itemDet.add(String.valueOf(items.get(i).getIid()));
             itemDet.add(String.valueOf(items.get(i).getPrice()));
@@ -271,7 +284,7 @@ public class ServerHandler implements Runnable{
             Vector <String> ordDet = new Vector<String>();
 
             for (int i = 0; i < orders.size(); i++) {
-                Vector <String> itemDet= loadItems(orders.get(i));
+                Vector <String> itemDet= loadItems(orders.get(i).getItems());
                 ordDet.add(orders.get(i).getODate().toString());
                 ordDet.add(String.valueOf(orders.get(i).getTotalPrice()));
                 addVectorToVector(ordDet,itemDet);
