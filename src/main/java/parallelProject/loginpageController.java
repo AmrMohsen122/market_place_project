@@ -37,16 +37,25 @@ public class loginpageController {
 
     public static Customer cust;
     public Client client;
-    String cc = "aa,bb,ccc,2000,eee,01111";
 
     public Customer parseCustomers(String str) throws ParseException {
         String[] itemA = str.split(",");
-        //String cc = "aa,bb,ccc,2000,eee,01111";
+        Customer c;
 
-        //SimpleDateFormat formatter=new SimpleDateFormat("yyyy-mm-dd");
-//        username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
-//        Date date1= Date.valueOf(itemA[3]);
-        Customer c = new Customer(itemA[0],itemA[1],itemA[2], Double.parseDouble(itemA[3]),itemA[4],itemA[5]);
+        // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
+        if(!itemA[3].equals("null") && !itemA[4].equals("null")){
+            c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
+        }
+        else if (itemA[3].equals("null")){
+            c = new Customer(itemA[0],itemA[1],itemA[2], null,Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
+        }
+        else if(itemA[4].equals("null")){
+            c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),0.00,itemA[5],itemA[6]);
+
+        }
+        else{
+            c = new Customer(itemA[0],itemA[1],itemA[2], null,0.00,itemA[5],itemA[6]);
+        }
         return c;
     }
 
@@ -112,9 +121,11 @@ public class loginpageController {
         boolean fcheck,flag;
         getter();
         fillVector();
-
         fcheck = check();
         flag = validation();
+        System.out.println(flag);
+        System.out.println(fcheck);
+
         if(fcheck==false){
             valid.setText("Enter all data!");
         }
@@ -122,7 +133,7 @@ public class loginpageController {
             valid.setText("Invalid username or password!");
         }
         else if( Admin == "Customer"){
-                cust = parseCustomers(cc);
+                cust = parseCustomers(validate);
                 Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle("Home Page");

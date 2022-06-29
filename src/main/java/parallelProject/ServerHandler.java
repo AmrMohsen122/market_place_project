@@ -84,11 +84,11 @@ public class ServerHandler implements Runnable{
                     // TODO asend el current balance ll GUI
 //                    String user_name, String password, String email, double current_balance, String address, String mobile_number
                     String email =((Customer)client).getEmail() ;
-//                    Date bdate =((Customer)client).getBdate();
+                    Date bdate =((Customer)client).getBdate();
                     String address=((Customer)client).getAddress() ;
                     String mobile_number =((Customer)client).getMobile_number();
                     String strToBePassed="";
-                    strToBePassed = username+','+password+','+email+','+current_balance_inStr+','+address+','+mobile_number;
+                    strToBePassed = username+','+password+','+email+ ','+ bdate  +','+current_balance_inStr+','+address+','+mobile_number;
                     this.output.writeUTF(strToBePassed);
                 }
 
@@ -246,7 +246,7 @@ public class ServerHandler implements Runnable{
 
 
     }
-    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException,SQLException {
+    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException, SQLException {
         Customer newUser= new Customer();
         if (User.userExists(newUserName,conn)==0) {
             newUser.addUser(conn);
@@ -275,18 +275,18 @@ public class ServerHandler implements Runnable{
         }
     }
     public Vector<String> loadOrderDetails(Customer client)
-                        /*vector of order details
-                format is: first order date
-                first order price
-                first item in first order iid;
-                    price
-                    item_name
-                    seller_name
-                    stock
-                    category
-                second order date .....
-                */
-    {
+            /*vector of order details
+    format is: first order date
+    first order price
+    first item in first order iid;
+        price
+        item_name
+        seller_name
+        stock
+        category
+    second order date .....
+    */
+{
         Vector<Order> orders =((Customer)client).getOrders();
         Vector <String> ordDet = new Vector<String>();
 
