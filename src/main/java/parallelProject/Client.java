@@ -50,7 +50,7 @@ public class Client {
                 try {
 
                     System.out.println("Please enter request");
-                    request = client.input.readUTF();
+                    request = client.input.readLine();
                     System.out.println("Input taken from user");
 
                     client.output.writeUTF(request);
