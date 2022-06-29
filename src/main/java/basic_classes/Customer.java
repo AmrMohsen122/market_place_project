@@ -26,6 +26,15 @@ public class Customer extends User{
         this.address = address;
         this.mobile_number = mobile_number;
     }
+
+    public Customer(String user_name, String password, String email, double current_balance, String address, String mobile_number) {
+        super(user_name, password, email);
+        this.current_balance = current_balance;
+        this.address = address;
+        this.mobile_number = mobile_number;
+        this.orders = orders;
+    }
+
     public Customer(String user_name , String password , String email){
         super(user_name , password , email);
         current_balance = 0;

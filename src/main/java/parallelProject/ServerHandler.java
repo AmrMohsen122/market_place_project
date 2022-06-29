@@ -82,13 +82,13 @@ public class ServerHandler implements Runnable{
                     double current_balance = ((Customer)client).getCurrent_balance();
                     String current_balance_inStr=String.valueOf(current_balance);
                     // TODO asend el current balance ll GUI
-
+//                    String user_name, String password, String email, double current_balance, String address, String mobile_number
                     String email =((Customer)client).getEmail() ;
-                    Date bdate =((Customer)client).getBdate();
+//                    Date bdate =((Customer)client).getBdate();
                     String address=((Customer)client).getAddress() ;
                     String mobile_number =((Customer)client).getMobile_number();
                     String strToBePassed="";
-                    strToBePassed = username+','+password+','+email+','+bdate+','+current_balance_inStr+','+address+','+mobile_number;
+                    strToBePassed = username+','+password+','+email+','+current_balance_inStr+','+address+','+mobile_number;
                     this.output.writeUTF(strToBePassed);
                 }
 

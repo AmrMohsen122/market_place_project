@@ -24,6 +24,16 @@ public class Client {
 
         }
     }
+    public  void terminate(){
+
+        try {
+            this.input.close();
+            this.output.close();
+            this.socket.close();
+        } catch (IOException i) {
+            System.out.println(i);
+        }
+    }
     public static void main (String [] args){
 
 
@@ -72,13 +82,7 @@ public class Client {
             }
             System.out.println("Connection Terminated");
 
-            try {
-                client.input.close();
-                client.output.close();
-                client.socket.close();
-            } catch (IOException i) {
-                System.out.println(i);
-            }
+
 
         }
 

@@ -45,8 +45,8 @@ public class loginpageController {
 
         //SimpleDateFormat formatter=new SimpleDateFormat("yyyy-mm-dd");
 //        username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
-        Date date1= Date.valueOf(itemA[3]);
-        Customer c = new Customer(itemA[0],itemA[1],itemA[2], date1,Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
+//        Date date1= Date.valueOf(itemA[3]);
+        Customer c = new Customer(itemA[0],itemA[1],itemA[2], Double.parseDouble(itemA[3]),itemA[4],itemA[5]);
         return c;
     }
 
@@ -66,6 +66,7 @@ public class loginpageController {
 
     public void fillVector() throws IOException {
         client = new Client("127.0.0.1", 2022);
+        client.socket = new Socket(client.address, client.port);
         client.input = new DataInputStream(new BufferedInputStream(client.socket.getInputStream()));
         client.output = new DataOutputStream(client.socket.getOutputStream());
         client.socket = new Socket(client.address, client.port);
@@ -139,4 +140,5 @@ public class loginpageController {
             stage.show();*/
         }
     }
+
 }
