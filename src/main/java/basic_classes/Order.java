@@ -47,6 +47,7 @@ public class Order {
         return totalPrice;
     }
 
+
     public void loadItems(Connection conn){
         try{
             String query = "select IID , PRICE, ITEM_NAME, SELLER_NAME, STOCK, CATEGORY from ITEM natural join CUST_ORDER where OID = " + OID;

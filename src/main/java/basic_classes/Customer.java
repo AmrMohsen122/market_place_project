@@ -56,6 +56,9 @@ public class Customer extends User{
     public void setMobile_number(String mobile_number) {
         this.mobile_number = mobile_number;
     }
+    public Vector<Order> getOrders(){
+        return this.orders;
+    }
 
     /*
         PRE_CONDITIONS: USER DOESN'T EXIST IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
