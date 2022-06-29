@@ -222,6 +222,29 @@ public class Item {
     }
 
     /*
+     * PRE_CONDITIONS: category exists in the database
+     * POST_CONDITIONS: retrieve 3 items from each category
+     */
+    public static Vector<Item> search_by_3_category(String category, Connection conn){
+        try {
+            Vector<Item> items = new Vector<Item>();
+            String query = "select top 3 * from ITEM where CATEGORY = " + insertQuotations(category);
+            Statement stmt = conn.createStatement();
+            ResultSet queryResult = stmt.executeQuery(query);
+            while(queryResult.next()) {
+                items.add(new Item(queryResult.getInt(queryResult.findColumn("IID")), queryResult.getFloat(queryResult.findColumn("PRICE")), queryResult.getString(queryResult.findColumn("ITEM_NAME")), queryResult.getString(queryResult.findColumn("SELLER_NAME")), queryResult.getInt(queryResult.findColumn("STOCK")), queryResult.getString(queryResult.findColumn("CATEGORY"))));
+            }
+            return items;
+        } catch (SQLException e) {
+            if (debug) {
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+        }
+        return null;
+    }
+
+    /*
      * PRE_CONDITIONS: item_name exists in the database
      * POST_CONDITIONS: retrieve items by name
      */
