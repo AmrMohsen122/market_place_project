@@ -41,7 +41,9 @@ public class loginpageController {
     public Customer parseCustomers(String str) throws ParseException {
         String[] itemA = str.split(",");
         Customer c;
-
+        for (int i = 0;  i< itemA.length; i++) {
+            System.out.println(itemA[i]);
+        }
         // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
         if(!itemA[3].equals("null") && !itemA[4].equals("null")){
             c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
@@ -62,8 +64,11 @@ public class loginpageController {
     public void getter(){
         boolean fAdmin;
         user = username.getText();
+
         pass = password.getText();
+
         Login = login.getId();
+
         fAdmin = asAdmin.isSelected();
         if(fAdmin == true){
             Admin = "Admin";
@@ -79,10 +84,11 @@ public class loginpageController {
         client.input = new DataInputStream(new BufferedInputStream(client.socket.getInputStream()));
         client.output = new DataOutputStream(client.socket.getOutputStream());
 
-        i1.add(Login);
-        i1.add(Admin);
-        i1.add(user);
-        i1.add(pass);
+        i1.add(0,Login);
+        i1.add(1,Admin);
+        i1.add(2,user);
+        i1.add(3,pass);
+        System.out.println(i1);
     }
 
     public boolean check() {
@@ -108,7 +114,7 @@ public class loginpageController {
     public boolean validation() throws IOException {
         client.send(i1);
         validate = client.input.readUTF();
-        if((validate == "Invalid Username") ||(validate == "Invalid Password")) {
+        if((validate.equals("Invalid Username")) ||(validate.equals("Invalid Password"))) {
             return false;
         }
         else {
@@ -117,6 +123,7 @@ public class loginpageController {
 
     }
     @FXML
+    // TODO nsheel 7war en awl m ndos login ykhosh 3la tool
     public void gologin(ActionEvent event) throws IOException, ParseException {
         boolean fcheck,flag;
         getter();
