@@ -115,7 +115,11 @@ public class ServerHandler implements Runnable{
 
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
-
+                Vector<String>orderHistory=new Vector<String>();
+                orderHistory=loadOrderDetails((Customer) client);
+                for (int i = 0; i < orderHistory.size(); i++) {
+                    this.output.writeUTF(orderHistory.get(i));
+                }
                 break;
 
             case "rechargeBalance":
@@ -232,8 +236,48 @@ public class ServerHandler implements Runnable{
             this.output.writeUTF("Invalid");
         //  TODO check the password and confirm password are the same
         }
-        public void loadOrderDetails(){
-            (Customer)client.
+    public Vector<String> loadItems(Order order){
+        Vector<Item>items=order.getItems();
+        Vector<String>itemDet=new Vector<String>();
+        for (int i = 0; i < items.size(); i++) {
+            itemDet.add(String.valueOf(items.get(i).getIid()));
+            itemDet.add(String.valueOf(items.get(i).getPrice()));
+            itemDet.add(items.get(i).getItem_name());
+            itemDet.add(items.get(i).getSeller_name());
+            itemDet.add(String.valueOf(items.get(i).getStock()));
+            itemDet.add(items.get(i).getCategory());
+        }
+        return itemDet;
+    }
+    public static void addVectorToVector(Vector<String>first,Vector<String>second){
+        for (int i = 0; i < second.size(); i++) {
+            first.add(second.get(i));
+        }
+    }
+        public Vector<String> loadOrderDetails(Customer client)
+                        /*vector of order details
+                format is: first order date
+                first order price
+                first item in first order iid;
+                    price
+                    item_name
+                    seller_name
+                    stock
+                    category
+                second order date .....
+                */
+        {
+            Vector<Order> orders =((Customer)client).getOrders();
+            Vector <String> ordDet = new Vector<String>();
+
+            for (int i = 0; i < orders.size(); i++) {
+                Vector <String> itemDet= loadItems(orders.get(i));
+                ordDet.add(orders.get(i).getODate().toString());
+                ordDet.add(String.valueOf(orders.get(i).getTotalPrice()));
+                addVectorToVector(ordDet,itemDet);
+
+            }
+            return ordDet ;
         }
 
 }
