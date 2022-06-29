@@ -13,10 +13,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.Vector;
 
+import java.util.Vector;
+import java.sql.Date;
 public class loginpageController {
     public static Vector<String> i1 = new Vector<>();
     String user,pass,Login,Admin,validate;
@@ -40,8 +39,9 @@ public class loginpageController {
         //String cc = "aa,bb,ccc,2000,eee,01111";
 
         //SimpleDateFormat formatter=new SimpleDateFormat("yyyy-mm-dd");
-        //Date date1=formatter.parse(itemA[3]);
-        Customer c = new Customer(itemA[0],itemA[1],itemA[2], Double.parseDouble(itemA[3]),itemA[4],itemA[5]);
+//        username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
+        Date date1= Date.valueOf(itemA[3]);
+        Customer c = new Customer(itemA[0],itemA[1],itemA[2], date1,Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
         return c;
     }
 
@@ -112,7 +112,7 @@ public class loginpageController {
             valid.setText("Invalid username or password!");
         }
         else if( Admin == "Customer"){
-                cust = new Customer(parseCustomers(cc));
+                cust = parseCustomers(cc);
                 Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle("Home Page");

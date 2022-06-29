@@ -30,6 +30,7 @@ public class ServerHandler implements Runnable{
         try {
 
             this.conn = DatabaseManager.requestConnection();
+            this.output = new DataOutputStream(this.socket.getOutputStream());
 //            System.out.println(conn);
 //            System.out.println(this.input);
             parse(input,conn,client);
@@ -87,7 +88,7 @@ public class ServerHandler implements Runnable{
                     String address=((Customer)client).getAddress() ;
                     String mobile_number =((Customer)client).getMobile_number();
                     String strToBePassed="";
-                    strToBePassed=username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr;
+                    strToBePassed = username+','+password+','+email+','+bdate+','+current_balance_inStr+','+address+','+mobile_number;
                     this.output.writeUTF(strToBePassed);
                 }
 
