@@ -81,8 +81,16 @@ public class ServerHandler implements Runnable{
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
                     double current_balance = ((Customer)client).getCurrent_balance();
+                    String current_balance_inStr=String.valueOf(current_balance);
                     // TODO asend el current balance ll GUI
-                    this.output.writeUTF(String.valueOf(current_balance));
+
+                    String email =((Customer)client).getEmail() ;
+                    Date bdate =((Customer)client).getBdate();
+                    String address=((Customer)client).getAddress() ;
+                    String mobile_number =((Customer)client).getMobile_number();
+                    String strToBePassed="";
+                    strToBePassed=username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr;
+                    this.output.writeUTF(strToBePassed);
                 }
                 System.out.println("Username: " + username + "\n password: " + password);
                 break;
@@ -223,6 +231,9 @@ public class ServerHandler implements Runnable{
         else
             this.output.writeUTF("Invalid");
         //  TODO check the password and confirm password are the same
+        }
+        public void loadOrderDetails(){
+            (Customer)client.
         }
 
 }
