@@ -58,6 +58,11 @@ public class ServerHandler implements Runnable{
         Vector<Item> items=null;
         Vector <String>itemsFound=null;
         String in = input.readUTF();
+        String email = null;
+        String password = null;
+        Date bdate = null;
+        String address = null;
+        String mobile_number = null;
 
 
         switch(in){
@@ -73,25 +78,31 @@ public class ServerHandler implements Runnable{
             case "login":
                 String type = input.readUTF();
                 String username = input.readUTF();
-                String password = input.readUTF();
+                password = input.readUTF();
 
 
 
                 client = login(type, username, password,conn );
-                if(client instanceof Customer ) {
-                    double current_balance = ((Customer)client).getCurrent_balance();
-                    String current_balance_inStr=String.valueOf(current_balance);
+
+
                     // TODO asend el current balance ll GUI
 //                    String user_name, String password, String email, double current_balance, String address, String mobile_number
-                    String email =((Customer)client).getEmail() ;
-                    Date bdate =((Customer)client).getBdate();
-                    String address=((Customer)client).getAddress() ;
-                    String mobile_number =((Customer)client).getMobile_number();
-                    String strToBePassed="";
-                    strToBePassed = username+','+password+','+email+ ','+ bdate  +','+current_balance_inStr+','+address+','+mobile_number;
+                if (client != null) {
+                    email = client.getEmail();
+                    bdate = client.getBdate();
+
+                    String strToBePassed = "";
+                    strToBePassed = username + ',' + password + ',' + email + ',' + bdate;
+                    if (client instanceof Customer) {
+                        double current_balance = ((Customer) client).getCurrent_balance();
+                        String current_balance_inStr = String.valueOf(current_balance);
+                        address = ((Customer) client).getAddress();
+                        mobile_number = ((Customer) client).getMobile_number();
+                        strToBePassed += ',' + current_balance_inStr + ',' + address + ',' + mobile_number;
+
+                    }
                     this.output.writeUTF(strToBePassed);
                 }
-
                 break;
             case "signUp":
                 //signUp returns string on the following format:
@@ -100,25 +111,45 @@ public class ServerHandler implements Runnable{
                 //email
                 //address
                 //mobile number
+                email=input.readUTF();
                 String newUserName= input.readUTF();
+                address= input.readUTF();
+                mobile_number= input.readUTF();
+                bdate = Date.valueOf(input.readUTF());
                 String newPassword=input.readUTF();
-                String email=input.readUTF();
-                String address= input.readUTF();
-                String mobileNumber= input.readUTF();
-                signUp(newUserName,newPassword,email,address,mobileNumber,conn);
+//                String newUserName, String newPassword, String email,Date bdate ,String address, String mobileNumber, Connection conn
+                signUp(newUserName,newPassword,email,bdate,address,mobile_number,conn);
                 // TODO check en el password w el confirm password text boxes contain same password
 
                 break;
 
 
             case "viewHistory":
+
                 ((Customer)client).loadOrders(conn);
                 Vector<String>orderHistory=new Vector<String>();
                 orderHistory=loadOrderDetails((Customer) client);
                 for (int i = 0; i < orderHistory.size(); i++) {
                     this.output.writeUTF(orderHistory.get(i));
                 }
+
                 this.output.writeUTF("end");
+                //iid, price, itemname, stock
+                /*to be sent to gui
+                 * orderdate
+                 * totalprice
+                 * "startItem"
+                 * item1 details  (iid, price, itemname, stock)
+                 * item2 details
+                 * "endOrder"  ------> end of first order
+                 * orderdate
+                 * totalprice
+                 * "startItem"
+                 * item1 details
+                 * item2 details
+                 * "endOrder"
+                 * "end" -----> end of transaction
+                 * */
                 break;
 
             case "rechargeBalance":
@@ -132,6 +163,9 @@ public class ServerHandler implements Runnable{
                 break;
 
             case "searchByName":
+
+                //id, price, itemname, stock
+
                 /*Input Format
                  * searchByName
                  * itemName
@@ -247,8 +281,8 @@ public class ServerHandler implements Runnable{
 
 
     }
-    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException, SQLException {
-        Customer newUser= new Customer();
+    public void signUp(String newUserName, String newPassword, String email,Date bdate ,String address, String mobileNumber, Connection conn) throws IOException, SQLException {
+        Customer newUser= new Customer(newUserName, newPassword, email, bdate, 0,address,mobileNumber);
         if (User.userExists(newUserName,conn)==0) {
             newUser.addUser(conn);
             this.output.writeUTF("Valid");

@@ -1,5 +1,7 @@
 package parallelProject;
 
+import basic_classes.Customer;
+import basic_classes.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
+
 
 public class rechargeController implements  Initializable{
 
@@ -46,7 +49,7 @@ public class rechargeController implements  Initializable{
         Recharge = rechargeBalance.getId();
         Amount = amount.getText();
 
-        Current = String.valueOf(loginpageController.cust.getCurrent_balance());
+        Current = String.valueOf(((Customer)loginpageController.cust).getCurrent_balance());
         //currentBalance.setText(Current);
     }
 
@@ -104,7 +107,7 @@ public class rechargeController implements  Initializable{
 
         }*/
 
-        Current = String.valueOf(loginpageController.cust.getCurrent_balance());
+        Current = String.valueOf(((Customer)loginpageController.cust).getCurrent_balance());
         currentBalance.setText(Current);
     }
 }

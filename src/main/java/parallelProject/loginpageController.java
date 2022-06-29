@@ -1,6 +1,8 @@
 package parallelProject;
 
+import basic_classes.Admin;
 import basic_classes.Customer;
+import basic_classes.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,7 @@ import java.util.Vector;
 import java.sql.Date;
 public class loginpageController {
     public static Vector<String> i1 = new Vector<>();
+
     String user,pass,Login,Admin,validate;
 
     @FXML
@@ -35,7 +38,7 @@ public class loginpageController {
     @FXML
     Label valid;
 
-    public static Customer cust;
+    public static User cust;
     public Client client;
 
     public Customer parseCustomers(String str) throws ParseException {
@@ -60,6 +63,23 @@ public class loginpageController {
         }
         return c;
     }
+    public Admin parseAdmin(String str) throws ParseException {
+        String[] itemA = str.split(",");
+        Admin c =  null;
+        for (int i = 0;  i< itemA.length; i++) {
+            System.out.println(itemA[i]);
+        }
+        // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
+        if(!itemA[3].equals("null")){
+            c = new Admin(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]));
+        }
+        else {
+            c = new Admin(itemA[0],itemA[1],itemA[2], null);
+        }
+
+
+        return c;
+    }
 
     public void getter(){
         boolean fAdmin;
@@ -79,15 +99,16 @@ public class loginpageController {
     }
 
     public void fillVector() throws IOException {
-        client = new Client("127.0.0.1", 2022);
-        client.socket = new Socket(client.address, client.port);
-        client.input = new DataInputStream(new BufferedInputStream(client.socket.getInputStream()));
-        client.output = new DataOutputStream(client.socket.getOutputStream());
+        client= new Client("127.0.0.1",2022);
+        client.initialize();
 
-        i1.add(0,Login);
-        i1.add(1,Admin);
-        i1.add(2,user);
-        i1.add(3,pass);
+        Vector <String>vec = new Vector<>(10);
+        vec.add(0,Login);
+        vec.add(1,Admin);
+        vec.add(2,user);
+        vec.add(3,pass);
+
+        i1 = vec;
         System.out.println(i1);
     }
 
@@ -139,7 +160,7 @@ public class loginpageController {
         else if (flag == false){
             valid.setText("Invalid username or password!");
         }
-        else if( Admin == "Customer"){
+        else if( Admin.equals("Customer")){
                 cust = parseCustomers(validate);
                 Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -148,6 +169,16 @@ public class loginpageController {
                 stage.setScene(scene);
                 stage.show();
             }
+        else if(Admin.equals("Admin")){
+            cust = parseAdmin(validate);
+            // TODO el mfrood dol ytghyro yb2o 7agat el admin
+            Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Home Page");
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
 
         else{
             /*Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));

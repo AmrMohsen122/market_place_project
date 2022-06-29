@@ -17,6 +17,13 @@ public class Client {
         this.port = port;
 
     }
+    public void initialize() throws IOException {
+
+
+        socket = new Socket(address, port);
+        input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        output = new DataOutputStream(socket.getOutputStream());
+    }
     public void send(Vector<String> text ) throws IOException {
 
         for (int i = 0; i < text.size() ; i++) {

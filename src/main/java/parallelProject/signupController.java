@@ -17,9 +17,10 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+
 public class signupController  {
     String Email,Username,Address,Mobile,Bdate, Signup;
-
+    Client client = null;
     String Password = "";
     String Confirm ;
     public static Vector<String> v1 = new Vector<String>();
@@ -53,19 +54,29 @@ public class signupController  {
         Password = password.getText();
         Confirm = confirm.getText();
         Bdate = bdate.getValue().toString();
+        System.out.println(Bdate);
         //Date firstDate1 = new Date(year, month, day);
 
     }
 
     public void fillVector() throws IOException {
-        v1.add(Signup);
-        v1.add(Username);
-        v1.add(Password);
-        v1.add(Email);
-        v1.add(Address);
-        v1.add(Mobile);
-        v1.add(Bdate);
-        //Client.send(v1);
+        client= new Client("127.0.0.1",2022);
+        client.initialize();
+        Vector <String>vec = new Vector<>(10);
+        vec.add(0,Signup);
+        vec.add(1,Email);
+        vec.add(2,Username);
+        vec.add(3,Address);
+        vec.add(4,Mobile);
+        vec.add(5,Bdate);
+        vec.add(6,Password);
+
+
+
+
+
+        v1 = vec;
+        client.send(v1);
 
     }
 
@@ -86,7 +97,9 @@ public class signupController  {
 
     @FXML
     public void gologin(ActionEvent event) throws IOException {
+
         filling();
+
 
         boolean flagfill, flagpass;
         flagpass = matching();
@@ -109,6 +122,7 @@ public class signupController  {
             stage.setScene(scene);
             stage.show();
         }
+        client.terminate();
     }
 
 
