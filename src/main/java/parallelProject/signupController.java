@@ -46,7 +46,7 @@ public class signupController  {
 
 
     public void filling(){
-        Signup = signup.getId();
+        Signup = "Signup";
         Email = email.getText();
         Username = username.getText();
         Address = address.getText();
@@ -97,7 +97,7 @@ public class signupController  {
 
     @FXML
     public void gologin(ActionEvent event) throws IOException {
-
+    // TODO lama el signup yfail ytl3 error message w yebo fe screen el signup
         filling();
 
 

@@ -104,7 +104,7 @@ public class ServerHandler implements Runnable{
                     this.output.writeUTF(strToBePassed);
                 }
                 break;
-            case "signUp":
+            case "Signup":
                 //signUp returns string on the following format:
                 //username
                 //password
@@ -117,6 +117,12 @@ public class ServerHandler implements Runnable{
                 mobile_number= input.readUTF();
                 bdate = Date.valueOf(input.readUTF());
                 String newPassword=input.readUTF();
+                System.out.println(email);
+                System.out.println(newUserName);
+                System.out.println(address);
+                System.out.println(mobile_number);
+                System.out.println(bdate);
+                System.out.println(newPassword);
 //                String newUserName, String newPassword, String email,Date bdate ,String address, String mobileNumber, Connection conn
                 signUp(newUserName,newPassword,email,bdate,address,mobile_number,conn);
                 // TODO check en el password w el confirm password text boxes contain same password
@@ -286,10 +292,13 @@ public class ServerHandler implements Runnable{
         if (User.userExists(newUserName,conn)==0) {
             newUser.addUser(conn);
             this.output.writeUTF("Valid");
+            System.out.println("Valid");
         }
-        else
+        else {
+            System.out.println("Invalid");
             this.output.writeUTF("Invalid");
-        //  TODO check the password and confirm password are the same
+            //  TODO check the password and confirm password are the same
+        }
     }
     public Vector<String> loadItems(Vector <Item>items) {
 
