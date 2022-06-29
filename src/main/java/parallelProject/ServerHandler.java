@@ -79,7 +79,7 @@ public class ServerHandler implements Runnable{
                 System.out.println("3adet");
 
                 client = login(type, username, password,conn );
-                if(client instanceof Customer) {
+                if(client instanceof Customer &&client!=null) {
                     double current_balance = ((Customer)client).getCurrent_balance();
                     String current_balance_inStr=String.valueOf(current_balance);
                     // TODO asend el current balance ll GUI
@@ -101,11 +101,11 @@ public class ServerHandler implements Runnable{
                 //email
                 //address
                 //mobile number
-                String newUserName= input.readLine();
-                String newPassword=input.readLine();
-                String email=input.readLine();
-                String address= input.readLine();
-                String mobileNumber= input.readLine();
+                String newUserName= input.readUTF();
+                String newPassword=input.readUTF();
+                String email=input.readUTF();
+                String address= input.readUTF();
+                String mobileNumber= input.readUTF();
                 signUp(newUserName,newPassword,email,address,mobileNumber,conn);
                 // TODO check en el password w el confirm password text boxes contain same password
 
@@ -114,7 +114,11 @@ public class ServerHandler implements Runnable{
 
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
-
+                Vector<String>orderHistory=new Vector<String>();
+                orderHistory=loadOrderDetails((Customer) client);
+                for (int i = 0; i < orderHistory.size(); i++) {
+                    this.output.writeUTF(orderHistory.get(i));
+                }
                 break;
 
             case "rechargeBalance":
@@ -122,34 +126,46 @@ public class ServerHandler implements Runnable{
             * rechargeBalance
             * amount
             * */
-                double amount = Double.parseDouble(input.readLine());
+                double amount = Double.parseDouble(input.readUTF());
                 ((Customer)client).rechargeBalance(amount, conn);
                 // TODO display message "Successful balance recharge"
                 break;
 
             case "searchByName":
                 /*Input Format
-                * searchByName
-                * itemName
-                * */
+                 * searchByName
+                 * itemName
+                 * */
                 // TODO azwd fe el GUI eno ycall searchByName bas lw feh 7aga maktoba gowa el Search Box
-                String itemName = input.readLine();
+                String itemName = input.readUTF();
                 if(Item.itemExists(itemName, conn)!=0)
-                     items = Item.search_by_name(itemName, conn);
+
+                    items = Item.search_by_name(itemName, conn);
+
+                itemsFound=loadItems(items);
+                for (int i = 0; i < itemsFound.size(); i++) {
+                    this.output.writeUTF(itemsFound.get(i));
+                }
                 // TODO return item details to GUI
+
                 break;
 
             case "searchByCategory":
-                 /*Input Format
+                /*Input Format
                  * searchByCategory
                  * category name
                  * */
 
                 //Category already exists since it is chosen from a menu
 
-                String categoryName = input.readLine();
+                String categoryName = input.readUTF();
                 items = Item.search_by_category(categoryName, conn);
                 // TODO return item details to GUI
+
+                itemsFound=loadItems(items);
+                for (int i = 0; i < 3; i++) {
+                    this.output.writeUTF(itemsFound.get(i));
+                }
                 break;
 
             case "exit":
@@ -158,24 +174,24 @@ public class ServerHandler implements Runnable{
                 break;
             case "confirmCart":
                 /*Input format
-                *orderDate
-                *totalPrice
-                *item1 details (iid,price,item_name,seller_name,stock,category,itemQuantity)
-                *item2 details
-                *-------
-                *end
-                * */
-             // TODO send "Item Not Found"
-            // TODO pass the object contains the order in the make order funcn
-                Date oDate = Date.valueOf(input.readLine());
-                double tPrice = Double.parseDouble(input.readLine());
+                 *orderDate
+                 *totalPrice
+                 *item1 details (iid,price,item_name,seller_name,stock,category,itemQuantity)
+                 *item2 details
+                 *-------
+                 *end
+                 * */
+                // TODO send "Item Not Found"
+                // TODO pass the object contains the order in the make order funcn
+                Date oDate = Date.valueOf(input.readUTF());
+                double tPrice = Double.parseDouble(input.readUTF());
                 Order o = new Order(oDate, tPrice);
-                String nextItem = input.readLine();
+                String nextItem = input.readUTF();
 
                 while(!nextItem.equals("end")) {
 
                     o.addItemToOrder(parseItems(nextItem));
-                    nextItem = input.readLine();
+                    nextItem = input.readUTF();
                 }
 
                 ((Customer)client).makeOrder(o,conn);
