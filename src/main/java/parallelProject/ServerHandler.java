@@ -58,7 +58,7 @@ public class ServerHandler implements Runnable{
         Vector <String>itemsFound=null;
         String in = input.readUTF();
 
-        System.out.println(in);
+
         switch(in){
 
 // login returns String on the following format:
@@ -70,13 +70,11 @@ public class ServerHandler implements Runnable{
             * */
 
             case "login":
-                System.out.println("i am here");
-
                 String type = input.readUTF();
                 String username = input.readUTF();
                 String password = input.readUTF();
 
-                System.out.println("3adet");
+
 
                 client = login(type, username, password,conn );
                 if(client instanceof Customer &&client!=null) {
@@ -92,7 +90,7 @@ public class ServerHandler implements Runnable{
                     strToBePassed=username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr;
                     this.output.writeUTF(strToBePassed);
                 }
-                System.out.println("Username: " + username + "\n password: " + password);
+
                 break;
             case "signUp":
                 //signUp returns string on the following format:
@@ -119,6 +117,7 @@ public class ServerHandler implements Runnable{
                 for (int i = 0; i < orderHistory.size(); i++) {
                     this.output.writeUTF(orderHistory.get(i));
                 }
+                this.output.writeUTF("end");
                 break;
 
             case "rechargeBalance":
@@ -147,7 +146,7 @@ public class ServerHandler implements Runnable{
                     this.output.writeUTF(itemsFound.get(i));
                 }
                 // TODO return item details to GUI
-
+                this.output.writeUTF("end");
                 break;
 
             case "searchByCategory":
@@ -166,6 +165,7 @@ public class ServerHandler implements Runnable{
                 for (int i = 0; i < 3; i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
+                this.output.writeUTF("end");
                 break;
 
             case "exit":
