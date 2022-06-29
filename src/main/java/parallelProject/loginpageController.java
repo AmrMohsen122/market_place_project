@@ -44,9 +44,7 @@ public class loginpageController {
     public Customer parseCustomers(String str) throws ParseException {
         String[] itemA = str.split(",");
         Customer c;
-        for (int i = 0;  i< itemA.length; i++) {
-            System.out.println(itemA[i]);
-        }
+
         // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
         if(!itemA[3].equals("null") && !itemA[4].equals("null")){
             c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
@@ -66,9 +64,7 @@ public class loginpageController {
     public Admin parseAdmin(String str) throws ParseException {
         String[] itemA = str.split(",");
         Admin c =  null;
-        for (int i = 0;  i< itemA.length; i++) {
-            System.out.println(itemA[i]);
-        }
+
         // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
         if(!itemA[3].equals("null")){
             c = new Admin(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]));
@@ -109,7 +105,7 @@ public class loginpageController {
         vec.add(3,pass);
 
         i1 = vec;
-        System.out.println(i1);
+
     }
 
     public boolean check() {
@@ -151,8 +147,6 @@ public class loginpageController {
         fillVector();
         fcheck = check();
         flag = validation();
-        System.out.println(flag);
-        System.out.println(fcheck);
 
         if(fcheck==false){
             valid.setText("Enter all data!");

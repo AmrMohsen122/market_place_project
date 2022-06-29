@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class DatabaseManager {
     //the username and password used to access the database server
     private static final String USER_DB = "root";
-    private static final String PASSWORD_DB = "123000";
+    private static final String PASSWORD_DB = "12345";
     private static final String URL = "jdbc:mysql://localhost:3306/market_place_db";
     private static LinkedList<Connection> connectionPool = new LinkedList<Connection>();
     //loadDriver() method is used to load driver

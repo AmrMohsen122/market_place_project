@@ -54,7 +54,7 @@ public class signupController  {
         Password = password.getText();
         Confirm = confirm.getText();
         Bdate = bdate.getValue().toString();
-        System.out.println(Bdate);
+
         //Date firstDate1 = new Date(year, month, day);
 
     }

@@ -31,8 +31,7 @@ public class ServerHandler implements Runnable{
 
             this.conn = DatabaseManager.requestConnection();
             this.output = new DataOutputStream(this.socket.getOutputStream());
-//            System.out.println(conn);
-//            System.out.println(this.input);
+
             parse(input,conn,client);
             DatabaseManager.releaseConnection(this.conn);
             terminate();
@@ -117,12 +116,7 @@ public class ServerHandler implements Runnable{
                 mobile_number= input.readUTF();
                 bdate = Date.valueOf(input.readUTF());
                 String newPassword=input.readUTF();
-                System.out.println(email);
-                System.out.println(newUserName);
-                System.out.println(address);
-                System.out.println(mobile_number);
-                System.out.println(bdate);
-                System.out.println(newPassword);
+
 //                String newUserName, String newPassword, String email,Date bdate ,String address, String mobileNumber, Connection conn
                 signUp(newUserName,newPassword,email,bdate,address,mobile_number,conn);
                 // TODO check en el password w el confirm password text boxes contain same password
@@ -167,7 +161,7 @@ public class ServerHandler implements Runnable{
                 client = Customer.getUserInfo(input.readUTF(), conn);
                 ((Customer)client).rechargeBalance(amount, conn);
                 // TODO display message "Successful balance recharge"
-                System.out.println(amount);
+
                 break;
 
             case "searchByName":
@@ -271,7 +265,7 @@ public class ServerHandler implements Runnable{
                 return null;
             } else {
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
-                System.out.println("Username: " + username + "\n password: " + password);
+
 
 
 
@@ -281,7 +275,7 @@ public class ServerHandler implements Runnable{
         }
         else{
             //TODO print Admin or Customer doesn't exist error message "Invalid Username"
-            System.out.println("Invalid Username");
+
             this.output.writeUTF("Invalid Username");
             return null;
 
@@ -294,10 +288,10 @@ public class ServerHandler implements Runnable{
         if (User.userExists(newUserName,conn)==0) {
             newUser.addUser(conn);
             this.output.writeUTF("Valid");
-            System.out.println("Valid");
+
         }
         else {
-            System.out.println("Invalid");
+
             this.output.writeUTF("Invalid");
             //  TODO check the password and confirm password are the same
         }

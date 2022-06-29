@@ -52,6 +52,7 @@ public class rechargeController implements  Initializable{
         Recharge = "rechargeBalance" ;
         Amount = amount.getText();
 
+
         Current = String.valueOf(((Customer) cust).getCurrent_balance());
         //currentBalance.setText(Current);
     }
@@ -70,6 +71,13 @@ public class rechargeController implements  Initializable{
     @FXML
     public void Ok(ActionEvent event) throws IOException {
         getAmount();
+        rechargeBalance.setDisable(false);
+        if(Double.parseDouble(Amount) < 0){
+
+            rechargeBalance.setDisable(true);
+
+        }
+
         if(!Amount.isEmpty()) {
             double amountt = Double.parseDouble(Amount);
             double currentt = Double.parseDouble(Current);
