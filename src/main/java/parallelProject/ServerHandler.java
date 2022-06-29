@@ -54,7 +54,8 @@ public class ServerHandler implements Runnable{
     }
 // TODO aghyar parse akhleha void
     public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
-        Vector<Item> items;
+        Vector<Item> items=null;
+        Vector <String>itemsFound=null;
         String in = input.readUTF();
 
         System.out.println(in);
@@ -80,12 +81,19 @@ public class ServerHandler implements Runnable{
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
                     double current_balance = ((Customer)client).getCurrent_balance();
+                    String current_balance_inStr=String.valueOf(current_balance);
                     // TODO asend el current balance ll GUI
-//                    this.output.writeUTF(String.valueOf(current_balance));
+
+                    String email =((Customer)client).getEmail() ;
+                    Date bdate =((Customer)client).getBdate();
+                    String address=((Customer)client).getAddress() ;
+                    String mobile_number =((Customer)client).getMobile_number();
+                    String strToBePassed="";
+                    strToBePassed=username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr;
+                    this.output.writeUTF(strToBePassed);
                 }
-
+                System.out.println("Username: " + username + "\n password: " + password);
                 break;
-
             case "signUp":
                 //signUp returns string on the following format:
                 //username
@@ -225,6 +233,48 @@ public class ServerHandler implements Runnable{
         else
             this.output.writeUTF("Invalid");
         //  TODO check the password and confirm password are the same
-        }
+    }
+    public Vector<String> loadItems(Vector <Item>items) {
 
+        Vector<String> itemDet = new Vector<String>();
+        for (int i = 0; i < items.size(); i++) {
+            itemDet.add(String.valueOf(items.get(i).getIid()));
+            itemDet.add(String.valueOf(items.get(i).getPrice()));
+            itemDet.add(items.get(i).getItem_name());
+            itemDet.add(items.get(i).getSeller_name());
+            itemDet.add(String.valueOf(items.get(i).getStock()));
+            itemDet.add(items.get(i).getCategory());
+        }
+        return itemDet;
+    }
+    public static void addVectorToVector(Vector<String>first,Vector<String>second){
+        for (int i = 0; i < second.size(); i++) {
+            first.add(second.get(i));
+        }
+    }
+    public Vector<String> loadOrderDetails(Customer client)
+                        /*vector of order details
+                format is: first order date
+                first order price
+                first item in first order iid;
+                    price
+                    item_name
+                    seller_name
+                    stock
+                    category
+                second order date .....
+                */
+    {
+        Vector<Order> orders =((Customer)client).getOrders();
+        Vector <String> ordDet = new Vector<String>();
+
+        for (int i = 0; i < orders.size(); i++) {
+            Vector <String> itemDet= loadItems(orders.get(i).getItems());
+            ordDet.add(orders.get(i).getODate().toString());
+            ordDet.add(String.valueOf(orders.get(i).getTotalPrice()));
+            addVectorToVector(ordDet,itemDet);
+
+        }
+        return ordDet ;
+    }
 }
