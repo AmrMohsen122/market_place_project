@@ -210,7 +210,7 @@ public class ServerHandler implements Runnable{
         Item i = new Item(Integer.parseInt(itemD[0]),Double.parseDouble(itemD[1]),itemD[2],itemD[3],Integer.parseInt(itemD[4]),itemD[5],Integer.parseInt(itemD[6]));
         return i;
     }
-    public User login(String type, String username, String password, Connection c) {
+    public User login(String type, String username, String password, Connection c) throws IOException {
         User a = null;
         double balance = -1;
         if(User.userExists(username, c)!=0) {
@@ -223,11 +223,15 @@ public class ServerHandler implements Runnable{
             String str = User.getPassword(username, conn);
             if (!str.equals(password)) {
                 //TODO Print error message "Invalid password"
-                System.out.println("Invalid Password");
+
+                this.output.writeUTF("Invalid Password");
                 return null;
             } else {
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
                 System.out.println("Username: " + username + "\n password: " + password);
+                this.output.writeUTF("Valid");
+
+
 
                 return a;
             }
@@ -235,6 +239,7 @@ public class ServerHandler implements Runnable{
         else{
             //TODO print Admin or Customer doesn't exist error message "Invalid Username"
             System.out.println("Invalid Username");
+            this.output.writeUTF("Invalid Username");
             return null;
 
         }
