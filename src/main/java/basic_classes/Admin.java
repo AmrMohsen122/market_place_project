@@ -64,20 +64,31 @@ public class Admin extends User{
         PRE_CONDITIONS: THE USERNAME DOESN'T EXIST IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
         POST_CONDITIONS: THE USER IS ADDED TO DATABASE WITH ADMIN PRIVILEGES
      */
-    @Override
-    public void addUser(Connection conn){
-        super.addUser(conn);
+    public void addUser(Connection conn) throws SQLException {
         try{
+            conn.setAutoCommit(false);
             String query;
-            query  = "insert into ADMIN_ACC values (" + insertQuotations(super.user_name) + ")";
+            if(bdate != null){
+                query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
+
+            }
+            else{
+                query  = "insert into USER_ACC (USERNAME , PASS_WORD , EMAIL)values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+")";
+
+            }
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
+            query  = "insert into ADMIN_ACC values (" + insertQuotations(super.user_name) + ")";
+            stmt.executeUpdate(query);
+            conn.commit();
+            conn.setAutoCommit(true);
         }
         catch(SQLException e){
             if(debug){
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
             }
+            conn.rollback();
         }
     }
 

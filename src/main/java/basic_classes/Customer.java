@@ -65,19 +65,31 @@ public class Customer extends User{
         PRE_CONDITIONS: USER DOESN'T EXIST IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
         POST_CONDITIONS: ADD USER TO CUSTOMER TABLE
      */
-    @Override
-    public void addUser(Connection conn) {
-        super.addUser(conn);
+    public void addUser(Connection conn) throws SQLException {
         try{
-            String query = "insert into customer_acc values( " + current_balance + "," + insertQuotations(user_name) + "," + insertQuotations(address) + "," + insertQuotations(mobile_number) + ")";
+            conn.setAutoCommit(false);
+            String query;
+            if(bdate != null){
+                query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
+
+            }
+            else{
+                query  = "insert into USER_ACC (USERNAME , PASS_WORD , EMAIL)values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+")";
+
+            }
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
-
+            query = "insert into customer_acc values( " + current_balance + "," + insertQuotations(user_name) + "," + insertQuotations(address) + "," + insertQuotations(mobile_number) + ")";
+            stmt.executeUpdate(query);
+            conn.commit();
+            conn.setAutoCommit(true);
         }catch(SQLException e){
             if(debug){
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
+
             }
+            conn.rollback();
         }
     }
 
@@ -156,9 +168,7 @@ public class Customer extends User{
         }
     }
 
-    //TODO CHECK STOCK BEFORE DECREMENTING
     //TODO CHECK IF THE ORDER ADDS UP TO TOTAL PRICE
-    //TODO KHALY MO2MEN Y7OTHA
     /*
         PRE_CONDITIONS: THE USER EXISTS IN DATABASE, ITEMS CONTAINED IN ORDER MUST ALREADY EXIST IN DATABASE
         POST_CONDITIONS: AN ORDER IS PLACED UNDER THE USERNAME

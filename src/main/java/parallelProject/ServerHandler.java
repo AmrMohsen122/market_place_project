@@ -240,7 +240,7 @@ public class ServerHandler implements Runnable{
 
 
     }
-    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException {
+    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException,SQLException {
         Customer newUser= new Customer();
         if (User.userExists(newUserName,conn)==0) {
             newUser.addUser(conn);
