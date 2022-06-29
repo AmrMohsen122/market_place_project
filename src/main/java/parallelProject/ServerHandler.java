@@ -76,12 +76,13 @@ public class ServerHandler implements Runnable{
                 String username = input.readUTF();
                 String password = input.readUTF();
 
-                System.out.println("Ana 3adet");
+
 
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
                     double current_balance = ((Customer)client).getCurrent_balance();
                     // TODO asend el current balance ll GUI
+                    this.output.writeUTF(String.valueOf(current_balance));
                 }
                 System.out.println("Username: " + username + "\n password: " + password);
                 break;
@@ -100,11 +101,13 @@ public class ServerHandler implements Runnable{
                 String mobileNumber= input.readLine();
                 signUp(newUserName,newPassword,email,address,mobileNumber,conn);
                 // TODO check en el password w el confirm password text boxes contain same password
+
                 break;
 
 
             case "viewHistory":
                 ((Customer)client).loadOrders(conn);
+
                 break;
 
             case "rechargeBalance":
@@ -211,9 +214,14 @@ public class ServerHandler implements Runnable{
 
 
     }
-    public static void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) {
+    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException {
         Customer newUser= new Customer();
-        newUser.addUser(conn);
+        if (User.userExists(newUserName,conn)==0) {
+            newUser.addUser(conn);
+            this.output.writeUTF("Valid");
+        }
+        else
+            this.output.writeUTF("Invalid");
         //  TODO check the password and confirm password are the same
         }
 
