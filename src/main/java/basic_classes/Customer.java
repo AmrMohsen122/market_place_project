@@ -2,6 +2,7 @@ package basic_classes;
 
 import database.manager.DatabaseManager;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.Vector;
 
 
@@ -162,11 +163,34 @@ public class Customer extends User{
         PRE_CONDITIONS: THE USER EXISTS IN DATABASE, ITEMS CONTAINED IN ORDER MUST ALREADY EXIST IN DATABASE
         POST_CONDITIONS: AN ORDER IS PLACED UNDER THE USERNAME
      */
-    public void makeOrder(Order o , Connection conn) throws SQLException {
+    public int makeOrder(Order o , Connection conn) throws SQLException {
         try {
             conn.setAutoCommit(false);
+            // get items in current order by IID to query on
+            String items = "(";
+            int size = o.getItems().size();
+            for (int i = 0 ; i <  size; i++){
+                items += o.getItems().get(i).getIid();
+                if(i != size - 1){
+                    items+= ",";
+                }
+            }
+            items += ")";
+            System.out.println(items);
+            String query = "select IID,STOCK from item where IID in " + items;
             Statement stmt = conn.createStatement();
-            String query = "insert into CUST_ORDER (ODATE , TOTAL_PRICE , USERNAME) values (" + insertQuotations(o.getODate().toString()) + "," + o.getTotalPrice() + "," + insertQuotations(user_name) + ")" ;
+            ResultSet queryResult = stmt.executeQuery(query);
+            //Will be used to store the item stock pairs for easier search later
+            HashMap<Integer , Integer> itemStock = new HashMap<Integer , Integer>();
+            while(queryResult.next()){
+                itemStock.put(queryResult.getInt("IID") , queryResult.getInt("STOCK"));
+            }
+            for (int i = 0 ; i < o.getItems().size() ; i++){
+                if(itemStock.get(o.getItems().get(i).getIid()) < o.getItems().get(i).getItemQuantity()){
+                    return - 1;
+                }
+            }
+            query = "insert into CUST_ORDER (ODATE , TOTAL_PRICE , USERNAME) values (" + insertQuotations(o.getODate().toString()) + "," + o.getTotalPrice() + "," + insertQuotations(user_name) + ")" ;
             stmt.executeUpdate(query);
             query = "Select last_insert_id()";
             ResultSet resultSet = stmt.executeQuery(query);
@@ -197,6 +221,7 @@ public class Customer extends User{
             }
             conn.rollback();
         }
+        return 1;
     }
 
     public void rechargeBalance(double amount, Connection conn){
@@ -224,17 +249,18 @@ public class Customer extends User{
         Connection conn = DatabaseManager.requestConnection();
         Order o1 = new Order(Date.valueOf("2022-06-28") , 350);
         Item i1 = Item.getItemInfo("Desert Shoes",conn);
-        i1.setItemQuantity(1);
-        Item i2 = Item.getItemInfo("Desert white sneakers" , conn);
-        i2.setItemQuantity(1);
+        i1.setItemQuantity(5);
+        Item i2 = Item.getItemInfo("DELL G3 LAPTOP" , conn);
+        i2.setItemQuantity(9);
         o1.addItemToOrder(i1);
         o1.addItemToOrder(i2);
         User u1 = Customer.getUserInfo("Amr Mahmoud" , conn);
-        ((Customer)u1).makeOrder(o1 , conn);
         ((Customer)u1).loadOrders(conn);
         for (Order o: ((Customer) u1).orders) {
+            System.out.println("************ORDER*************");
             System.out.println(o);
             o.printOrderItem();
+
 
         }
     }

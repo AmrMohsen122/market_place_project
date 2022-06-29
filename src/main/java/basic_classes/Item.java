@@ -252,13 +252,4 @@ public class Item {
     public String toString(){
         return "iid: " + iid + "\nprice: " + price + "\nitem_name: " + item_name + "\nseller_name: " + seller_name + "\nstock: " + stock + "\ncategory: " + category + "\nItem Quantity: " + itemQuantity;
     }
-    public static void main(String[] args) {
-        DatabaseManager.initConnection(10);
-        Connection conn = DatabaseManager.requestConnection();
-        Vector<Item> i1 = search_by_name("cats", conn);
-        for (Item i:i1
-             ) {
-            System.out.println(i);
-        }
-    }
 }
