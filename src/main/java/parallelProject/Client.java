@@ -24,7 +24,7 @@ public class Client {
 
         }
     }
-    public  void terminate(){
+    public void terminate(){
 
         try {
             this.input.close();

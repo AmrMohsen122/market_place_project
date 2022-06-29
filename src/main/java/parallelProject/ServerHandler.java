@@ -78,7 +78,7 @@ public class ServerHandler implements Runnable{
 
 
                 client = login(type, username, password,conn );
-                if(client instanceof Customer &&client!=null) {
+                if(client instanceof Customer ) {
                     double current_balance = ((Customer)client).getCurrent_balance();
                     String current_balance_inStr=String.valueOf(current_balance);
                     // TODO asend el current balance ll GUI
@@ -239,7 +239,7 @@ public class ServerHandler implements Runnable{
         else{
             //TODO print Admin or Customer doesn't exist error message "Invalid Username"
             System.out.println("Invalid Username");
-            this.output.writeUTF("Invalid Username");
+            this.output.writeUTF("Invalid");
             return null;
 
         }

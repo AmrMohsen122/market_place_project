@@ -69,7 +69,7 @@ public class loginpageController {
         client.socket = new Socket(client.address, client.port);
         client.input = new DataInputStream(new BufferedInputStream(client.socket.getInputStream()));
         client.output = new DataOutputStream(client.socket.getOutputStream());
-        client.socket = new Socket(client.address, client.port);
+
         i1.add(Login);
         i1.add(Admin);
         i1.add(user);
@@ -98,7 +98,7 @@ public class loginpageController {
 
     public boolean validation() throws IOException {
         client.send(i1);
-        validate = client.input.readUTF() ;
+        validate = client.input.readUTF();
         if((validate == "Invalid Username") ||(validate == "Invalid Password")) {
             return false;
         }
@@ -139,6 +139,8 @@ public class loginpageController {
             stage.setScene(scene);
             stage.show();*/
         }
+        client.terminate();
     }
+
 
 }
