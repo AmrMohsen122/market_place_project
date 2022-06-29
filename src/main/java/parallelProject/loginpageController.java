@@ -10,7 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -32,6 +36,7 @@ public class loginpageController {
     Label valid;
 
     public static Customer cust;
+    public Client client;
     String cc = "aa,bb,ccc,2000,eee,01111";
 
     public Customer parseCustomers(String str) throws ParseException {
@@ -59,7 +64,11 @@ public class loginpageController {
         }
     }
 
-    public void fillVector() {
+    public void fillVector() throws IOException {
+        client = new Client("127.0.0.1", 2022);
+        client.input = new DataInputStream(new BufferedInputStream(client.socket.getInputStream()));
+        client.output = new DataOutputStream(client.socket.getOutputStream());
+        client.socket = new Socket(client.address, client.port);
         i1.add(Login);
         i1.add(Admin);
         i1.add(user);
@@ -87,8 +96,8 @@ public class loginpageController {
 
 
     public boolean validation() throws IOException {
-        //Client.send(i1);
-        // validate  ;
+        client.send(i1);
+        validate = client.input.readUTF() ;
         if((validate == "Invalid Username") ||(validate == "Invalid Password")) {
             return false;
         }
@@ -101,7 +110,7 @@ public class loginpageController {
     public void gologin(ActionEvent event) throws IOException, ParseException {
         boolean fcheck,flag;
         getter();
-        //fillVector();
+        fillVector();
 
         fcheck = check();
         flag = validation();
