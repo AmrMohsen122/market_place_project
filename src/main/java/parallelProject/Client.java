@@ -50,7 +50,7 @@ public class Client {
                 try {
 
                     System.out.println("Please enter request");
-                    request = client.input.readUTF();
+                    request = client.input.readLine();
                     System.out.println("Input taken from user");
 
                     client.output.writeUTF(request);
@@ -61,7 +61,7 @@ public class Client {
 //                    response = client.serverinput.readUTF();
 //                while (!response.equals("exit"))
 //                    System.out.println("Waiting....");
-//                System.out.println(response);
+//                System.out.println("Response taken from server: " + response);
 //                System.out.println("Reqeuest processed and finished");
                 } catch (IOException i) {
 
