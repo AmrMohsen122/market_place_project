@@ -161,11 +161,13 @@ public class ServerHandler implements Runnable{
             case "rechargeBalance":
             /*Input on following format
             * rechargeBalance
-            * amount
+            * amount"rechargeBalance"
             * */
                 double amount = Double.parseDouble(input.readUTF());
+                client = Customer.getUserInfo(input.readUTF(), conn);
                 ((Customer)client).rechargeBalance(amount, conn);
                 // TODO display message "Successful balance recharge"
+                System.out.println(amount);
                 break;
 
             case "searchByName":
