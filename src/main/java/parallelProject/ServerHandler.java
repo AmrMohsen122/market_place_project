@@ -30,10 +30,11 @@ public class ServerHandler implements Runnable{
         try {
 
             this.conn = DatabaseManager.requestConnection();
-            System.out.println(conn);
-            System.out.println(this.input);
+//            System.out.println(conn);
+//            System.out.println(this.input);
             parse(input,conn,client);
             DatabaseManager.releaseConnection(this.conn);
+            terminate();
             //momken acall el terminate hena badal m a3mlha case lw7dha fe el parse
 
         } catch (IOException e) {
@@ -48,16 +49,14 @@ public class ServerHandler implements Runnable{
 
         socket.close();
         input.close();
-        output.close();
+//        output.close();
 
     }
-
+// TODO aghyar parse akhleha void
     public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
         Vector<Item> items;
         String in = input.readUTF();
-        if(in == null){
-            System.out.println("in is null");
-        }
+
         System.out.println(in);
         switch(in){
 
@@ -76,15 +75,15 @@ public class ServerHandler implements Runnable{
                 String username = input.readUTF();
                 String password = input.readUTF();
 
-
+                System.out.println("3adet");
 
                 client = login(type, username, password,conn );
                 if(client instanceof Customer) {
                     double current_balance = ((Customer)client).getCurrent_balance();
                     // TODO asend el current balance ll GUI
-                    this.output.writeUTF(String.valueOf(current_balance));
+//                    this.output.writeUTF(String.valueOf(current_balance));
                 }
-                System.out.println("Username: " + username + "\n password: " + password);
+
                 break;
 
             case "signUp":
@@ -199,15 +198,18 @@ public class ServerHandler implements Runnable{
             String str = User.getPassword(username, conn);
             if (!str.equals(password)) {
                 //TODO Print error message "Invalid password"
+                System.out.println("Invalid Password");
                 return null;
             } else {
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
+                System.out.println("Username: " + username + "\n password: " + password);
 
                 return a;
             }
         }
         else{
             //TODO print Admin or Customer doesn't exist error message "Invalid Username"
+            System.out.println("Invalid Username");
             return null;
 
         }
