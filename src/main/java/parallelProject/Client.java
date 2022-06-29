@@ -61,7 +61,7 @@ public class Client {
 //                    response = client.serverinput.readUTF();
 //                while (!response.equals("exit"))
 //                    System.out.println("Waiting....");
-//                System.out.println(response);
+//                System.out.println("Response taken from server: " + response);
 //                System.out.println("Reqeuest processed and finished");
                 } catch (IOException i) {
 

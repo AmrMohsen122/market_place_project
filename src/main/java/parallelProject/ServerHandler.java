@@ -30,6 +30,7 @@ public class ServerHandler implements Runnable{
         try {
 
             this.conn = DatabaseManager.requestConnection();
+            output = new DataOutputStream(this.socket.getOutputStream());
 //            System.out.println(conn);
 //            System.out.println(this.input);
             parse(input,conn,client);
@@ -49,7 +50,7 @@ public class ServerHandler implements Runnable{
 
         socket.close();
         input.close();
-//        output.close();
+        output.close();
 
     }
 // TODO aghyar parse akhleha void
@@ -77,7 +78,7 @@ public class ServerHandler implements Runnable{
 
 
                 client = login(type, username, password,conn );
-                if(client instanceof Customer &&client!=null) {
+                if(client instanceof Customer && client!=null) {
                     double current_balance = ((Customer)client).getCurrent_balance();
                     String current_balance_inStr=String.valueOf(current_balance);
                     // TODO asend el current balance ll GUI
@@ -97,14 +98,16 @@ public class ServerHandler implements Runnable{
                 //username
                 //password
                 //email
+                //bDate
                 //address
                 //mobile number
                 String newUserName= input.readUTF();
                 String newPassword=input.readUTF();
                 String email=input.readUTF();
+                String bDate = input.readUTF();
                 String address= input.readUTF();
                 String mobileNumber= input.readUTF();
-                signUp(newUserName,newPassword,email,address,mobileNumber,conn);
+                signUp(newUserName,newPassword,email,bDate,address,mobileNumber,conn);
                 // TODO check en el password w el confirm password text boxes contain same password
 
                 break;
@@ -115,9 +118,11 @@ public class ServerHandler implements Runnable{
                 Vector<String>orderHistory=new Vector<String>();
                 orderHistory=loadOrderDetails((Customer) client);
                 for (int i = 0; i < orderHistory.size(); i++) {
+//                    System.out.println(orderHistory.get(i));
                     this.output.writeUTF(orderHistory.get(i));
                 }
                 this.output.writeUTF("end");
+//                System.out.println("Request ended");
                 break;
 
             case "rechargeBalance":
@@ -222,33 +227,36 @@ public class ServerHandler implements Runnable{
             String str = User.getPassword(username, conn);
             if (!str.equals(password)) {
                 //TODO Print error message "Invalid password"
-                System.out.println("Invalid Password");
+//                System.out.println("Invalid Password");
                 return null;
             } else {
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
-                System.out.println("Username: " + username + "\n password: " + password);
+//                System.out.println("Username: " + username + "\n password: " + password);
 
                 return a;
             }
         }
         else{
             //TODO print Admin or Customer doesn't exist error message "Invalid Username"
-            System.out.println("Invalid Username");
+//            System.out.println("Invalid Username");
             return null;
 
         }
 
 
     }
-    public void signUp(String newUserName, String newPassword, String email, String address, String mobileNumber, Connection conn) throws IOException {
-        Customer newUser= new Customer();
+    public void signUp(String newUserName, String newPassword, String email,String bDate,String address, String mobileNumber, Connection conn) throws IOException {
+        Customer newUser= new Customer(newUserName, newPassword, email,Date.valueOf(bDate),0,address,mobileNumber);
         if (User.userExists(newUserName,conn)==0) {
             newUser.addUser(conn);
+//            System.out.println("Account created");
             this.output.writeUTF("Valid");
         }
-        else
+        else {
+//            System.out.println("Username already exists");
             this.output.writeUTF("Invalid");
-        //  TODO check the password and confirm password are the same
+            //  TODO check the password and confirm password are the same
+        }
     }
     public Vector<String> loadItems(Vector <Item>items) {
 
