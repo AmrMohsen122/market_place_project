@@ -130,7 +130,7 @@ public class ServerHandler implements Runnable{
                  * orderdate
                  * totalprice
                  * "startItem"
-                 * item1 details  (iid, price, itemname, stock)
+                 * item1 details  (iid, price, itemname, quantity)
                  * item2 details
                  * "endOrder"  ------> end of first order
                  * orderdate
