@@ -30,6 +30,19 @@ public class Item {
         this.item_name = item_name;
         this.stock = stock;
     }
+    
+    public Item(double price, String item_name) {
+        this.price = price;
+        this.item_name = item_name;
+    }
+    
+    //Used in History
+    public Item(int iid ,int itemQuantity , double price, String item_name) {
+        this.iid = iid;
+        this.itemQuantity = itemQuantity;
+        this.price = price;
+        this.item_name = item_name;
+    }
 
     public Item(int iid, double price, String item_name, String seller_name, int stock, String category, int itemQuantity) {
         this.iid = iid;
