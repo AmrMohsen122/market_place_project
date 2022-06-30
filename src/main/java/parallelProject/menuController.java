@@ -13,7 +13,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Vector;
-
+// TODO search items lama bkhoshaha marten wara ba3d btdy error 3ayz asl7ha
+// TODO 3ayz arbot search by name gui bl backend
 public class menuController {
 
     Vector<String> testt = new Vector<>(9); // ana khaletha 9 badal 8

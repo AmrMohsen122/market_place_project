@@ -65,7 +65,7 @@ public class ServerHandler implements Runnable{
         Date bdate = null;
         String address = null;
         String mobile_number = null;
-
+        Order order = null;
 
         switch(in){
 
@@ -219,32 +219,86 @@ public class ServerHandler implements Runnable{
                 this.terminate();
                 //ana khalet el parse non-static hena
                 break;
-            case "confirmCart":
-                /*Input format
-                 *orderDate
-                 *totalPrice
-                 *item1 details (iid,price,item_name,seller_name,stock,category,itemQuantity)
-                 *item2 details
-                 *-------
-                 *end
-                 * */
-                // TODO send "Item Not Found"
-                // TODO pass the object contains the order in the make order funcn
-                Date oDate = Date.valueOf(input.readUTF());
-                double tPrice = Double.parseDouble(input.readUTF());
-                Order o = new Order(oDate, tPrice);
-                String nextItem = input.readUTF();
 
-                while(!nextItem.equals("end")) {
+            case "loadCart":
+                /*Input on the following format
+                * loadCart
+                * username
+                * */
 
-                    o.addItemToOrder(parseItems(nextItem));
-                    nextItem = input.readUTF();
+                username = input.readUTF();
+                order = Customer.loadCart(username, conn);
+                items = order.getItems();
+
+                this.output.writeUTF(String.valueOf(order.getOID()));
+                this.output.writeUTF(String.valueOf(order.getODate()));
+                this.output.writeUTF(String.valueOf(order.getTotalPrice()));
+
+                if(items.size()!=0){
+                    itemsFound = loadItems(items);
+                    for (int i = 0; i < itemsFound.size(); i++)
+                        this.output.writeUTF(itemsFound.get(i));
                 }
+                this.output.writeUTF("end");
+                /*Output on the following format:
+                * OrderID
+                * OrderDate
+                * total price
+                * item1 details
+                * item2 details
+                * "end
+                * */
+                break;
 
-                ((Customer)client).makeOrder(o,conn);
+            case "addToCart":
+                /*Input on the following format
+                * addToCart
+                * Order ID
+                * item ID
+                * item quantity
+                * item price
+                * */
+                int oid = Integer.parseInt(this.input.readUTF());
+                int iid = Integer.parseInt(this.input.readUTF());
+                int itemQty = Integer.parseInt(this.input.readUTF());
+                double itemPrice = Double.parseDouble(this.input.readUTF());
+
+                // function treturn el order object
+                order.addItem(iid,itemQty, itemPrice,conn);
+
+
+
                 break;
 
 
+            case "confirmCart":
+                /* Input format
+                 * confirmCart
+                 * client ID
+                 * orderID
+                 * */
+                // TODO send "Item Not Found"
+                // TODO pass the object contains the order in the make order funcn
+
+                // TODO function returns order object given its id
+                // leh bpass el order lama kdh kdh hwa el unconfirmed ?
+
+
+                client = Customer.getUserInfo(input.readUTF(), conn);
+                // function treturn object mn el order given its order id
+                int valid = ((Customer)client).makeOrder(order,conn);
+                if (valid!=-1)
+                    this.output.writeUTF("Valid Transaction");
+                else
+                    this.output.writeUTF("Invalid Item Stock");
+                // TODO fe el gui msm7losh ykhtar quantity aktar mn el stock ely mwgood
+
+                /*
+                * Ouptut on the following format
+                * Valid Transaction if the transaction is successful
+                * Invalid Transaction if the transaction is unsuccessful
+                * */
+                break;
         }
 
         return "";
