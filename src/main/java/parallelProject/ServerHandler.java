@@ -116,10 +116,10 @@ public class ServerHandler implements Runnable{
 
 
             case "viewHistory":
-
+                client = Customer.getUserInfo(input.readUTF(),conn);
                 ((Customer)client).loadOrders(conn);
                 Vector<String>orderHistory=new Vector<String>();
-                orderHistory=loadOrderDetails((Customer) client);
+                orderHistory=loadOrderDetails(((Customer) client));
                 for (int i = 0; i < orderHistory.size(); i++) {
                     this.output.writeUTF(orderHistory.get(i));
                 }
@@ -169,7 +169,7 @@ public class ServerHandler implements Runnable{
 
                     items = Item.search_by_name(itemName, conn);
 
-                itemsFound=loadItems(items);
+                itemsFound=loadItems(items,"stock");
                 for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
@@ -195,7 +195,7 @@ public class ServerHandler implements Runnable{
                 Vector<Item>items3 = Item.search_by_3_category(categoryName, conn);
                 // TODO return item details to GUI
 
-                itemsFound=loadItems(items1);
+                itemsFound=loadItems(items1,"stock");
 
                 int size = items1.size()+items2.size()+ items3.size();
                 this.output.writeUTF(String.valueOf(size));
@@ -203,11 +203,11 @@ public class ServerHandler implements Runnable{
                     this.output.writeUTF(itemsFound.get(i));
 
                 }
-                itemsFound=loadItems(items2);
+                itemsFound=loadItems(items2,"stock");
                 for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
-                itemsFound=loadItems(items3);
+                itemsFound=loadItems(items3,"stock");
                 for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
@@ -235,7 +235,8 @@ public class ServerHandler implements Runnable{
                 this.output.writeUTF(String.valueOf(order.getTotalPrice()));
 
                 if(items.size()!=0){
-                    itemsFound = loadItems(items);
+                    // TODO msh mot2kd mn hean hcall 3la Qty walla stock
+                    itemsFound = loadItems(items,"Qty");
                     for (int i = 0; i < itemsFound.size(); i++)
                         this.output.writeUTF(itemsFound.get(i));
                 }
@@ -377,26 +378,34 @@ public class ServerHandler implements Runnable{
             //  TODO check the password and confirm password are the same
         }
     }
-    public Vector<String> loadItems(Vector <Item>items) {
+    // for value of stockOrQty
+    // set to "stock" to return (iid,price,name,stock)
+    // set to "Qty" to return (iid, price , name , itemQuantity)
+    public Vector<String> loadItems(Vector <Item>items,String stockOrQty) {
         /*startItem
         * id,price,itemName,stock
         * .
         * .
         * */
+
         Vector<String> itemDet = new Vector<String>();
 
         for (int i = 0; i < items.size(); i++) {
             String str="";
             str=String.valueOf(items.get(i).getIid())+','+
                     String.valueOf(items.get(i).getPrice())+','+
-                    items.get(i).getItem_name()+','+
-                    String.valueOf(items.get(i).getStock());
+                    items.get(i).getItem_name()+',';
+            if(stockOrQty.equals("stock"))
+                    str+=String.valueOf(items.get(i).getStock());
+            else
+                str+= String.valueOf(items.get(i).getItemQuantity());
             // TODO shelna startItem mn hena 3ayzenha ta7t fe loadOrderDetails
 //            itemDet.add("startItem");
             itemDet.add(str);
 
         }
         return itemDet;
+
     }
     public static void addVectorToVector(Vector<String>first,Vector<String>second){
         for (int i = 0; i < second.size(); i++) {
@@ -406,6 +415,7 @@ public class ServerHandler implements Runnable{
     public Vector<String> loadOrderDetails(Customer client)
             /*vector of order details
     format is:
+    username
     first order date
     first order price
     startItem
@@ -428,13 +438,14 @@ public class ServerHandler implements Runnable{
 
     */
 {
-        Vector<Order> orders =((Customer)client).getOrders();
+
+        ((Customer)client).loadOrders(conn);
         Vector <String> ordDet = new Vector<String>();
 
-        for (int i = 0; i < orders.size(); i++) {
-            Vector <String> itemDet= loadItems(orders.get(i).getItems());
-            ordDet.add(orders.get(i).getODate().toString());
-            ordDet.add(String.valueOf(orders.get(i).getTotalPrice()));
+        for (int i = 0; i < client.getOrders().size(); i++) {
+            Vector <String> itemDet= loadItems(client.getOrders().get(i).getItems(),"Qty");
+            ordDet.add(client.getOrders().get(i).getODate().toString());
+            ordDet.add(String.valueOf(client.getOrders().get(i).getTotalPrice()));
             ordDet.add("startItem");
             addVectorToVector(ordDet,itemDet);
             ordDet.add("endOrder");
