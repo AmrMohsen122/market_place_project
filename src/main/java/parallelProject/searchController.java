@@ -254,7 +254,7 @@ public class searchController implements Initializable {
     @FXML
     public void goSearchItems(ActionEvent event) throws IOException {
         startSearch();
-        int found = searchh(menuController.i,iname);
+        int found = searchh(menuController.i,itemName.getText());
         if(found != -1) {
             Parent root = FXMLLoader.load(getClass().getResource("searcheditems.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
