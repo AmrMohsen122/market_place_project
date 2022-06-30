@@ -1,7 +1,6 @@
 package basic_classes;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.Vector;
 
 public class Order {
@@ -82,10 +81,18 @@ public class Order {
         try{
             conn.setAutoCommit(false);
             String query;
-            query  = "insert into CONTAIN values (" + itemQuantity + "," + OID + "," + IID + ")";
             Statement stmt = conn.createStatement();
-            stmt.executeUpdate(query);
-            query = "update cust_order set TOTAL_PRICE = TOTAL_PRICE + " + itemPrice * itemQuantity + "where OID = " + OID ;
+            query = "select * from CONTAIN where OID = " + OID + " AND IID = " + IID;
+            ResultSet queryResult = stmt.executeQuery(query);
+            if(queryResult.next()){
+                query = "update CONTAIN set ITEM_QUANTITY = ITEM_QUANTITY + " + itemQuantity + " where OID = " + OID +" AND IID = " + IID;
+                stmt.executeUpdate(query);
+            }
+            else {
+                query = "insert into CONTAIN values (" + itemQuantity + "," + OID + "," + IID + ")";
+                stmt.executeUpdate(query);
+            }
+            query = "update cust_order set TOTAL_PRICE = TOTAL_PRICE + " + itemPrice * itemQuantity + "where OID = " + OID;
             stmt.executeUpdate(query);
             conn.commit();
             conn.setAutoCommit(true);
@@ -99,7 +106,6 @@ public class Order {
         }
     }
 
-// TODO function get order adelha el order id tgebly el order object
 
     @Override
     public String toString(){

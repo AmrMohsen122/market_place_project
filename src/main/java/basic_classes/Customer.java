@@ -244,15 +244,14 @@ public class Customer extends User{
     public static Order loadCart(String user_name , Connection conn ) throws SQLException {
         try{
             conn.setAutoCommit(false);
-            String query = "select OID , ODATE, TOTAL_PRICE, IID, ITEM_NAME, PRICE,SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY from CUST_ORDER natural join CONTAIN natural join ITEM where USERNAME = " + insertQuotations(user_name) + "AND UNCONFIRMED = \"UNCONFIRMED\" " + "ORDER BY OID";
+            String query = "select OID , ODATE, TOTAL_PRICE from CUST_ORDER natural join CUSTOMER_ACC where USERNAME = " + insertQuotations(user_name) + " AND UNCONFIRMED = \"UNCONFIRMED\"";
             Statement stmt = conn.createStatement();
             ResultSet queryResult = stmt.executeQuery(query);
             Order o = null;
             if(queryResult.next()) {
-                o = new Order(queryResult.getInt("OID"), queryResult.getDate("ODATE"), queryResult.getDouble("TOTAL_PRICE"), "CONFIRMED");
-                o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
-                        , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
-                        queryResult.getInt("STOCK"), queryResult.getString("CATEGORY"), queryResult.getInt("ITEM_QUANTITY")));
+                o = new Order(queryResult.getInt("OID"), queryResult.getDate("ODATE"), queryResult.getDouble("TOTAL_PRICE"), "UNCONFIRMED");
+                query = "select IID , PRICE , ITEM_NAME , SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY from CUST_ORDER natural join CONTAIN natural join ITEM where USERNAME = " + insertQuotations(user_name) + " AND UNCONFIRMED = \"UNCONFIRMED\" " + " ORDER BY OID";
+                queryResult = stmt.executeQuery(query);
                 while(queryResult.next()){
                     o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
                             , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
@@ -308,11 +307,13 @@ public class Customer extends User{
 
     }
 
+    //TODO UPDATE ORDER
     public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-//        (String user_name , String password , String email , Date bdate , double current_balance , String address , String mobile_number)
-        Order o = Order.getOrderByID(12 , conn);
+        Customer c1 = Customer.getUserInfo("Mo2" , conn);
+        Order o = loadCart("Mo2" , conn);
+        o.addItem(2 , 2 , 150 , conn);
         System.out.println("**********ORDER*********");
         System.out.println(o);
         o.printOrderItem();
