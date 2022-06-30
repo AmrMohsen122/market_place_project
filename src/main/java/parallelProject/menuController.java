@@ -13,32 +13,58 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Vector;
+import java.sql.Date;
+import java.util.Vector;
+import static parallelProject.loginpageController.cust;
+
 // TODO search items lama bkhoshaha marten wara ba3d btdy error 3ayz asl7ha
 // TODO 3ayz arbot search by name gui bl backend
 public class menuController {
 
+    @FXML
+    private Button searchByCategory;
+
+    @FXML
+    private Button viewHistory;
+
+    //For Search Page
     Vector<String> testt = new Vector<>(9); // ana khaletha 9 badal 8
-    String category;
-    Client client;
-    static Vector<String> v2 = new Vector<>();
+    static Vector<String> vSearch = new Vector<>();
      Vector<Item> items = new Vector<>();
+
+     //For History Page
+    //orders contain all orders of the customer
+    public static Vector<Order> orders = new Vector<>();
+    public static Vector<Order> fillingOrders = new Vector<>();
+     static Vector<String> vhistory = new Vector<>();
+    Vector<String> parsing = new Vector<>();
+
+    //All Items' Data
     public static Vector<Item> i;
-//    public void initial(){
-//        testt.add(0,"1");
-//        testt.add(1,"800");
-//        testt.add(2,"Iphone 12");
-//        testt.add(3,"5");
-//        testt.add(4,"2");
-//        testt.add(5,"900");
-//        testt.add(6,"Iphone 13");
-//        testt.add(7,"1");
-//
-//
-//    }
+    Client client;
+    Vector<String> testt = new Vector<>(9); // ana khaletha 9 badal 8
+    
+    
+    //Search Functions
+    public void fillSearch() throws IOException {
+        client= new Client("127.0.0.1",2022);
+        client.initialize();
+
+        Vector <String>vec = new Vector<>(2);
+        vec.add(0,"searchByCategory");
+        vSearch = vec;
+        //client.send(v2);
+        initVec();
+
+    }
+
     public void initVec() throws IOException {
         int size = Integer.parseInt(client.input.readUTF());
         Vector<String>it = new Vector<>(size);
-
+        
+        //it.add(0,"1,800,Iphone 12,5");
+        //it.add(1,"2,900,Iphone 13,1");
+        
         for (int j = 0; j < size; j++) {
             it.add(client.input.readUTF());
         }
@@ -57,28 +83,84 @@ public class menuController {
         }
         return items;
     }
-    @FXML
-    private Button searchByCategory;
+    
+    //History Functions
+    public void fillorders() throws IOException {
+        //client= new Client("127.0.0.1",2022);
+        //client.initialize();
 
-    public void fillVector() throws IOException {
-        client= new Client("127.0.0.1",2022);
-        client.initialize();
+        Vector <String>vec = new Vector<>();
+        vec.add(0,"viewHistory");
+        vec.add(1,cust.getUsername());
+        vhistory = vec;
 
-        Vector <String>vec = new Vector<>(2);
-//        category=searchByCategory.getId();
-        vec.add(0,"searchByCategory");
-        v2 = vec;
-        client.send(v2);
-        initVec();
+        //client.send(vhistory);
+        initVec2();
+    }
+    
+    public void initVec2() throws IOException {
+        int size = Integer.parseInt(client.input.readUTF());
+        Vector<String> ord  = new Vector<>(size);
+        
+        //ord.add(0,"2020-12-3");
+        //ord.add(1,"2000");
+        //ord.add(2,"startItem");
+        //ord.add(3,"1,300,Iphone 12,5");
+        //ord.add(4,"endOrder");
+       
+        //ord.add(5,"2020-12-3");
+        //ord.add(6,"2000");
+        //ord.add(7,"startItem");
+        //ord.add(8,"1,300,Samsung 12,5");
+        //ord.add(9,"endOrder");
+        //ord.add(10,"end");
 
+
+        for (int j = 0; j < size; j++) {
+            ord.add(client.input.readUTF());
+        }
+
+        parsing = ord;
+    }
+
+    public Vector<Order> parseOrders (Vector<String> ord) {
+        //System.out.println(orders);
+        Vector<Order> orrr = new Vector<>();
+        int l=0;
+        int index=0;
+        String[] itemobj;
+        String orderDate;
+        String price;
+        Order or;
+        while((l<ord.size()) && !(ord.get(l).equals("end"))) {
+            orderDate = ord.get(l);
+            price = ord.get(l + 1);
+            l += 2;
+            Order LocalOrder = new Order(Date.valueOf(orderDate),Double.parseDouble(price));
+            while ((l<ord.size()) && !(ord.get(l).equals("endOrder"))) {
+                if (ord.get(l).equals("startItem")) {
+                    l++;
+                }
+
+                itemobj = ord.get(l).split(",");
+                Item itemNew = new Item(Integer.parseInt(itemobj[0]), Integer.parseInt(itemobj[3]), Double.parseDouble(itemobj[1]), itemobj[2]);
+                LocalOrder.addItemToOrder(itemNew);
+                l++;
+
+            }
+            orrr.add(index,LocalOrder);
+            index++;
+            l++;
+        }
+        fillingOrders = orrr;
+        return orrr;
     }
 
     @FXML
     public void gosearch(ActionEvent event) throws IOException {
-
-
-        fillVector();
+        fillSearch();
         i = parseItems(testt);
+        
         // TODO el items ely rg3t fe i hya ely hnzahrha fe el screen
         Parent root = FXMLLoader.load(getClass().getResource("search.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -103,7 +185,9 @@ public class menuController {
 
     @FXML
     public void gohistory(ActionEvent event) throws IOException {
-
+        fillorders();
+        orders = parseOrders(parsing);
+        
         Parent root = FXMLLoader.load(getClass().getResource("history.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("My History");
