@@ -50,7 +50,7 @@ public class ServerHandler implements Runnable{
 
         socket.close();
         input.close();
-        // m3rfsh hena hcall el output.close walla la
+        // TODO msh mot2kd hena hcall el output.close walla la
         output.close();
 
     }
@@ -182,7 +182,7 @@ public class ServerHandler implements Runnable{
                  * searchByCategory
                  *
                  * */
-                System.out.println("Salam aleishom");
+
                 //Category already exists since it is chosen from a menu
 
                 String categoryName = "mobile";
@@ -201,7 +201,7 @@ public class ServerHandler implements Runnable{
                 this.output.writeUTF(String.valueOf(size));
                 for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
-                    System.out.println(itemsFound.get(i));
+
                 }
                 itemsFound=loadItems(items2);
                 for (int i = 0; i < itemsFound.size(); i++) {
@@ -267,12 +267,14 @@ public class ServerHandler implements Runnable{
             else if (type.equals("Customer"))
                 client = (Customer)Customer.getUserInfo(username, c);
         }
+
         if (client!=null) {
             String str = User.getPassword(username, conn);
             if (!str.equals(password)) {
                 //TODO Print error message "Invalid password"
 
                 this.output.writeUTF("Invalid Password");
+
                 return null;
             } else {
                 email = client.getEmail();
@@ -290,6 +292,7 @@ public class ServerHandler implements Runnable{
 
                 this.output.writeUTF(strToBePassed);
 
+
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
                 return client;
             }
@@ -298,6 +301,7 @@ public class ServerHandler implements Runnable{
             //TODO print Admin or Customer doesn't exist error message "Invalid Username"
 
             this.output.writeUTF("Invalid Username");
+
             return null;
 
         }
@@ -310,10 +314,12 @@ public class ServerHandler implements Runnable{
             newUser.addUser(conn);
             this.output.writeUTF("Valid");
 
+
         }
         else {
 
             this.output.writeUTF("Invalid");
+
             //  TODO check the password and confirm password are the same
         }
     }
@@ -375,6 +381,7 @@ public class ServerHandler implements Runnable{
             Vector <String> itemDet= loadItems(orders.get(i).getItems());
             ordDet.add(orders.get(i).getODate().toString());
             ordDet.add(String.valueOf(orders.get(i).getTotalPrice()));
+            ordDet.add("startItem");
             addVectorToVector(ordDet,itemDet);
             ordDet.add("endOrder");
 
