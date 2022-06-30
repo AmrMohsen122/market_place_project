@@ -42,7 +42,6 @@ public class menuController {
     //All Items' Data
     public static Vector<Item> i;
     Client client;
-    Vector<String> testt = new Vector<>(9); // ana khaletha 9 badal 8
     
     
     //Search Functions
