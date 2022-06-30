@@ -310,15 +310,20 @@ public class ServerHandler implements Runnable{
         }
     }
     public Vector<String> loadItems(Vector <Item>items) {
-
+        /*startItem
+        * id,price,itemName,stock
+        * .
+        * .
+        * */
         Vector<String> itemDet = new Vector<String>();
         for (int i = 0; i < items.size(); i++) {
-            itemDet.add(String.valueOf(items.get(i).getIid()));
-            itemDet.add(String.valueOf(items.get(i).getPrice()));
-            itemDet.add(items.get(i).getItem_name());
-            itemDet.add(items.get(i).getSeller_name());
-            itemDet.add(String.valueOf(items.get(i).getStock()));
-            itemDet.add(items.get(i).getCategory());
+            String str="";
+            str+=String.valueOf(items.get(i).getIid())+','+
+                    String.valueOf(items.get(i).getPrice())+','+
+                    items.get(i).getItem_name()+','+
+                    String.valueOf(items.get(i).getStock());
+            itemDet.add("startItem");
+            itemDet.add(str);
         }
         return itemDet;
     }
@@ -329,15 +334,27 @@ public class ServerHandler implements Runnable{
     }
     public Vector<String> loadOrderDetails(Customer client)
             /*vector of order details
-    format is: first order date
+    format is:
+    first order date
     first order price
-    first item in first order iid;
-        price
-        item_name
-        seller_name
-        stock
-        category
-    second order date .....
+    startItem
+    (id,price,itemName,stock)
+    startItem
+    (id,price,itemName,stock)
+    .
+    .
+    endOrder
+    second order date
+    second order price
+    startItem
+    (id,price,itemName,stock)
+    startItem
+    (id,price,itemName,stock)
+    endOrder
+    .
+    .
+    end
+
     */
 {
         Vector<Order> orders =((Customer)client).getOrders();
@@ -348,8 +365,10 @@ public class ServerHandler implements Runnable{
             ordDet.add(orders.get(i).getODate().toString());
             ordDet.add(String.valueOf(orders.get(i).getTotalPrice()));
             addVectorToVector(ordDet,itemDet);
+            ordDet.add("endOrder");
 
         }
+        ordDet.add("end");
         return ordDet ;
     }
 }
