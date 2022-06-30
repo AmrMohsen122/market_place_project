@@ -83,6 +83,9 @@ public class rechargeController implements  Initializable{
             double currentt = Double.parseDouble(Current);
             currentt = currentt + amountt;
             Current = Double.toString(currentt);
+
+            ((Customer)cust).setCurrent_balance(currentt);
+
             currentBalance.setText(Current);
             filling();
             client.send(c1);
