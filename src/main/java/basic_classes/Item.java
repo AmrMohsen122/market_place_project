@@ -234,7 +234,7 @@ public class Item {
     public static Vector<Item> search_by_3_category(String category, Connection conn){
         try {
             Vector<Item> items = new Vector<Item>();
-            String query = "select top 3 * from ITEM where CATEGORY = " + insertQuotations(category);
+            String query = "select * from ITEM where CATEGORY = " + insertQuotations(category)+" limit 3";
             Statement stmt = conn.createStatement();
             ResultSet queryResult = stmt.executeQuery(query);
             while(queryResult.next()) {

@@ -1,6 +1,7 @@
 package parallelProject;
 
 import basic_classes.Item;
+import javafx.beans.binding.IntegerBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,25 +16,36 @@ import java.util.Vector;
 
 public class menuController {
 
-    Vector<String> testt = new Vector<>(8);
+    Vector<String> testt = new Vector<>(9); // ana khaletha 9 badal 8
     String category;
     Client client;
-    Vector<String> v2 = new Vector<>();
+    static Vector<String> v2 = new Vector<>();
      Vector<Item> items = new Vector<>();
     public static Vector<Item> i;
-    public void initial(){
-        testt.add(0,"1");
-        testt.add(1,"800");
-        testt.add(2,"Iphone 12");
-        testt.add(3,"5");
-        testt.add(4,"2");
-        testt.add(5,"900");
-        testt.add(6,"Iphone 13");
-        testt.add(7,"1");
+//    public void initial(){
+//        testt.add(0,"1");
+//        testt.add(1,"800");
+//        testt.add(2,"Iphone 12");
+//        testt.add(3,"5");
+//        testt.add(4,"2");
+//        testt.add(5,"900");
+//        testt.add(6,"Iphone 13");
+//        testt.add(7,"1");
+//
+//
+//    }
+    public void initVec() throws IOException {
+        int size = Integer.parseInt(client.input.readUTF());
+        Vector<String>it = new Vector<>(size);
 
-
+        for (int j = 0; j < size; j++) {
+            it.add(client.input.readUTF());
+        }
+        testt = it;
     }
+
      public Vector<Item> parseItems (Vector<String>it) {
+         System.out.println(it);
         int j=0;
         for (int i = 0; i < it.size(); i+=4) {
               String[] itemobj = it.get(i).split(",");
@@ -48,20 +60,25 @@ public class menuController {
     private Button searchByCategory;
 
     public void fillVector() throws IOException {
-     //   client= new Client("127.0.0.1",2022);
+        client= new Client("127.0.0.1",2022);
+        client.initialize();
+
         Vector <String>vec = new Vector<>(2);
-        category=searchByCategory.getId();
-        vec.add(0,category);
+//        category=searchByCategory.getId();
+        vec.add(0,"searchByCategory");
         v2 = vec;
-      //  client.send(v2);
+        client.send(v2);
+        initVec();
 
     }
 
     @FXML
     public void gosearch(ActionEvent event) throws IOException {
-        initial();
-        i = parseItems(testt);
+
+
         fillVector();
+        i = parseItems(testt);
+        // TODO el items ely rg3t fe i hya ely hnzahrha fe el screen
         Parent root = FXMLLoader.load(getClass().getResource("search.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Search");

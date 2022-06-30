@@ -191,27 +191,33 @@ public class ServerHandler implements Runnable{
                  * searchByCategory
                  *
                  * */
-
+                System.out.println("Salam aleishom");
                 //Category already exists since it is chosen from a menu
 
                 String categoryName = "mobile";
                 Vector<Item>items1 = Item.search_by_3_category(categoryName, conn);
+
                 categoryName = "laptop";
                 Vector<Item>items2 = Item.search_by_3_category(categoryName, conn);
+
                 categoryName = "accessory";
                 Vector<Item>items3 = Item.search_by_3_category(categoryName, conn);
                 // TODO return item details to GUI
 
                 itemsFound=loadItems(items1);
-                for (int i = 0; i < 3; i++) {
+
+                int size = items1.size()+items2.size()+ items3.size();
+                this.output.writeUTF(String.valueOf(size));
+                for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
+                    System.out.println(itemsFound.get(i));
                 }
                 itemsFound=loadItems(items2);
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
                 itemsFound=loadItems(items3);
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
 
@@ -316,14 +322,17 @@ public class ServerHandler implements Runnable{
         * .
         * */
         Vector<String> itemDet = new Vector<String>();
+
         for (int i = 0; i < items.size(); i++) {
             String str="";
-            str+=String.valueOf(items.get(i).getIid())+','+
+            str=String.valueOf(items.get(i).getIid())+','+
                     String.valueOf(items.get(i).getPrice())+','+
                     items.get(i).getItem_name()+','+
                     String.valueOf(items.get(i).getStock());
-            itemDet.add("startItem");
+            // TODO shelna startItem mn hena 3ayzenha ta7t fe loadOrderDetails
+//            itemDet.add("startItem");
             itemDet.add(str);
+
         }
         return itemDet;
     }
