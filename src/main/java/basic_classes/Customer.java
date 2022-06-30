@@ -312,21 +312,9 @@ public class Customer extends User{
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
 //        (String user_name , String password , String email , Date bdate , double current_balance , String address , String mobile_number)
-        User u1 = Customer.getUserInfo("Mo2" , conn);
-        ((Customer)u1).loadOrders(conn);
-        Order o1 = ((Customer)u1).loadCart("Mo2" , conn);
-        System.out.println("***************CART****************");
-        System.out.println(o1);
-        for (Item i: o1.getItems()) {
-            System.out.println(i);
-        }
-        ((Customer) u1).makeOrder(o1 , conn);
-        ((Customer) u1).loadOrders(conn);
-        for (Order o: ((Customer) u1).orders
-             ) {
-            System.out.println("**********ORDER*********");
-            System.out.println(o);
-            o.printOrderItem();
-        }
+        Order o = Order.getOrderByID(12 , conn);
+        System.out.println("**********ORDER*********");
+        System.out.println(o);
+        o.printOrderItem();
     }
 }
