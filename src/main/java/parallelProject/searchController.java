@@ -128,12 +128,23 @@ public class searchController implements Initializable {
     @FXML
     private Button searchByName;
 
-    String sname, iname;
+   //For the client
+    static Vector<String> search = new Vector<>();
+    
     public static int pars;
     public  int index=-1;
-    public void getter(){
-        sname = searchByName.getId();
-        iname = itemName.getText();
+    
+    public void startSearch() throws IOException {
+        //client= new Client("127.0.0.1",2022);
+        //client.initialize();
+
+        Vector <String> startS = new Vector<>(2);
+        startS.add(0,"searchByName");
+        startS.add(0,"itemName");
+
+        search = startS;
+        //client.send(search);
+
     }
 
     public int searchh(Vector<Item> v, String name){
@@ -242,7 +253,7 @@ public class searchController implements Initializable {
 
     @FXML
     public void goSearchItems(ActionEvent event) throws IOException {
-        getter();
+        startSearch();
         int found = searchh(menuController.i,iname);
         if(found != -1) {
             Parent root = FXMLLoader.load(getClass().getResource("searcheditems.fxml"));
