@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class searcheditemsController implements Initializable {
-    String iname,pri,qty;
+    
 
     @FXML
     private Label itemname;
