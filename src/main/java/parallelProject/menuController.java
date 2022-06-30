@@ -33,19 +33,12 @@ public class menuController {
 
 
     }
-    public Vector<Item> parseItems (Vector<String>it) {
-        int a=0;
-        int b=1;
-        int c=2;
-        int d=3;
+     public Vector<Item> parseItems (Vector<String>it) {
         int j=0;
         for (int i = 0; i < it.size(); i+=4) {
-            //  String[] itemobj = it.get(i).split(",");
-            Item ii = new Item(Integer.parseInt(it.get(a)),Double.parseDouble(it.get(b)),it.get(c),Integer.parseInt(it.get(d)));
-            a+=4;
-            b+=4;
-            c+=4;
-            d+=4;
+              String[] itemobj = it.get(i).split(",");
+            Item ii = new Item(Integer.parseInt(itemobj[0]),Double.parseDouble(itemobj[1]),itemobj[2],Integer.parseInt(itemobj[3]));
+
             items.add(j,ii);
             j++;
         }
