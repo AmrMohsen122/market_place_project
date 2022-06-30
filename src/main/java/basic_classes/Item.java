@@ -24,6 +24,12 @@ public class Item {
     public int getItemQuantity() {
         return itemQuantity;
     }
+    public Item(int iid, double price, String item_name, int stock) {
+        this.iid = iid;
+        this.price = price;
+        this.item_name = item_name;
+        this.stock = stock;
+    }
 
     public Item(int iid, double price, String item_name, String seller_name, int stock, String category, int itemQuantity) {
         this.iid = iid;
