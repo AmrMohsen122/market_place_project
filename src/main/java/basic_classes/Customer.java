@@ -176,8 +176,7 @@ public class Customer extends User{
             }
         }
     }
-
-    //TODO WE NEED TO CHECK TABLE CONTAIN IF THE ITEM ALREADY EXIST JUST INCREMENT ITS QUANTITY (PRIMARY KEY CONSTRAINTS)
+    //TODO CART SHOULD BE CHECKED FOR EMPTINESS BEFORE EXECUTING makeOrder
     //TODO CHECK IF THE ORDER ADDS UP TO TOTAL PRICE
     /*
         PRE_CONDITIONS: THE USER EXISTS IN DATABASE, ITEMS CONTAINED IN ORDER MUST ALREADY EXIST IN DATABASE
@@ -210,7 +209,7 @@ public class Customer extends User{
                     return - 1;
                 }
             }
-            query = "update CUST_ORDER set UNCONFIRMED  = \"CONFIRMED\" WHERE OID =  " + o.getOID() ;
+            query = "update CUST_ORDER set UNCONFIRMED  = \"CONFIRMED\"  , ODATE = " + insertQuotations(Date.valueOf(LocalDate.now()).toString()) +" WHERE OID =  " + o.getOID() ;
             stmt.executeUpdate(query);
             query = "update CUSTOMER_ACC SET CURRENT_BALANCE = CURRENT_BALANCE - " + o.getTotalPrice() + " where USERNAME = " + insertQuotations(user_name);
             stmt.executeUpdate(query);
@@ -233,7 +232,6 @@ public class Customer extends User{
         }
         return 1;
     }
-
 
     /*
         PRE_CONDITIONS: USER EXISTS IN DATABASE
@@ -307,13 +305,15 @@ public class Customer extends User{
 
     }
 
-    //TODO UPDATE ORDER
     public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-        Customer c1 = Customer.getUserInfo("Mo2" , conn);
-        Order o = loadCart("Mo2" , conn);
-        o.addItem(2 , 2 , 150 , conn);
+        Customer c1 = Customer.getUserInfo("Amr Mahmoud" , conn);
+        Order o = loadCart("Amr Mahmoud" , conn);
+        System.out.println("**********ORDER*********");
+        System.out.println(o);
+        o.printOrderItem();
+        System.out.println("Order was : " + c1.makeOrder(o , conn));
         System.out.println("**********ORDER*********");
         System.out.println(o);
         o.printOrderItem();

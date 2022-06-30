@@ -4,8 +4,6 @@ import database.manager.DatabaseManager;
 import java.sql.*;
 import java.util.Vector;
 
-//TODO ADD AUTO_INCREMENT TO ITEMS
-//TODO SPECIFY ITEM QUANTITY OF EACH ITEM IN ORDER
 public class Item {
 
     private static final boolean debug = true;

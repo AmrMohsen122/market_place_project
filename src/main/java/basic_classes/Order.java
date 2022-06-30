@@ -110,8 +110,40 @@ public class Order {
             conn.rollback();
         }
     }
-
-
+    /*
+        PRE_CONDITIONS: ITEM ALREADY EXISTS IN DATABASE, ITEM_QUANTITY SHOULD BE MORE THAN ITEM_QUANTITY IN ORDER
+        POST_CONDITIONS: ITEM QUANTITY IS DECREMENTED FROM DATABASE
+        itemQuantity SHOULD BE ONE
+     */
+    public void removeItem(int IID , int itemQuantity, double itemPrice ,Connection conn) throws SQLException{
+        try{
+            conn.setAutoCommit(false);
+            String query;
+            Statement stmt = conn.createStatement();
+            query = "select * from CONTAIN where OID = " + OID + " AND IID = " + IID;
+            ResultSet queryResult = stmt.executeQuery(query);
+            if(queryResult.next()){
+                if(queryResult.getInt("ITEM_QUANTITY") <= itemQuantity){
+                    query = "delete from CONTAIN where OID = " + OID + " AND IID = " + IID;
+                }
+                else {
+                    query = "update CONTAIN set ITEM_QUANTITY = ITEM_QUANTITY - " + itemQuantity + " where OID = " + OID + " AND IID = " + IID;
+                }
+                stmt.executeUpdate(query);
+            }
+            query = "update cust_order set TOTAL_PRICE = TOTAL_PRICE - " + itemPrice * itemQuantity + "where OID = " + OID;
+            stmt.executeUpdate(query);
+            conn.commit();
+            conn.setAutoCommit(true);
+        }
+        catch(SQLException e){
+            if(debug){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+            conn.rollback();
+        }
+    }
     @Override
     public String toString(){
         return "OID: " + OID + "\nOrder Date: " + ODate + "\nTotal Price: " + totalPrice;
