@@ -25,7 +25,19 @@ public class searcheditemsController implements Initializable {
 
     @FXML
     private Label quantity;
-
+    
+    @FXML
+    public void Addtocart(ActionEvent event) throws IOException {
+        if(!(quantity.getText().equals("Not Found"))) {
+            String Name;
+            double Price;
+            Name = itemname.getText();
+            Price = Double.parseDouble(price.getText());
+            Item it = new Item(Price, Name);
+            searchController.addcart.add(it);
+        }
+    }
+    
     @FXML
     public void goviewcart(ActionEvent event) throws IOException {
 
