@@ -18,9 +18,9 @@ public abstract class User {
 
     //EMPTY CONSTRUCTOR CREATES A TEST OBJECT
     public User(){
-        this.user_name = "test";
+        this.user_name = "test121";
         this.password = "test";
-        this.email = "test@example.com";
+        this.email = "test12312@example.com";
         this.bdate = Date.valueOf(LocalDate.now());
     }
     //CREATES A USER WITH ALL FIELDS SPECIFIED BY ARGUMENTS OF CONSTRUCTOR
@@ -104,35 +104,6 @@ public abstract class User {
             return null;
         }
     }
-
-
-//    /*
-//     * PRE_CONDITIONS: CURRENT USERNAME DOESN'T EXISTS IN DATABASE. USERNAME, PASSWORD, EMAIL SHOULDN'T BE NULLS
-//     * POST_CONDITIONS: ADDS THE CURRENT USER OBJECT TO DATABASE
-//     */
-//    public void addUser(Connection conn){
-//        try{
-//            String query;
-//            if(bdate != null){
-//                query  = "insert into USER_ACC values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+ "," + insertQuotations(bdate.toString()) + ")";
-//
-//            }
-//            else{
-//                query  = "insert into USER_ACC (USERNAME , PASS_WORD , EMAIL)values (" + insertQuotations(user_name) + "," + insertQuotations(password)+ "," + insertQuotations(email)+")";
-//
-//            }
-//            Statement stmt = conn.createStatement();
-//            stmt.executeUpdate(query);
-//        }
-//        catch(SQLException e){
-//            if(debug){
-//                System.out.println("SQLException: " + e.getMessage());
-//                System.out.println("SQLState: " + e.getSQLState());
-//            }
-//        }
-//    }
-
-
 
     //UTILITY FUNCTION USED TO RETURN A QUOTED STRING
     protected static String insertQuotations(String str){

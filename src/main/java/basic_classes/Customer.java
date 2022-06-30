@@ -2,11 +2,12 @@ package basic_classes;
 
 import database.manager.DatabaseManager;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Vector;
 
 
-//TODO ARE BALANCE UPDATE AND DECREMENT METHODS NEEDED?
+//TODO CHECK EMAIL EXISTS IN DATABASE
 public class Customer extends User{
     double current_balance;
     String address;
@@ -130,14 +131,13 @@ public class Customer extends User{
         return null;
     }
 
-
     /*
         PRE_CONDITIONS: NONE
         POST_CONDITIONS: THE ORDER LIST OF USER IS FILLED WITH ORDERS HE MADE BEFORE
      */
     public void loadOrders(Connection conn){
         try{
-            String query = "select OID , ODATE, TOTAL_PRICE, IID, ITEM_NAME, PRICE,SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY from CUST_ORDER natural join CONTAIN natural join ITEM where USERNAME = " + insertQuotations(user_name) + "ORDER BY OID";
+            String query = "select OID , ODATE, TOTAL_PRICE, IID, ITEM_NAME, PRICE,SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY from CUST_ORDER natural join CONTAIN natural join ITEM where USERNAME = " + insertQuotations(user_name) + "AND UNCONFIRMED = \"CONFIRMED\"" + "ORDER BY OID";
             Statement stmt = conn.createStatement();
             ResultSet queryResult = stmt.executeQuery(query);
             int prevOID = 0;
@@ -146,7 +146,7 @@ public class Customer extends User{
             if(queryResult.next()) {
                 prevOID = queryResult.getInt(queryResult.findColumn("OID"));
                 currentOID = prevOID;
-                o = new Order(queryResult.getInt("OID"), queryResult.getDate("ODATE"), queryResult.getDouble("TOTAL_PRICE"));
+                o = new Order(queryResult.getInt("OID"), queryResult.getDate("ODATE"), queryResult.getDouble("TOTAL_PRICE") , "CONFIRMED");
                 orders.add(o);
                 o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
                         , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
@@ -160,7 +160,7 @@ public class Customer extends User{
                             queryResult.getInt("STOCK"), queryResult.getString("CATEGORY") , queryResult.getInt("ITEM_QUANTITY")));
                 }
                 else{
-                    o = new Order(queryResult.getInt("OID") ,queryResult.getDate("ODATE") , queryResult.getDouble("TOTAL_PRICE"));
+                    o = new Order(queryResult.getInt("OID") ,queryResult.getDate("ODATE") , queryResult.getDouble("TOTAL_PRICE") , "CONFIRMED");
                     orders.add(o);
                     o.addItemToOrder(new Item(queryResult.getInt("IID"),queryResult.getDouble("PRICE")
                             ,queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
@@ -177,6 +177,7 @@ public class Customer extends User{
         }
     }
 
+    //TODO WE NEED TO CHECK TABLE CONTAIN IF THE ITEM ALREADY EXIST JUST INCREMENT ITS QUANTITY (PRIMARY KEY CONSTRAINTS)
     //TODO CHECK IF THE ORDER ADDS UP TO TOTAL PRICE
     /*
         PRE_CONDITIONS: THE USER EXISTS IN DATABASE, ITEMS CONTAINED IN ORDER MUST ALREADY EXIST IN DATABASE
@@ -209,25 +210,15 @@ public class Customer extends User{
                     return - 1;
                 }
             }
-            query = "insert into CUST_ORDER (ODATE , TOTAL_PRICE , USERNAME) values (" + insertQuotations(o.getODate().toString()) + "," + o.getTotalPrice() + "," + insertQuotations(user_name) + ")" ;
+            query = "update CUST_ORDER set UNCONFIRMED  = \"CONFIRMED\" WHERE OID =  " + o.getOID() ;
             stmt.executeUpdate(query);
-            query = "Select last_insert_id()";
-            ResultSet resultSet = stmt.executeQuery(query);
-            resultSet.next();
-            int currentOID = resultSet.getInt(1);
             query = "update CUSTOMER_ACC SET CURRENT_BALANCE = CURRENT_BALANCE - " + o.getTotalPrice() + " where USERNAME = " + insertQuotations(user_name);
             stmt.executeUpdate(query);
-            String insertContain = "insert into CONTAIN (ITEM_QUANTITY , OID , IID) values (?,?,?)";
             String updateStock = "update item set STOCK = STOCK - ? where ITEM_NAME = ?";
-            PreparedStatement prepStmt = conn.prepareStatement(insertContain);
             PreparedStatement prepstmt2 = conn.prepareStatement(updateStock);
             for(Item i : o.getItems()){
-                prepStmt.setInt(1 , i.getItemQuantity());
-                prepStmt.setInt(2 , currentOID);
-                prepStmt.setInt(3 , i.getIid());
                 prepstmt2.setInt(1 , i.getItemQuantity());
                 prepstmt2.setString(2 , i.getItem_name());
-                prepStmt.executeUpdate();
                 prepstmt2.executeUpdate();
             }
             conn.commit();
@@ -243,6 +234,60 @@ public class Customer extends User{
         return 1;
     }
 
+
+    /*
+        PRE_CONDITIONS: USER EXISTS IN DATABASE
+        POST_CONDITIONS: RETURNS AN ORDER OBJECT REPRESENTING CART IF THERE EXISTS AN UNCONFIRMED ORDER, RETURNS AN EMPTY ORDER WITH
+        NEXT UNIQUE OID IF NO UNCONFIRMED ORDER EXISTS
+        RETURN NULL IN CASE OF SQL ERRS
+     */
+    public static Order loadCart(String user_name , Connection conn ) throws SQLException {
+        try{
+            conn.setAutoCommit(false);
+            String query = "select OID , ODATE, TOTAL_PRICE, IID, ITEM_NAME, PRICE,SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY from CUST_ORDER natural join CONTAIN natural join ITEM where USERNAME = " + insertQuotations(user_name) + "AND UNCONFIRMED = \"UNCONFIRMED\" " + "ORDER BY OID";
+            Statement stmt = conn.createStatement();
+            ResultSet queryResult = stmt.executeQuery(query);
+            Order o = null;
+            if(queryResult.next()) {
+                o = new Order(queryResult.getInt("OID"), queryResult.getDate("ODATE"), queryResult.getDouble("TOTAL_PRICE"), "CONFIRMED");
+                o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
+                        , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
+                        queryResult.getInt("STOCK"), queryResult.getString("CATEGORY"), queryResult.getInt("ITEM_QUANTITY")));
+                while(queryResult.next()){
+                    o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
+                            , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
+                            queryResult.getInt("STOCK"), queryResult.getString("CATEGORY") , queryResult.getInt("ITEM_QUANTITY")));
+                }
+            }
+            else{
+                query = "select max(OID) from cust_order";
+                queryResult = stmt.executeQuery(query);
+                queryResult.next();
+                int nextOID = queryResult.getInt(1) + 1;
+                System.out.println( Date.valueOf(LocalDate.now()));
+                query = "insert into cust_order(OID , TOTAL_PRICE , ODATE , USERNAME, UNCONFIRMED) values( " + nextOID + ",0," + insertQuotations(Date.valueOf(LocalDate.now()).toString()) +   "," + insertQuotations(user_name) + "," + "\"UNCONFIRMED\" )";
+                stmt.executeUpdate(query);
+                o = new Order(nextOID);
+
+            }
+            conn.commit();
+            conn.setAutoCommit(true);
+            return o;
+        }catch (SQLException e){
+            if(debug){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+            conn.rollback();
+        }
+        return null;
+    }
+
+
+    /*
+        PRE_CONDITIONS: AMOUNT IS A POSITIVE INTEGER AND USERNAME EXISTS IN DATABASE
+        POST_CONDITIONS: THE BALANCE ASSOCIATED WITH USERNAME IS INCREMENTED BY SPECIFIED AMOUNT
+     */
     public void rechargeBalance(double amount, Connection conn){
         try {
             Statement stmt = conn.createStatement();
@@ -266,21 +311,22 @@ public class Customer extends User{
     public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-        Order o1 = new Order(Date.valueOf("2022-06-28") , 350);
-        Item i1 = Item.getItemInfo("Desert Shoes",conn);
-        i1.setItemQuantity(5);
-        Item i2 = Item.getItemInfo("DELL G3 LAPTOP" , conn);
-        i2.setItemQuantity(9);
-        o1.addItemToOrder(i1);
-        o1.addItemToOrder(i2);
-        User u1 = Customer.getUserInfo("Amr Mahmoud" , conn);
+//        (String user_name , String password , String email , Date bdate , double current_balance , String address , String mobile_number)
+        User u1 = Customer.getUserInfo("Mo2" , conn);
         ((Customer)u1).loadOrders(conn);
-        for (Order o: ((Customer) u1).orders) {
-            System.out.println("************ORDER*************");
+        Order o1 = ((Customer)u1).loadCart("Mo2" , conn);
+        System.out.println("***************CART****************");
+        System.out.println(o1);
+        for (Item i: o1.getItems()) {
+            System.out.println(i);
+        }
+        ((Customer) u1).makeOrder(o1 , conn);
+        ((Customer) u1).loadOrders(conn);
+        for (Order o: ((Customer) u1).orders
+             ) {
+            System.out.println("**********ORDER*********");
             System.out.println(o);
             o.printOrderItem();
-
-
         }
     }
 }

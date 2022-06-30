@@ -8,6 +8,7 @@ public class Order {
     protected static final boolean debug = true;
     private Date ODate;
     private double totalPrice;
+    private String isConfirmed;
     private Vector<Item> items = new Vector<Item>();
 
 
@@ -22,16 +23,24 @@ public class Order {
     public void addItemToOrder(Item item){
         items.add(item);
     }
-    public Order(int OID, Date ODate, double totalPrice) {
+    public Order(int OID, Date ODate, double totalPrice , String isConfirmed) {
         this.OID = OID;
         this.ODate = ODate;
         this.totalPrice = totalPrice;
+        this.isConfirmed = isConfirmed;
     }
 
     //CONSTRUCTORS
-    public Order(Date ODate, double totalPrice) {
+    public Order(Date ODate, double totalPrice , String isConfirmed) {
         this.ODate = ODate;
         this.totalPrice = totalPrice;
+        this.isConfirmed = isConfirmed;
+    }
+    public Order(int OID) {
+        this.OID = OID;
+        this.ODate = null;
+        this.totalPrice = 0;
+        this.isConfirmed = "UNCONFIRMED";
     }
 
     //GETTERS
@@ -47,6 +56,9 @@ public class Order {
         return totalPrice;
     }
 
+    public String getIsConfirmed() {
+        return isConfirmed;
+    }
 
     public void loadItems(Connection conn){
         try{
@@ -64,6 +76,29 @@ public class Order {
             }
         }
     }
+
+    public void addItem(int IID , int itemQuantity,double itemPrice ,Connection conn) throws SQLException {
+        try{
+            conn.setAutoCommit(false);
+            String query;
+            query  = "insert into CONTAIN values (" + itemQuantity + "," + OID + "," + IID + ")";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+            query = "update cust_order set TOTAL_PRICE = TOTAL_PRICE + " + itemPrice * itemQuantity + "where OID = " + OID ;
+            stmt.executeUpdate(query);
+            conn.commit();
+            conn.setAutoCommit(true);
+        }
+        catch(SQLException e){
+            if(debug){
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+            conn.rollback();
+        }
+    }
+
+
 
     @Override
     public String toString(){
