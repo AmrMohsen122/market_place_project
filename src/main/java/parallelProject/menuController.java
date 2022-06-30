@@ -85,6 +85,8 @@ public class menuController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        // TODO msh mot2ked h7tag aterminate el connection hena walla la
+        client.terminate();
     }
 
     @FXML
@@ -122,7 +124,7 @@ public class menuController {
 
     @FXML
     public void gocurrent(ActionEvent event) throws IOException {
-
+        // TODO hena lama bdos current balance lw kont 3mlt update fe el databae b recharge balance el update msh byzhar hena
         Parent root = FXMLLoader.load(getClass().getResource("recharge.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("My Balance");

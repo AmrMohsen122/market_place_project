@@ -21,8 +21,9 @@ public class ServerHandler implements Runnable{
     public Connection conn=null;
     public User client = null;
 
-    public ServerHandler(Socket socket){
+    public ServerHandler(Socket socket, DataInputStream input){
         this.socket=socket;
+        this.input = input;
 
     }
     @Override
@@ -49,11 +50,13 @@ public class ServerHandler implements Runnable{
 
         socket.close();
         input.close();
-//        output.close();
+        // m3rfsh hena hcall el output.close walla la
+        output.close();
 
     }
 // TODO aghyar parse akhleha void
     public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
+
         Vector<Item> items=null;
         Vector <String>itemsFound=null;
         String in = input.readUTF();
@@ -81,26 +84,14 @@ public class ServerHandler implements Runnable{
 
 
 
-                client = login(type, username, password,conn );
+                client = login(type, username, password, email, bdate,address, mobile_number,conn );
 
 
                     // TODO asend el current balance ll GUI
 //                    String user_name, String password, String email, double current_balance, String address, String mobile_number
                 if (client != null) {
-                    email = client.getEmail();
-                    bdate = client.getBdate();
 
-                    String strToBePassed = "";
-                    strToBePassed = username + ',' + password + ',' + email + ',' + bdate;
-                    if (client instanceof Customer) {
-                        double current_balance = ((Customer) client).getCurrent_balance();
-                        String current_balance_inStr = String.valueOf(current_balance);
-                        address = ((Customer) client).getAddress();
-                        mobile_number = ((Customer) client).getMobile_number();
-                        strToBePassed += ',' + current_balance_inStr + ',' + address + ',' + mobile_number;
 
-                    }
-                    this.output.writeUTF(strToBePassed);
                 }
                 break;
             case "Signup":
@@ -265,17 +256,18 @@ public class ServerHandler implements Runnable{
         Item i = new Item(Integer.parseInt(itemD[0]),Double.parseDouble(itemD[1]),itemD[2],itemD[3],Integer.parseInt(itemD[4]),itemD[5],Integer.parseInt(itemD[6]));
         return i;
     }
-    public User login(String type, String username, String password, Connection c) throws IOException {
-        User a = null;
+//    type, username, password, email, bdate,address, mobile_number,conn
+    public User login(String type, String username, String password,String email, Date bdate, String address, String mobile_number, Connection c) throws IOException {
+
         double balance = -1;
         // TODO case el invalid password btreturn invalid username msh password
         if(User.userExists(username, c)!=0) {
             if (type.equals("Admin"))
-                a = (Admin)Admin.getUserInfo(username, c);
+                client = (Admin)Admin.getUserInfo(username, c);
             else if (type.equals("Customer"))
-                a = (Customer)Customer.getUserInfo(username, c);
+                client = (Customer)Customer.getUserInfo(username, c);
         }
-        if (a!=null) {
+        if (client!=null) {
             String str = User.getPassword(username, conn);
             if (!str.equals(password)) {
                 //TODO Print error message "Invalid password"
@@ -283,13 +275,23 @@ public class ServerHandler implements Runnable{
                 this.output.writeUTF("Invalid Password");
                 return null;
             } else {
+                email = client.getEmail();
+                bdate = client.getBdate();
+
+                String strToBePassed = "";
+                strToBePassed = username + ',' + password + ',' + email + ',' + bdate;
+                if (client instanceof Customer) {
+                    double current_balance = ((Customer) client).getCurrent_balance();
+                    String current_balance_inStr = String.valueOf(current_balance);
+                    address = ((Customer) client).getAddress();
+                    mobile_number = ((Customer) client).getMobile_number();
+                    strToBePassed += ',' + current_balance_inStr + ',' + address + ',' + mobile_number;
+                }
+
+                this.output.writeUTF(strToBePassed);
+
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
-
-
-
-
-
-                return a;
+                return client;
             }
         }
         else{

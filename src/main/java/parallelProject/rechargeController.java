@@ -93,6 +93,7 @@ public class rechargeController implements  Initializable{
         else{
             wrong.setText("Please enter amount!");
         }
+        client.terminate();
     }
 
     @FXML
