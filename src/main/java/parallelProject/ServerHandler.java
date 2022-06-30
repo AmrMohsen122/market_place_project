@@ -189,20 +189,33 @@ public class ServerHandler implements Runnable{
             case "searchByCategory":
                 /*Input Format
                  * searchByCategory
-                 * category name
+                 *
                  * */
 
                 //Category already exists since it is chosen from a menu
 
-                String categoryName = input.readUTF();
-                items = Item.search_by_category(categoryName, conn);
+                String categoryName = "mobile";
+                Vector<Item>items1 = Item.search_by_3_category(categoryName, conn);
+                categoryName = "laptop";
+                Vector<Item>items2 = Item.search_by_3_category(categoryName, conn);
+                categoryName = "accessory";
+                Vector<Item>items3 = Item.search_by_3_category(categoryName, conn);
                 // TODO return item details to GUI
 
-                itemsFound=loadItems(items);
+                itemsFound=loadItems(items1);
                 for (int i = 0; i < 3; i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
-                this.output.writeUTF("end");
+                itemsFound=loadItems(items2);
+                for (int i = 0; i < 3; i++) {
+                    this.output.writeUTF(itemsFound.get(i));
+                }
+                itemsFound=loadItems(items3);
+                for (int i = 0; i < 3; i++) {
+                    this.output.writeUTF(itemsFound.get(i));
+                }
+
+
                 break;
 
             case "exit":
