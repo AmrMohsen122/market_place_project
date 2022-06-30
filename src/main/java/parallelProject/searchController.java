@@ -130,17 +130,17 @@ public class searchController implements Initializable {
 
    //For the client
     static Vector<String> search = new Vector<>();
-    
+    Client client = null;
     public static int pars;
     public  int index=-1;
     
     public void startSearch() throws IOException {
-        //client= new Client("127.0.0.1",2022);
-        //client.initialize();
+        client = new Client("127.0.0.1",2022);
+        client.initialize();
 
         Vector <String> startS = new Vector<>(2);
         startS.add(0,"searchByName");
-        startS.add(0,"itemName");
+        startS.add(1,itemName.getText());
 
         search = startS;
         //client.send(search);
@@ -250,11 +250,37 @@ public class searchController implements Initializable {
             addcart.add(it);
         }
     }
+    public static Vector<Item> parseItems(Vector<String> items){
+//        id,price,itemName,stock
+        Vector<Item> itemsFound = new Vector<>();
+        for (int i = 0; i < items.size(); i++) {
 
+            String [] str = items.get(i).split(",");
+            itemsFound.add(new Item(Integer.parseInt(str[0]), Double.parseDouble(str[1]), str[2],Integer.parseInt(str[3])));
+
+        }
+
+        return itemsFound;
+    }
     @FXML
     public void goSearchItems(ActionEvent event) throws IOException {
         startSearch();
-        int found = searchh(menuController.i,itemName.getText());
+        for (int j = 0; j < search.size(); j++) {
+
+            client.output.writeUTF(search.get(j));
+
+        }
+        String input = client.input.readUTF();
+        Vector<String> items = new Vector<>(2);
+        while(!input.equals("end")){
+
+            items.add(input);
+            input = client.input.readUTF();
+
+        }
+
+        int found = searchh(parseItems(items), itemName.getText());
+//        int found = searchh(menuController.i,itemName.getText());
         if(found != -1) {
             Parent root = FXMLLoader.load(getClass().getResource("searcheditems.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
