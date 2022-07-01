@@ -457,7 +457,7 @@ public class ServerHandler implements Runnable{
                     String.valueOf(customers.get(i).getPassword())+','+
                     customers.get(i).getEmail()+','+
                     customers.get(i).getCurrent_balance()+','+
-                    String.valueOf(customers.get(i).getAddress());
+                    String.valueOf(customers.get(i).getAddress())+','+customers.get(i).getMobile_number();
             userDet.add(str);
 
         }
