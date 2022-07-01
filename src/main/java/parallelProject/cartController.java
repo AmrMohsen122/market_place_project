@@ -41,6 +41,8 @@ public class cartController implements Initializable {
     private Label notEnough;
     Client client = null;
     static TreeItem<String> cartItems;
+    static TreeItem<String> branch11;
+    static TreeItem<String> branch12;
     public static Vector<String> confirmVector = new Vector<>();
 
     public void fillCart() throws IOException {
@@ -62,8 +64,8 @@ public class cartController implements Initializable {
             // THIS WILL PROBABLY NEED TO CALL A NEW LOAD CARD
             //TODO cartOrder if confirmed is added to vector orders and cartOrder is cleared
         }
-        else{
 
+        else{
             notEnough.setText("Balance is not enough!");
 //            Order unsendOrder = new Order(ordernum, date, cartOrder.getTotalPrice(), "UNCONFIRMED");
         }
@@ -83,21 +85,12 @@ public class cartController implements Initializable {
     }
 
     public void confirm(ActionEvent event) throws IOException {
-
         fillCart();
-        Parent root = FXMLLoader.load(getClass().getResource("cart.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Home Page");
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-                //TreeItem<String> selected = tree.getSelectionModel().getSelectedItem();
-        //            selected.getParent().getChildren().remove(selected)
-
+        cartItems.getChildren().removeAll(branch11,branch12);
 
     }
     public void selectItem(){
-       // TreeItem<String> it = cartItems.get
+     //   TreeItem<String> it = cartTree.getSelectionModel().getSelectedItems();
     }
     @FXML
     public void gocurrent(ActionEvent event) throws IOException {
@@ -109,13 +102,14 @@ public class cartController implements Initializable {
         stage.show();
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cartItems = new TreeItem<>("Cart Items: ");
         cartTree.setRoot(cartItems);
         String branchI = "item ";
-            TreeItem<String> branch11 = new TreeItem<>("Order Price: " + Double.toString(cartOrder.getTotalPrice()));
-            TreeItem<String> branch12 = new TreeItem<>("Items: ");
+             branch11 = new TreeItem<>("Order Price: " + Double.toString(cartOrder.getTotalPrice()));
+             branch12 = new TreeItem<>("Items: ");
             cartItems.getChildren().addAll(branch11,branch12);
 
             for(int m=0 ; m<cartOrder.getItems().size() ; m++){

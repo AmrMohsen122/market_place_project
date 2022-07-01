@@ -128,6 +128,7 @@ public class loginpageController {
         String price;
         Order or;
               store = info.get(l).split(",");
+              //TODO deh el mafrud tb2a cust ?
               loggedCustomer = new Customer(store[0],store[1],store[2],Date.valueOf(store[3]),Double.parseDouble(store[4]),store[5],store[6]);
               l+=2;
               orderDate =info.get(l);

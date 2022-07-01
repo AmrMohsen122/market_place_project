@@ -43,6 +43,11 @@ public class Order {
         this.isConfirmed = isConfirmed;
     }
 
+    public Order(int OID, double totalPrice) {
+        this.OID = OID;
+        this.totalPrice = totalPrice;
+    }
+
     //CONSTRUCTORS
     public Order(Date ODate, double totalPrice , String isConfirmed) {
         this.ODate = ODate;
