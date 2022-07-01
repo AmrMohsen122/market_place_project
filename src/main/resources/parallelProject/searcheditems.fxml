@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.searcheditemsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.searcheditemsController">
    <children>
       <Pane layoutX="-16.0" prefHeight="58.0" prefWidth="618.0" style="-fx-background-color: black;">
          <children>
@@ -57,7 +57,7 @@
       <Pane layoutX="55.0" layoutY="145.0" prefHeight="124.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;" />
       <Label fx:id="itemname" layoutX="67.0" layoutY="285.0" text="itemname" />
       <Label fx:id="price" layoutX="67.0" layoutY="307.0" text="price" />
-      <Button layoutX="134.0" layoutY="289.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+      <Button layoutX="134.0" layoutY="289.0" mnemonicParsing="false" onAction="#Addtocart" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
       <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="139.0" layoutY="289.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/cartbut.jpg" />
