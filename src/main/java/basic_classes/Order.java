@@ -20,6 +20,12 @@ public class Order {
             System.out.println(i);
         }
     }
+
+    public Order( Date ODate, double totalPrice) {
+        this.ODate = ODate;
+        this.totalPrice = totalPrice;
+    }
+
     public void addItemToOrder(Item item){
         items.add(item);
     }

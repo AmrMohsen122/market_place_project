@@ -60,6 +60,6 @@
             <Font name="Berlin Sans FB Bold" size="15.0" />
          </font>
       </Label>
-      <TreeView fx:id="tree" layoutX="68.0" layoutY="141.0" prefHeight="200.0" prefWidth="317.0" style="-fx-background-color: black; -fx-border-color: black;" />
+      <TreeView fx:id="tree" layoutX="68.0" layoutY="141.0" prefHeight="200.0" prefWidth="317.0" style="-fx-border-color: black;" />
    </children>
 </AnchorPane>

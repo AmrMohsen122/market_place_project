@@ -1,6 +1,7 @@
 package parallelProject;
 
 import basic_classes.Item;
+import basic_classes.Order;
 import javafx.beans.binding.IntegerBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +43,7 @@ public class menuController {
     //All Items' Data
     public static Vector<Item> i;
     Client client;
+
     
     
     //Search Functions

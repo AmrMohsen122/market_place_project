@@ -1,5 +1,6 @@
 package parallelProject;
 
+import basic_classes.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

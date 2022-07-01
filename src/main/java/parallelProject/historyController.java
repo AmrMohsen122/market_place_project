@@ -84,7 +84,7 @@ public class historyController implements Initializable{
                     TreeItem<String> branch1311 = new TreeItem<>("Item #: " + Integer.toString(orders.get(o).getItems().get(m).getIid()));
                     TreeItem<String> branch1312 = new TreeItem<>("Item Price: " + Double.toString(orders.get(o).getItems().get(m).getPrice()));
                     TreeItem<String> branch1313 = new TreeItem<>("Item Name: " + orders.get(o).getItems().get(m).getItem_name());
-                    TreeItem<String> branch1314 = new TreeItem<>("Item Quantity: " + Integer.toString(orders.get(o).getItems().get(m).getStock()));
+                    TreeItem<String> branch1314 = new TreeItem<>("Item Quantity: " + Integer.toString(orders.get(o).getItems().get(m).getItemQuantity()));
                     branch131.getChildren().addAll(branch1311,branch1312,branch1313,branch1314);
                 }
             }
