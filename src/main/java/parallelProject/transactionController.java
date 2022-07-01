@@ -20,15 +20,20 @@ import java.util.ResourceBundle;
 
 import static parallelProject.adminMenuController.allUsers;
 
+//import static parallelProject.adminMenuController.allUsers;
+
 
 public class transactionController implements Initializable {
+    public static TreeItem<String> ORDER;
+    public static TreeItem<String> branch1;
 
     @FXML
     private TreeView transactionTree;
 
     @FXML
     public void goback(ActionEvent event) throws IOException {
-
+        System.out.println(adminViewUsersController.indexUser);
+        ORDER.getChildren().removeAll(branch1);
         Parent root = FXMLLoader.load(getClass().getResource("adminViewUsers.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("All Users");
@@ -37,19 +42,20 @@ public class transactionController implements Initializable {
         stage.show();
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TreeItem<String> ORDER = new TreeItem<>("Orders:");
+        ORDER = new TreeItem<>("Orders:");
         transactionTree.setRoot(ORDER);
         String branchO = "Order ";
         String branchI = "item ";
-        Customer showCustomerTransaction = allUsers.get(0); //TODO indexUser instead of 0
+
+        Customer showCustomerTransaction = allUsers.get(adminViewUsersController.indexUser); //TODO indexUser instead of 0
         for(int o=0 ; o<showCustomerTransaction.getOrders().size() ; o++){
-            TreeItem<String> branch1 = new TreeItem<>(branchO+ (Integer.toString(o+1)));
+            branch1 = new TreeItem<>(branchO+ (Integer.toString(o+1)));
             ORDER.getChildren().addAll(branch1);
-             String test1 = Double.toString(showCustomerTransaction.getOrders().get(o).getTotalPrice());
-           //  String test2 = (showCustomerTransaction.getOrders().get(0).getODate()).toString();
-           // TreeItem<String> branch11 = new TreeItem<>("Order Date: " + test2);
+            String test1 = Double.toString(showCustomerTransaction.getOrders().get(o).getTotalPrice());
+            // TreeItem<String> branch11 = new TreeItem<>("Order Date: " + test2);
             TreeItem<String> branch12 = new TreeItem<>("Order Price: " +test1);
             TreeItem<String> branch13 = new TreeItem<>("Items: ");
             branch1.getChildren().addAll(branch12,branch13);
@@ -57,7 +63,6 @@ public class transactionController implements Initializable {
             for(int m=0 ; m<showCustomerTransaction.getOrders().get(o).getItems().size() ; m++){
                 TreeItem<String> branch131 = new TreeItem<>(branchI+ (Integer.toString(m+1)));
                 branch13.getChildren().addAll(branch131);
-
                 TreeItem<String> branch1311 = new TreeItem<>("Item #: " + Integer.toString(showCustomerTransaction.getOrders().get(o).getItems().get(m).getIid()));
                 TreeItem<String> branch1312 = new TreeItem<>("Item Price: " + Double.toString(showCustomerTransaction.getOrders().get(o).getItems().get(m).getPrice()));
                 TreeItem<String> branch1313 = new TreeItem<>("Item Name: " + showCustomerTransaction.getOrders().get(o).getItems().get(m).getItem_name());
