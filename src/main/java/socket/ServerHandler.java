@@ -75,6 +75,35 @@ public class ServerHandler implements Runnable{
             * username
             * password
             * */
+            case "sendAllItems":
+
+                Vector<Item> allItems= Item.getAllItems(conn);
+
+                Vector<String> send = loadAllItems(allItems);
+
+                for (int i = 0; i < send.size() ; i++) {
+                    output.writeUTF(send.get(i));
+                }
+                this.output.writeUTF("end");
+                /*Output on following format:
+                * item1details (iid, price, name, stock)
+                * item2deatils
+                *
+                * "end"
+                * */
+
+                break;
+            case "sendAllUsers":
+
+                Vector<Customer> customers = Customer.getAllCustomers(conn);
+                Vector<String> sendUsers = loadAllUsers(customers);
+                for (int i = 0; i < sendUsers.size() ; i++) {
+                    output.writeUTF(sendUsers.get(i));
+                }
+                this.output.writeUTF("end");
+
+
+                break;
 
             case "login":
                 String type = input.readUTF();
@@ -413,11 +442,57 @@ public class ServerHandler implements Runnable{
             //  TODO check the password and confirm password are the same
         }
     }
+    public Vector<String> loadAllUsers(Vector <Customer> customers) {
+        /*
+         * id,price,itemName,stock
+         * .
+         * .
+         * */
+
+        Vector<String> userDet = new Vector<String>();
+//        String user_name, String password, String email, double current_balance, String address, String mobile_number
+        for (int i = 0; i < customers.size(); i++) {
+            String str="";
+            str=String.valueOf(customers.get(i).getUsername())+','+
+                    String.valueOf(customers.get(i).getPassword())+','+
+                    customers.get(i).getEmail()+','+
+                    customers.get(i).getCurrent_balance()+','+
+                    String.valueOf(customers.get(i).getAddress());
+            userDet.add(str);
+
+        }
+        return userDet;
+
+    }
+    public Vector<String> loadAllItems(Vector <Item>items) {
+        /*
+         * id,price,itemName,stock
+         * .
+         * .
+         * */
+
+        Vector<String> itemDet = new Vector<String>();
+//        int iid, double price, String item_name, String seller_name, int stock, String category
+        for (int i = 0; i < items.size(); i++) {
+            String str="";
+            str=String.valueOf(items.get(i).getIid())+','+
+                    String.valueOf(items.get(i).getPrice())+','+
+                    items.get(i).getItem_name()+','+
+                    items.get(i).getSeller_name()+','+
+            String.valueOf(items.get(i).getStock())+','+items.get(i).getCategory();
+
+            itemDet.add(str);
+
+        }
+        return itemDet;
+
+    }
     /* for value of stockOrQty
     // set to "stock" to return (iid,price,name,stock)
     set to "Qty" to return (iid, price , name , itemQuantity)*/
+
     public Vector<String> loadItems(Vector <Item>items,String stockOrQty) {
-        /*startItem
+        /*
         * id,price,itemName,stock
         * .
         * .
