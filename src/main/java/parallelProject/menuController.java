@@ -78,7 +78,7 @@ public class menuController {
     }
     //TODO 3ayzeen nn3at el category kman msh lazem delwa2ty
     //useStock is 0 when we want to use quantity
-     public Vector<Item> parseItems (Vector<String>it , boolean useStock) {
+     public static Vector<Item> parseItems(Vector<String> it, boolean useStock) {
         int j=0;
         Vector<Item> items = new Vector<>();
          Item ii = null;
@@ -111,7 +111,8 @@ public class menuController {
         client.send(vhistory);
         initVec2();  // ely ana bb3to mn el server
     }
-    
+
+
     public void initVec2() throws IOException {
         String in = client.input.readUTF();
         Vector<String> parsedItems = new Vector<>();

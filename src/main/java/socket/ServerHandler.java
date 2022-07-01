@@ -323,15 +323,21 @@ public class ServerHandler implements Runnable{
         items = order.getItems();
 //                this.output.writeUTF(String.valueOf(order.getOID()));
         this.output.writeUTF(String.valueOf(order.getODate()));
+        System.out.println(String.valueOf(order.getODate()));
         this.output.writeUTF(String.valueOf(order.getTotalPrice()));
+        System.out.println(String.valueOf(order.getTotalPrice()));
         Vector<String> itemsFound;
         if(items.size()!=0){
             // TODO msh mot2kd mn hean hcall 3la Qty walla stock
             itemsFound = loadItems(items,"Qty");
-            for (int i = 0; i < itemsFound.size(); i++)
+            for (int i = 0; i < itemsFound.size(); i++) {
                 this.output.writeUTF(itemsFound.get(i));
+                System.out.println((itemsFound.get(i)));
+            }
+
         }
         this.output.writeUTF("end");
+        System.out.println("end");
         /*Output on the following format:
          * OrderDate
          * total price
@@ -380,9 +386,8 @@ public class ServerHandler implements Runnable{
                     strToBePassed += ',' + current_balance_inStr + ',' + address + ',' + mobile_number;
                 }
                 // username,password,email,bdate,current_balance,address, mobile_number
-
                 this.output.writeUTF(strToBePassed);
-                this.output.writeUTF("startOrder");
+                System.out.println(strToBePassed);
                 sendCart(username);
 
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"

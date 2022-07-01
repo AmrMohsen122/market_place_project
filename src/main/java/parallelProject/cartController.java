@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
+import socket.Client;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,13 +38,13 @@ public class cartController implements Initializable {
 
     @FXML
     private Label notEnough;
-
+    Client client = null;
     static TreeItem<String> cartItems;
     public static Vector<String> confirmVector = new Vector<>();
 
     public void fillCart() throws IOException {
-        // client= new Client("127.0.0.1",2022); //TODO uncomment
-        //  client.initialize();                 //TODO uncomment
+         client = new Client("127.0.0.1",2022); //TODO uncomment
+          client.initialize();                 //TODO uncomment
 
         Vector <String>vec = new Vector<>(10);
         long millis=System.currentTimeMillis();

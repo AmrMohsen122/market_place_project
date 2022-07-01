@@ -18,11 +18,9 @@ import java.util.Vector;
 import java.sql.Date;
 public class loginpageController {
     public static Vector<String> i1 = new Vector<>();
-    Vector<String> parseinfo = new Vector<>();
+    //TODO CONTAINS CART
      public static  Order cartOrder;
-
     String user,pass,Login,Admin,validate;
-
     @FXML
     TextField username;
     @FXML
@@ -94,53 +92,32 @@ public class loginpageController {
     public void fillVector() throws IOException {
         client= new Client("127.0.0.1",2022);
         client.initialize();
-
         Vector <String>vec = new Vector<>(10);
         vec.add(0,Login);
         vec.add(1,Admin);
         vec.add(2,user);
         vec.add(3,pass);
-
         i1 = vec;
-        initlog();
-
     }
 
-    public void initlog() throws IOException {
-       // int size = Integer.parseInt(client.input.readUTF());
-        Vector<String> loginfo  = new Vector<>(15);
+    public Order initlog() throws IOException {
+        String in = client.input.readUTF();
+        Vector<String> parsedItems = new Vector<>();
+        Order o = null;
+        if (in != null) {
+            o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
+            in = client.input.readUTF();
+            while (!in.equals("end")) {
+                parsedItems.add(in);
+                in = client.input.readUTF();
+            }
+            if (parsedItems.size() != 0) {
+                o.setItems(menuController.parseItems(parsedItems, false));
+            }
+        }
+        return o;
 
-        loginfo.add(0,"Ahmed,1234,email,2021-10-02,4000,aaaa,012345");
-        loginfo.add(1,"startOrder");
-        loginfo.add(2,"2020-5-7");
-        loginfo.add(3,"700");
-        loginfo.add(4,"1,300,Iphone 12,5");
-        loginfo.add(5,"end");
-
-        //ord.add(5,"2020-12-3");
-        //ord.add(6,"2000");
-        //ord.add(7,"startItem");
-        //ord.add(8,"1,300,Samsung 12,5");
-        //ord.add(9,"endOrder");
-        //ord.add(10,"end");
-
-
-        /*for (int j = 0; j < size; j++) {
-            ord.add(client.input.readUTF());
-        }*/
-
-        parseinfo = loginfo;
     }
-
-    /*
-     * Client details (username, password, email, bdate, current balance , address , mobile)
-     * startOrder
-     * OrderDate
-     * total price
-     * item1 details(iid,price, itemname , quantity)
-     * Item 2 details
-     * end
-     */
 
     public Order parseCart (Vector<String> info) {
         //System.out.println(orders);
@@ -205,12 +182,8 @@ public class loginpageController {
         boolean fcheck,flag;
         getter();
         fillVector();
-        cartOrder = parseCart(parseinfo);
-//        System.out.println(cartOrder);
-//        System.out.println(cartOrder.getItems());
         fcheck = check();
         flag = validation();
-
         if(fcheck==false){
             valid.setText("Enter all data!");
         }
@@ -218,9 +191,9 @@ public class loginpageController {
             valid.setText("Invalid username or password!");
         }
         else if( Admin.equals("Customer")){
-                cust = parseCustomers(validate);
-
-                Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            cust = parseCustomers(validate);
+            cartOrder = initlog();
+            Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle("Home Page");
                 Scene scene = new Scene(root);
