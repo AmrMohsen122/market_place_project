@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylee.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.searchController">
+   <children>
+      <Pane layoutX="-4.0" layoutY="-1.0" prefHeight="58.0" prefWidth="604.0" style="-fx-background-color: black;">
+         <children>
+            <Pane layoutX="50.0" layoutY="12.0" prefHeight="34.0" prefWidth="135.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="6.0" text="E-MarketPlace">
+                     <font>
+                        <Font name="Berlin Sans FB" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button layoutX="383.0" layoutY="19.0" mnemonicParsing="false" onAction="#gocurrent" prefHeight="22.0" prefWidth="100.0" style="-fx-background-radius: 5px; -fx-background-color: white;" text="Current Balance">
+               <font>
+                  <Font name="Berlin Sans FB" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="496.0" layoutY="19.0" mnemonicParsing="false" onAction="#goviewcart" style="-fx-background-radius: 5px; -fx-background-color: white;" text="View Cart">
+               <font>
+                  <Font name="Berlin Sans FB" size="12.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="42.0" fitWidth="45.0" layoutX="562.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/cart.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <ImageView fitHeight="349.0" fitWidth="600.0" layoutY="57.0" opacity="0.85" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/orange.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="344.0" fitWidth="600.0" layoutX="1.0" layoutY="57.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/orangewithbags.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="64.0" layoutY="71.0" text="Search for Items">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="itemName" layoutX="267.0" layoutY="116.0" prefHeight="26.0" prefWidth="150.0" promptText="Search for an item" style="-fx-background-radius: 5px; -fx-background-color: white;" />
+      <TabPane fx:id="tabpane" layoutX="56.0" layoutY="156.0" prefHeight="245.0" prefWidth="510.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab>
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Mobile Phones">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane layoutX="52.0" layoutY="14.0" prefHeight="126.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;" AnchorPane.bottomAnchor="77.0" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="344.0" AnchorPane.topAnchor="14.0">
+                           <children>
+                              <ImageView fitHeight="102.0" fitWidth="121.0" layoutX="6.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/12.jpg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="198.0" layoutY="14.0" prefHeight="124.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="110.0" fitWidth="100.0" layoutX="7.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/13.jpg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="348.0" layoutY="14.0" prefHeight="124.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="98.0" fitWidth="84.0" layoutX="15.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/s22.jpg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Label fx:id="i1" layoutX="67.0" layoutY="152.0" text="Iphone 12" />
+                        <Label fx:id="i2" layoutX="213.0" layoutY="152.0" text="Iphone 13" />
+                        <Label fx:id="i3" layoutX="348.0" layoutY="152.0" text="Samsung s22" />
+                        <Button fx:id="cart1" layoutX="130.0" layoutY="148.0" mnemonicParsing="false" onAction="#addToCart1" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="135.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="cart2" layoutX="274.0" layoutY="148.0" mnemonicParsing="false" onAction="#addToCart2" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <Button fx:id="cart3" layoutX="426.0" layoutY="148.0" mnemonicParsing="false" onAction="#addToCart3" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="431.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="p1" layoutX="67.0" layoutY="165.0" text="800" />
+                        <Label fx:id="p2" layoutX="213.0" layoutY="165.0" text="900" />
+                        <Label fx:id="p3" layoutX="348.0" layoutY="165.0" text="800" />
+                        <Label fx:id="q2" layoutX="213.0" layoutY="177.0" text="Not Found" />
+                        <Label fx:id="q3" layoutX="348.0" layoutY="177.0" text="Not Found" />
+                        <Label fx:id="q1" layoutX="66.0" layoutY="178.0" text="Not Found" />
+                        <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="279.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Laptops">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="178.0" prefWidth="356.0">
+                     <children>
+                        <Pane layoutX="52.0" layoutY="26.0" prefHeight="110.0" prefWidth="160.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="102.0" fitWidth="121.0" layoutX="19.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/dell.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="285.0" layoutY="26.0" prefHeight="110.0" prefWidth="160.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="102.0" fitWidth="121.0" layoutX="19.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/hp.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Label fx:id="i4" layoutX="85.0" layoutY="153.0" text="DELL" />
+                        <Label fx:id="i5" layoutX="329.0" layoutY="153.0" text="HP" />
+                        <Button fx:id="cart4" layoutX="144.0" layoutY="148.0" mnemonicParsing="false" onAction="#addToCart4" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="149.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="cart5" layoutX="378.0" layoutY="148.0" mnemonicParsing="false" onAction="#addToCart5" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="383.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="p4" layoutX="85.0" layoutY="166.0" text="1000" />
+                        <Label fx:id="q4" layoutX="85.0" layoutY="180.0" text="Not Found" />
+                        <Label fx:id="p5" layoutX="329.0" layoutY="166.0" text="950" />
+                        <Label fx:id="q5" layoutX="329.0" layoutY="180.0" text="Not Found" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Accessories">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="230.0" prefWidth="510.0">
+                     <children>
+                        <Pane layoutX="30.0" layoutY="29.0" prefHeight="127.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="102.0" fitWidth="121.0" layoutX="20.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/airpods.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="198.0" layoutY="29.0" prefHeight="127.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="88.0" fitWidth="114.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/powerbank.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="358.0" layoutY="29.0" prefHeight="127.0" prefWidth="114.0" style="-fx-background-color: white; -fx-background-radius: 20px;">
+                           <children>
+                              <ImageView fitHeight="101.0" fitWidth="114.0" layoutX="6.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/charger.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Label fx:id="i6" layoutX="42.0" layoutY="166.0" text="AirPods" />
+                        <Button fx:id="cart6" layoutX="89.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart6" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="94.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="cart7" layoutX="267.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart7" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="272.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="cart8" layoutX="429.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart8" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="434.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/cartbut.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="i7" layoutX="198.0" layoutY="166.0" text="PowerBank" />
+                        <Label fx:id="i8" layoutX="374.0" layoutY="166.0" text="Charger" />
+                        <Label fx:id="p6" layoutX="42.0" layoutY="180.0" text="100" />
+                        <Label fx:id="p7" layoutX="198.0" layoutY="180.0" text="50" />
+                        <Label fx:id="q6" layoutX="42.0" layoutY="192.0" text="Not Found" />
+                        <Label fx:id="q7" layoutX="198.0" layoutY="192.0" text="Not Found" />
+                        <Label fx:id="p8" layoutX="374.0" layoutY="180.0" text="70" />
+                        <Label fx:id="q8" layoutX="374.0" layoutY="192.0" text="Not Found" />
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <Label layoutX="64.0" layoutY="120.0" text="Choose by Categories">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="searchByName" layoutX="423.0" layoutY="116.0" mnemonicParsing="false" onAction="#goSearchItems" prefHeight="19.0" prefWidth="31.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+      <ImageView fitHeight="13.0" fitWidth="13.0" layoutX="435.0" layoutY="126.0" opacity="0.28" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/serach.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="32.0" layoutY="367.0" mnemonicParsing="false" onAction="#goback" prefHeight="22.0" prefWidth="19.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+      <ImageView fitHeight="19.0" fitWidth="13.0" layoutX="35.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/goback.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="notfound" layoutX="471.0" layoutY="121.0" prefHeight="18.0" prefWidth="114.0" textFill="#f70404" />
+   </children>
+</AnchorPane>
