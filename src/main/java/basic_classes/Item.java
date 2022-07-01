@@ -290,6 +290,31 @@ public class Item {
         return null;
     }
 
+
+    /*
+        PRE_CONDITIONS: NONE
+        POST_CONDITIONS: RETURNS A VECTOR OF ALL ITEMS IN DATABASE, RETURNS NULL IN CASE THERE ARE NO ITEMS IN DATABASE
+     */
+    public static Vector<Item> getAllItems(Connection conn){
+        try {
+            Vector<Item> items = new Vector<Item>();
+            String query = "select * from ITEM  ";
+            Statement stmt = conn.createStatement();
+            ResultSet queryResult = stmt.executeQuery(query);
+            while(queryResult.next()) {
+                items.add(new Item(queryResult.getInt(queryResult.findColumn("IID")), queryResult.getFloat(queryResult.findColumn("PRICE")), queryResult.getString(queryResult.findColumn("ITEM_NAME")), queryResult.getString(queryResult.findColumn("SELLER_NAME")), queryResult.getInt(queryResult.findColumn("STOCK")), queryResult.getString(queryResult.findColumn("CATEGORY"))));
+            }
+            return items;
+        } catch (SQLException e) {
+            if (debug) {
+                System.out.println("SQLException: " + e.getMessage());
+                System.out.println("SQLState: " + e.getSQLState());
+            }
+        }
+        return null;
+    }
+
+
     private static String insertQuotations(String str){
         return "\"" + str + "\"" ;
     }

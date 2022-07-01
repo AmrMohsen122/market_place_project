@@ -297,6 +297,32 @@ public class Customer extends User{
         }
     }
 
+      /*
+        PRECONDITIONS: NONE
+        POST_CONDITIONS: RETURNS A LIST OF ALL CUSTOMERS CURRENTLY SIGNED UP IN SYSTEM, NULL IF NO USERS ARE CURRENTLY SIGNED UP
+     */
+    public static Vector<Customer> getAllCustomers(Connection conn){
+          try {
+              Vector<Customer> customers = new Vector<>();
+              String query = "select * from USER_ACC natural join CUSTOMER_ACC";
+              Statement stmt = conn.createStatement();
+              ResultSet queryResult = stmt.executeQuery(query);
+              while(queryResult.next()) {
+                  customers.add(new Customer(queryResult.getString("USERNAME"), queryResult.getString("PASS_WORD") , queryResult.getString("EMAIL")
+                                             ,Date.valueOf(queryResult.getString("BDATE")), queryResult.getDouble("CURRENT_BALANCE") , queryResult.getString("ADDRESS"),
+                                            queryResult.getString("MOBILE_NUMBER")));
+              }
+              return customers;
+          } catch (SQLException e) {
+              if (debug) {
+                  System.out.println("SQLException: " + e.getMessage());
+                  System.out.println("SQLState: " + e.getSQLState());
+              }
+          }
+          return null;
+      }
+
+
     @Override
     public String toString(){
        return "***************** CUSTOMER *****************\n" + super.toString() + "\nCurrent balance = " + current_balance + "\nAddress: " + address + "\nMobile number: " + mobile_number;
@@ -306,14 +332,8 @@ public class Customer extends User{
     public static void main(String[] args) throws SQLException {
         DatabaseManager.initConnection(10);
         Connection conn = DatabaseManager.requestConnection();
-        Customer c1 = Customer.getUserInfo("Amr Mahmoud" , conn);
-        Order o = loadCart("Amr Mahmoud" , conn);
-        System.out.println("**********ORDER*********");
-        System.out.println(o);
-        o.printOrderItem();
-        System.out.println("Order was : " + c1.makeOrder(o , conn));
-        System.out.println("**********ORDER*********");
-        System.out.println(o);
-        o.printOrderItem();
+        for (Item c : Item.getAllItems(conn)){
+            System.out.println(c);
+        }
     }
 }

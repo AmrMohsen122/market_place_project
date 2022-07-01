@@ -91,8 +91,6 @@ public class Admin extends User{
             conn.rollback();
         }
     }
-
-
     @Override
     public String toString(){
         return "***************** ADMIN *****************\n" + super.toString();
