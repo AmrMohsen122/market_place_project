@@ -223,7 +223,7 @@ public class loginpageController {
             stage.setScene(scene);
             stage.show();*/
         }
-     //   client.terminate();
+     //   client.terminate(); //TODO msh fakra ento ely 3mlnha comment wla ehna
     }
 
 
