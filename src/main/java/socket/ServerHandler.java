@@ -32,7 +32,6 @@ public class ServerHandler implements Runnable{
 
             this.conn = DatabaseManager.requestConnection();
             this.output = new DataOutputStream(this.socket.getOutputStream());
-            System.out.println("ana dakhlt l parse");
             parse(input,conn,client);
             DatabaseManager.releaseConnection(this.conn);
             terminate();
@@ -407,11 +406,14 @@ public class ServerHandler implements Runnable{
                     address = ((Customer) client).getAddress();
                     mobile_number = ((Customer) client).getMobile_number();
                     strToBePassed += ',' + current_balance_inStr + ',' + address + ',' + mobile_number;
+                    this.output.writeUTF(strToBePassed);
+                    sendCart(username);
+
+                }
+                else{
+                    this.output.writeUTF(strToBePassed);
                 }
                 // username,password,email,bdate,current_balance,address, mobile_number
-                this.output.writeUTF(strToBePassed);
-                sendCart(username);
-
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
                 return client;
             }
@@ -448,7 +450,6 @@ public class ServerHandler implements Runnable{
          * .
          * .
          * */
-
         Vector<String> userDet = new Vector<String>();
 //        String user_name, String password, String email, double current_balance, String address, String mobile_number
         for (int i = 0; i < customers.size(); i++) {

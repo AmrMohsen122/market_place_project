@@ -20,8 +20,12 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 import java.util.Vector;
-//import static parallelProject.loginpageController.allUsers;  //TODO uncomment when finishing
+
+import static parallelProject.adminMenuController.allUsers;
+//TODO uncomment when finishing
+
 //TODO mafrud hnakhud allUsers deh mn login
+
 
 public class adminViewUsersController implements Initializable {
 
@@ -63,7 +67,7 @@ public class adminViewUsersController implements Initializable {
         usersTree.setRoot(Users);
 
         String branchO = "User ";
-        for(int o=0 ; o<allUsers.size() ; o++) {
+        for(int o=0 ;  o< allUsers.size() ; o++) {
             TreeItem<String> branch1 = new TreeItem<>(branchO + (Integer.toString(o + 1)));
             Users.getChildren().addAll(branch1);
             TreeItem<String> branchT = new TreeItem<>("View Transaction");

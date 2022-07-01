@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-//import static parallelProject.loginpageController.allItems; //TODO uncomment when finishing
+import static parallelProject.adminMenuController.allItems;
 
 
 public class adminSystemController implements Initializable {
