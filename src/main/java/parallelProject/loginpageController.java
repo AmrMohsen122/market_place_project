@@ -42,10 +42,10 @@ public class loginpageController {
     public static Customer loggedCustomer;
     public Client client;
 
-    /*public Customer parseCustomers(String str) throws ParseException {
+    public Customer parseCustomers(String str) throws ParseException {
         String[] itemA = str.split(",");
         Customer c;
-
+        System.out.println(itemA);
         // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
         if(!itemA[3].equals("null") && !itemA[4].equals("null")){
             c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
@@ -61,8 +61,8 @@ public class loginpageController {
             c = new Customer(itemA[0],itemA[1],itemA[2], null,0.00,itemA[5],itemA[6]);
         }
         return c;
-    }*/
-    /*public Admin parseAdmin(String str) throws ParseException {
+    }
+    public Admin parseAdmin(String str) throws ParseException {
         String[] itemA = str.split(",");
         Admin c =  null;
 
@@ -76,7 +76,7 @@ public class loginpageController {
 
 
         return c;
-    }*/
+    }
 
     public void getter(){
         boolean fAdmin;
@@ -96,8 +96,8 @@ public class loginpageController {
     }
 
     public void fillVector() throws IOException {
-       // client= new Client("127.0.0.1",2022);
-      //  client.initialize();
+        client= new Client("127.0.0.1",2022);
+        client.initialize();
 
         Vector <String>vec = new Vector<>(10);
         vec.add(0,Login);
@@ -192,9 +192,9 @@ public class loginpageController {
 
 
     public boolean validation() throws IOException {
-      //  client.send(i1);
-       // validate = client.input.readUTF();
-        validate ="";
+        client.send(i1);
+        validate = client.input.readUTF();
+//        validate ="";
         if((validate.equals("Invalid Username")) ||(validate.equals("Invalid Password"))) {
             return false;
         }
@@ -222,7 +222,7 @@ public class loginpageController {
             valid.setText("Invalid username or password!");
         }
         else if( Admin.equals("Customer")){
-             //   cust = parseCustomers(validate);
+                cust = parseCustomers(validate);
 
                 Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -232,7 +232,7 @@ public class loginpageController {
                 stage.show();
             }
         else if(Admin.equals("Admin")){
-          //  cust = parseAdmin(validate);
+            cust = parseAdmin(validate);
             // TODO el mfrood dol ytghyro yb2o 7agat el admin
             Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
