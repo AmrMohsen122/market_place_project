@@ -67,7 +67,6 @@ public class historyController implements Initializable{
         String branchO = "Order ";
         String branchI = "item ";
         Order o1 = orders.get(0);
-
         for(int o=0 ; o<orders.size() ; o++){
             TreeItem<String> branch1 = new TreeItem<>(branchO+ (Integer.toString(o+1)));
             ORDER.getChildren().addAll(branch1);

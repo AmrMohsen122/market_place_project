@@ -43,6 +43,10 @@ public class Customer extends User{
         mobile_number = null;
     }
 
+    public void setOrder(Order order) {
+        orders.add(order);
+    }
+
     //SETTERS AND GETTERS
     public double getCurrent_balance() {
         return current_balance;

@@ -203,8 +203,11 @@ public class loginpageController {
             }
         else if(Admin.equals("Admin")){
             cust = parseAdmin(validate);
+            //TODO mafrud hna b2a t3mlo haga zy initlog() trga3 ll admin kul el users fi vector of users, w kul el items
+            //TODO allUsers da el vector el 3yzako tmluh bl users w da static
+            //TODO allItems da el vector el 3yzako tmluh bl items w da static brdo
             // TODO el mfrood dol ytghyro yb2o 7agat el admin
-            Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("adminMenu.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("Home Page");
             Scene scene = new Scene(root);
