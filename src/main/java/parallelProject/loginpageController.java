@@ -105,7 +105,7 @@ public class loginpageController {
         Vector<String> parsedItems = new Vector<>();
         Order o = null;
         if (in != null) {
-            o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
+            o = new Order(Integer.parseInt(in) ,Date.valueOf(client.input.readUTF()), Double.parseDouble(client.input.readUTF()) , "UNCONFIRMED");
             in = client.input.readUTF();
             while (!in.equals("end")) {
                 parsedItems.add(in);

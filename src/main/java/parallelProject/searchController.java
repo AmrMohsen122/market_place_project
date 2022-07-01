@@ -166,13 +166,32 @@ public class searchController implements Initializable {
     public static Vector<Item> addcart = new Vector<>();
     @FXML
     public void addToCart1 (ActionEvent event) throws IOException{
+        /*Input on the following format
+         * addToCart
+         * Order ID
+         * item ID
+         * item quantity
+         * item price
+         * */
         if(!(q1.getText().equals("Not Found"))) {
-            double addedPrice =0;
+            client = new Client("127.0.0.1",2022);
+            client.initialize();
+            Vector<String> toBeSent = new Vector<>();
+            toBeSent.add("addToCart");
+            toBeSent.add(Integer.toString(cartOrder.getOID()));
+//            toBeSent.add("itemID");
+            //searchController.parseItems(items)
+//            toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
+            toBeSent.add(Integer.toString(menuController.i.get(0).getIid()));
+            toBeSent.add("1");
+            toBeSent.add(p1.getText());
+            client.send(toBeSent);
+            double addedPrice = Double.parseDouble(p1.getText());
             cartOrder.addItemToOrder(new Item(1,1,Double.parseDouble(p1.getText()),i1.getText()));
             addedPrice += cartOrder.getTotalPrice();
+            System.out.println(addedPrice);
             cartOrder.setTotalPrice(addedPrice);
         }
-
     }
     @FXML
     public void addToCart2 (ActionEvent event) throws IOException{

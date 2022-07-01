@@ -243,18 +243,24 @@ public class ServerHandler implements Runnable{
                 username = input.readUTF();
                 order = Customer.loadCart(username, conn);
                 items = order.getItems();
-
 //                this.output.writeUTF(String.valueOf(order.getOID()));
+//                System.out.println(order.getOID());
                 this.output.writeUTF(String.valueOf(order.getODate()));
+                System.out.println(order.getODate());
                 this.output.writeUTF(String.valueOf(order.getTotalPrice()));
+                System.out.println(order.getTotalPrice());
 
                 if(items.size()!=0){
                     // TODO msh mot2kd mn hean hcall 3la Qty walla stock
                     itemsFound = loadItems(items,"Qty");
-                    for (int i = 0; i < itemsFound.size(); i++)
+                    for (int i = 0; i < itemsFound.size(); i++) {
                         this.output.writeUTF(itemsFound.get(i));
+                        System.out.println(itemsFound.get(i));
+                    }
                 }
                 this.output.writeUTF("end");
+                System.out.println("end");
+
                 /*Output on the following format:
                 * OrderDate
                 * total price
@@ -265,6 +271,7 @@ public class ServerHandler implements Runnable{
                 break;
 
             case "addToCart":
+                System.out.println("ana f addToCart");
                 /*Input on the following format
                 * addToCart
                 * Order ID
@@ -276,12 +283,9 @@ public class ServerHandler implements Runnable{
                 int iid = Integer.parseInt(this.input.readUTF());
                 int itemQty = Integer.parseInt(this.input.readUTF());
                 double itemPrice = Double.parseDouble(this.input.readUTF());
+                System.out.println(oid);
                 order = Order.getOrderByID(oid,conn);
-
                 order.addItem(iid,itemQty, itemPrice,conn);
-
-
-
                 break;
 
 
@@ -321,23 +325,19 @@ public class ServerHandler implements Runnable{
         Vector<Item> items;
         order = Customer.loadCart(username, conn);
         items = order.getItems();
-//                this.output.writeUTF(String.valueOf(order.getOID()));
+        this.output.writeUTF(String.valueOf(order.getOID()));
         this.output.writeUTF(String.valueOf(order.getODate()));
-        System.out.println(String.valueOf(order.getODate()));
         this.output.writeUTF(String.valueOf(order.getTotalPrice()));
-        System.out.println(String.valueOf(order.getTotalPrice()));
         Vector<String> itemsFound;
         if(items.size()!=0){
             // TODO msh mot2kd mn hean hcall 3la Qty walla stock
             itemsFound = loadItems(items,"Qty");
             for (int i = 0; i < itemsFound.size(); i++) {
                 this.output.writeUTF(itemsFound.get(i));
-                System.out.println((itemsFound.get(i)));
             }
 
         }
         this.output.writeUTF("end");
-        System.out.println("end");
         /*Output on the following format:
          * OrderDate
          * total price
@@ -387,7 +387,6 @@ public class ServerHandler implements Runnable{
                 }
                 // username,password,email,bdate,current_balance,address, mobile_number
                 this.output.writeUTF(strToBePassed);
-                System.out.println(strToBePassed);
                 sendCart(username);
 
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"

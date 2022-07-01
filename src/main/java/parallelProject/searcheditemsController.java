@@ -34,6 +34,9 @@ public class searcheditemsController implements Initializable {
     
     @FXML
     public void Addtocart(ActionEvent event) throws IOException {
+        //IID IS searchController.pars
+        //toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
+
         if(!(quantity.getText().equals("Not Found"))) {
             double addedPrice =0;
             cartOrder.addItemToOrder(new Item(8,1,Double.parseDouble(price.getText()),itemname.getText()));

@@ -43,8 +43,6 @@ public class menuController {
     public static Vector<Item> i;
     Client client;
 
-    
-    
     //Search Functions
     public void fillSearch() throws IOException {
         client= new Client("127.0.0.1",2022);
