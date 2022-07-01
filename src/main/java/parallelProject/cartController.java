@@ -55,7 +55,7 @@ public class cartController implements Initializable {
             vec.add(0, "confirmCart");
             vec.add(1, cust.getUsername());
             vec.add(2, Integer.toString(cartOrder.getOID()));
-            confirmVector =vec;
+            confirmVector =vec ;
             client.send(confirmVector);
 
             // TODO CHECK IF STOCK IS ACTUALLY ENOUGH

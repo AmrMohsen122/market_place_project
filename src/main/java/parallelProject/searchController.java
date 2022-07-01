@@ -162,23 +162,19 @@ public class searchController implements Initializable {
         pars=index;
         return index;
     }
-    public void checkBalance(Label q ,Label p , Label i , int itemNumber) throws IOException {
-
-        if(!(q.getText().equals("Not Found"))) {
+    public void checkBalance(Label q ,Label p , Label i , int itemNumber , int index) throws IOException {
+        if(!(i.getText().equals("Not Found"))) {
             client = new Client("127.0.0.1",2022);
             client.initialize();
             Vector<String> toBeSent = new Vector<>();
             toBeSent.add("addToCart");
             toBeSent.add(Integer.toString(cartOrder.getOID()));
-            //            toBeSent.add("itemID");
-            //            searchController.parseItems(items)
-            //            toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
-            toBeSent.add(Integer.toString(menuController.i.get(0).getIid()));
+            toBeSent.add(Integer.toString(menuController.i.get(index).getIid()));
             toBeSent.add(Integer.toString(itemNumber));
             toBeSent.add(p.getText());
             client.send(toBeSent);
             double addedPrice = Double.parseDouble(p.getText());
-            cartOrder.addItemToOrder(new Item(itemNumber,1,Double.parseDouble(p.getText()),i.getText()));
+            cartOrder.addItemToOrder(new Item(1,itemNumber,Double.parseDouble(p.getText()),i.getText()));
             addedPrice += cartOrder.getTotalPrice();
             System.out.println(addedPrice);
             cartOrder.setTotalPrice(addedPrice);
@@ -195,37 +191,37 @@ public class searchController implements Initializable {
          * item quantity
          * item price
          * */
-        checkBalance(q1,p1,i1,1);
+        checkBalance(q1,p1,i1,1 , 0);
     }
     @FXML
     public void addToCart2 (ActionEvent event) throws IOException{
-        checkBalance(q2,p2,i2,2);
+        checkBalance(q2,p2,i2,1,1);
     }
     @FXML
     public void addToCart3 (ActionEvent event) throws IOException{
-        checkBalance(q3,p3,i3,3);
+        checkBalance(q3,p3,i3,1,2);
     }
     @FXML
     public void addToCart4 (ActionEvent event) throws IOException{
-        checkBalance(q4,p4,i4,4);
+        checkBalance(q4,p4,i4,1,3);
     }
     @FXML
     public void addToCart5 (ActionEvent event) throws IOException{
-        checkBalance(q5,p5,i5,5);
+        checkBalance(q5,p5,i5,1,4);
     }
 
     @FXML
     public void addToCart6 (ActionEvent event) throws IOException{
-        checkBalance(q6,p6,i6,6);
+        checkBalance(q6,p6,i6,1,5);
     }
 
     @FXML
     public void addToCart7 (ActionEvent event) throws IOException{
-        checkBalance(q7,p7,i7,7);
+        checkBalance(q7,p7,i7,1,6);
     }
     @FXML
     public void addToCart8 (ActionEvent event) throws IOException{
-        checkBalance(q8,p8,i8,8);
+        checkBalance(q8,p8,i8,1,7);
     }
     public static Vector<Item> parseItems(Vector<String> items){
 //        id,price,itemName,stock

@@ -77,7 +77,7 @@ public class historyController implements Initializable{
                 TreeItem<String> branch13 = new TreeItem<>("Items: ");
                 branch1.getChildren().addAll(branch11,branch12,branch13);
 
-                for(int m=0 ; m<orders.get(0).getItems().size() ; m++){
+                for(int m=0 ; m<orders.get(o).getItems().size() ; m++){
                     TreeItem<String> branch131 = new TreeItem<>(branchI+ (Integer.toString(m+1)));
                     branch13.getChildren().addAll(branch131);
 
