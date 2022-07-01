@@ -66,26 +66,29 @@ public class historyController implements Initializable{
 
         String branchO = "Order ";
         String branchI = "item ";
-        Order o1 = orders.get(0);
-        for(int o=0 ; o<orders.size() ; o++){
-            TreeItem<String> branch1 = new TreeItem<>(branchO+ (Integer.toString(o+1)));
-            ORDER.getChildren().addAll(branch1);
+        if(orders.size()!=0) {
+            Order o1 = orders.get(0);
+
+            for (int o = 0; o < orders.size(); o++) {
+                TreeItem<String> branch1 = new TreeItem<>(branchO + (Integer.toString(o + 1)));
+                ORDER.getChildren().addAll(branch1);
 
                 TreeItem<String> branch11 = new TreeItem<>("Order Date: " + (orders.get(o).getODate()).toString());
                 TreeItem<String> branch12 = new TreeItem<>("Order Price: " + Double.toString(orders.get(o).getTotalPrice()));
                 TreeItem<String> branch13 = new TreeItem<>("Items: ");
-                branch1.getChildren().addAll(branch11,branch12,branch13);
+                branch1.getChildren().addAll(branch11, branch12, branch13);
 
-                for(int m=0 ; m<orders.get(o).getItems().size() ; m++){
-                    TreeItem<String> branch131 = new TreeItem<>(branchI+ (Integer.toString(m+1)));
+                for (int m = 0; m < orders.get(o).getItems().size(); m++) {
+                    TreeItem<String> branch131 = new TreeItem<>(branchI + (Integer.toString(m + 1)));
                     branch13.getChildren().addAll(branch131);
 
                     TreeItem<String> branch1311 = new TreeItem<>("Item #: " + Integer.toString(orders.get(o).getItems().get(m).getIid()));
                     TreeItem<String> branch1312 = new TreeItem<>("Item Price: " + Double.toString(orders.get(o).getItems().get(m).getPrice()));
                     TreeItem<String> branch1313 = new TreeItem<>("Item Name: " + orders.get(o).getItems().get(m).getItem_name());
                     TreeItem<String> branch1314 = new TreeItem<>("Item Quantity: " + Integer.toString(orders.get(o).getItems().get(m).getItemQuantity()));
-                    branch131.getChildren().addAll(branch1311,branch1312,branch1313,branch1314);
+                    branch131.getChildren().addAll(branch1311, branch1312, branch1313, branch1314);
                 }
             }
+        }
     }
 }

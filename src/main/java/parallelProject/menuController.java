@@ -113,9 +113,10 @@ public class menuController {
 
     public void initVec2() throws IOException {
         String in = client.input.readUTF();
+
         Vector<String> parsedItems = new Vector<>();
 
-        if(in != null){
+        if(in != null && !in.equals("end")){
             Order o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
             while(true) {
                 in = client.input.readUTF();
