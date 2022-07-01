@@ -261,11 +261,10 @@ public class Customer extends User{
                 queryResult = stmt.executeQuery(query);
                 queryResult.next();
                 int nextOID = queryResult.getInt(1) + 1;
-                System.out.println( Date.valueOf(LocalDate.now()));
-                query = "insert into cust_order(OID , TOTAL_PRICE , ODATE , USERNAME, UNCONFIRMED) values( " + nextOID + ",0," + insertQuotations(Date.valueOf(LocalDate.now()).toString()) +   "," + insertQuotations(user_name) + "," + "\"UNCONFIRMED\" )";
+                Date today = Date.valueOf(LocalDate.now());
+                query = "insert into cust_order(OID , TOTAL_PRICE , ODATE , USERNAME, UNCONFIRMED) values( " + nextOID + " , 0 , " + insertQuotations(today.toString()) +   "," + insertQuotations(user_name) + "," + "\"UNCONFIRMED\" )";
                 stmt.executeUpdate(query);
-                o = new Order(nextOID);
-
+                o = new Order(nextOID , today);
             }
             conn.commit();
             conn.setAutoCommit(true);

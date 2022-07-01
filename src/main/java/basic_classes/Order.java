@@ -54,9 +54,9 @@ public class Order {
         this.items = items;
     }
 
-    public Order(int OID) {
+    public Order(int OID , Date ODate) {
         this.OID = OID;
-        this.ODate = null;
+        this.ODate = ODate;
         this.totalPrice = 0;
         this.isConfirmed = "UNCONFIRMED";
     }

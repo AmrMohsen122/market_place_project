@@ -10,18 +10,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import socket.Client;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 import static parallelProject.loginpageController.cartOrder;
-
+import static parallelProject.searchController.items;
 
 
 public class searcheditemsController implements Initializable {
     static int indexitem;
-    
+
+    Client client = null;
 
     @FXML
     private Label itemname;
@@ -37,10 +40,20 @@ public class searcheditemsController implements Initializable {
         //IID IS searchController.pars
         //toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
 
-        if(!(quantity.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(8,1,Double.parseDouble(price.getText()),itemname.getText()));
+        if(!(itemname.getText().equals("Not Found"))) {
+            client = new Client("127.0.0.1",2022);
+            client.initialize();
+            Vector<String> toBeSent = new Vector<>();
+            toBeSent.add("addToCart");
+            toBeSent.add(Integer.toString(cartOrder.getOID()));
+            toBeSent.add(Integer.toString(searchController.pars));
+            toBeSent.add("1");
+            toBeSent.add(price.getText());
+            client.send(toBeSent);
+            double addedPrice = Double.parseDouble(price.getText());
+            cartOrder.addItemToOrder(new Item(1,1,Double.parseDouble(price.getText()),itemname.getText()));
             addedPrice += cartOrder.getTotalPrice();
+            System.out.println(addedPrice);
             cartOrder.setTotalPrice(addedPrice);
         }
     }
@@ -79,13 +92,13 @@ public class searcheditemsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO
-        for(int j=0; j<menuController.i.size(); j++){
-            if (searchController.pars == menuController.i.get(j).getIid())
+        Vector<Item> v = menuController.parseItems(items , true);
+        for(int j=0; j< v.size(); j++){
+            if (searchController.pars == v.get(j).getIid())
             {
-                itemname.setText(menuController.i.get(j).getItem_name());
-                price.setText(Double.toString(menuController.i.get(j).getPrice()));
-                quantity.setText(Integer.toString(menuController.i.get(j).getStock()));
+                itemname.setText(v.get(j).getItem_name());
+                price.setText(Double.toString(v.get(j).getPrice()));
+                quantity.setText(Integer.toString(v.get(j).getStock()));
                 indexitem =j;
                 break;
             }
