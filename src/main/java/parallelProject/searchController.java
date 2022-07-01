@@ -162,6 +162,28 @@ public class searchController implements Initializable {
         pars=index;
         return index;
     }
+    public void checkBalance(Label q ,Label p , Label i , int itemNumber) throws IOException {
+
+        if(!(q.getText().equals("Not Found"))) {
+            client = new Client("127.0.0.1",2022);
+            client.initialize();
+            Vector<String> toBeSent = new Vector<>();
+            toBeSent.add("addToCart");
+            toBeSent.add(Integer.toString(cartOrder.getOID()));
+            //            toBeSent.add("itemID");
+            //            searchController.parseItems(items)
+            //            toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
+            toBeSent.add(Integer.toString(menuController.i.get(0).getIid()));
+            toBeSent.add(Integer.toString(itemNumber));
+            toBeSent.add(p.getText());
+            client.send(toBeSent);
+            double addedPrice = Double.parseDouble(p.getText());
+            cartOrder.addItemToOrder(new Item(itemNumber,1,Double.parseDouble(p.getText()),i.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            System.out.println(addedPrice);
+            cartOrder.setTotalPrice(addedPrice);
+        }
+    }
 
     public static Vector<Item> addcart = new Vector<>();
     @FXML
@@ -173,90 +195,37 @@ public class searchController implements Initializable {
          * item quantity
          * item price
          * */
-        if(!(q1.getText().equals("Not Found"))) {
-            client = new Client("127.0.0.1",2022);
-            client.initialize();
-            Vector<String> toBeSent = new Vector<>();
-            toBeSent.add("addToCart");
-            toBeSent.add(Integer.toString(cartOrder.getOID()));
-//            toBeSent.add("itemID");
-            //searchController.parseItems(items)
-//            toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
-            toBeSent.add(Integer.toString(menuController.i.get(0).getIid()));
-            toBeSent.add("1");
-            toBeSent.add(p1.getText());
-            client.send(toBeSent);
-            double addedPrice = Double.parseDouble(p1.getText());
-            cartOrder.addItemToOrder(new Item(1,1,Double.parseDouble(p1.getText()),i1.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            System.out.println(addedPrice);
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q1,p1,i1,1);
     }
     @FXML
     public void addToCart2 (ActionEvent event) throws IOException{
-        if(!(q2.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(2,1,Double.parseDouble(p2.getText()),i2.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q2,p2,i2,2);
     }
     @FXML
     public void addToCart3 (ActionEvent event) throws IOException{
-        if(!(q3.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(3,1,Double.parseDouble(p3.getText()),i3.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q3,p3,i3,3);
     }
     @FXML
     public void addToCart4 (ActionEvent event) throws IOException{
-        if(!(q4.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(4,1,Double.parseDouble(p4.getText()),i4.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q4,p4,i4,4);
     }
     @FXML
     public void addToCart5 (ActionEvent event) throws IOException{
-        if(!(q5.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(5,1,Double.parseDouble(p5.getText()),i5.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q5,p5,i5,5);
     }
 
     @FXML
     public void addToCart6 (ActionEvent event) throws IOException{
-        if(!(q6.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(6,1,Double.parseDouble(p6.getText()),i6.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q6,p6,i6,6);
     }
 
     @FXML
     public void addToCart7 (ActionEvent event) throws IOException{
-        if(!(q7.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(7,1,Double.parseDouble(p7.getText()),i7.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q7,p7,i7,7);
     }
     @FXML
     public void addToCart8 (ActionEvent event) throws IOException{
-        if(!(q1.getText().equals("Not Found"))) {
-            double addedPrice =0;
-            cartOrder.addItemToOrder(new Item(8,1,Double.parseDouble(p8.getText()),i8.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            cartOrder.setTotalPrice(addedPrice);
-        }
+        checkBalance(q8,p8,i8,8);
     }
     public static Vector<Item> parseItems(Vector<String> items){
 //        id,price,itemName,stock

@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+
 import static parallelProject.loginpageController.*;
 import static parallelProject.menuController.orders;
 
@@ -59,6 +60,7 @@ public class cartController implements Initializable {
             ((Customer)cust).setCurrent_balance(((Customer)cust).getCurrent_balance() - cartOrder.getTotalPrice());
             // TODO CLEAR CART AFTER SENDING IT
             // THIS WILL PROBABLY NEED TO CALL A NEW LOAD CARD
+            //TODO cartOrder if confirmed is added to vector orders and cartOrder is cleared
         }
         else{
 
@@ -95,7 +97,7 @@ public class cartController implements Initializable {
 
     }
     public void selectItem(){
-      //  TreeItem<String> it = cartItems.
+       // TreeItem<String> it = cartItems.get
     }
     @FXML
     public void gocurrent(ActionEvent event) throws IOException {

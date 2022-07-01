@@ -207,13 +207,13 @@
                               <Image url="@Images/cartbut.jpg" />
                            </image>
                         </ImageView>
-                        <Button fx:id="cart7" layoutX="267.0" layoutY="163.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <Button fx:id="cart7" layoutX="267.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart7" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
                         <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="272.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@Images/cartbut.jpg" />
                            </image>
                         </ImageView>
-                        <Button fx:id="cart8" layoutX="429.0" layoutY="163.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <Button fx:id="cart8" layoutX="429.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart8" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
                         <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="434.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@Images/cartbut.jpg" />
