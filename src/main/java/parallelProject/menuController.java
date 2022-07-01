@@ -115,7 +115,7 @@ public class menuController {
         String in = client.input.readUTF();
 
         Vector<String> parsedItems = new Vector<>();
-
+        orders.clear();
         if(in != null && !in.equals("end")){
             Order o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
             while(true) {
