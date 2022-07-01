@@ -92,9 +92,19 @@ public class cartController implements Initializable {
                 //TreeItem<String> selected = tree.getSelectionModel().getSelectedItem();
         //            selected.getParent().getChildren().remove(selected)
 
+
     }
     public void selectItem(){
-      //  TreeItem<String> it = cartItems.getSelectionModel().getSelctedItem();
+      //  TreeItem<String> it = cartItems.
+    }
+    @FXML
+    public void gocurrent(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("recharge.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("My Balance");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @Override
