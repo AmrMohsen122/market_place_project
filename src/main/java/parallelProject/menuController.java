@@ -2,7 +2,6 @@ package parallelProject;
 
 import basic_classes.Item;
 import basic_classes.Order;
-import javafx.beans.binding.IntegerBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +10,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import socket.Client;
 
 import java.io.IOException;
 import java.util.Vector;
 import java.sql.Date;
-import java.util.Vector;
+
 import static parallelProject.loginpageController.cust;
 
 // TODO search items lama bkhoshaha marten wara ba3d btdy error 3ayz asl7ha
@@ -31,7 +31,6 @@ public class menuController {
     //For Search Page
     Vector<String> testt = new Vector<>(9); // ana khaletha 9 badal 8
     static Vector<String> vSearch = new Vector<>();
-     Vector<Item> items = new Vector<>();
 
      //For History Page
     //orders contain all orders of the customer
@@ -77,13 +76,22 @@ public class menuController {
 
         testt = it;
     }
-
-// TODO 3ayzeen nn3at el category kman
-     public Vector<Item> parseItems (Vector<String>it) {
+    //TODO 3ayzeen nn3at el category kman msh lazem delwa2ty
+    //useStock is 0 when we want to use quantity
+     public Vector<Item> parseItems (Vector<String>it , boolean useStock) {
         int j=0;
-        for (int i = 0; i < it.size(); i++) {
-              String[] itemobj = it.get(i).split(",");
-            Item ii = new Item(Integer.parseInt(itemobj[0]),Double.parseDouble(itemobj[1]),itemobj[2],Integer.parseInt(itemobj[3]));
+        Vector<Item> items = new Vector<>();
+         Item ii = null;
+         for (int i = 0; i < it.size(); i++) {
+             String[] itemobj = it.get(i).split(",");
+             if(useStock){
+                 ii = new Item(Integer.parseInt(itemobj[0]),Double.parseDouble(itemobj[1]),itemobj[2],Integer.parseInt(itemobj[3]));
+
+             }
+             else{
+                 //int iid ,int itemQuantity , double price, String item_name
+                 ii = new Item(Integer.parseInt(itemobj[0]), Integer.parseInt(itemobj[3]), Double.parseDouble(itemobj[1]), itemobj[2]);
+             }
             items.add(j,ii);
             j++;
         }
@@ -100,34 +108,32 @@ public class menuController {
         vec.add(0,"viewHistory");
         vec.add(1,cust.getUsername());
         vhistory = vec;
-
         client.send(vhistory);
         initVec2();  // ely ana bb3to mn el server
     }
     
     public void initVec2() throws IOException {
-        int size = Integer.parseInt(client.input.readUTF());
-        Vector<String> ord  = new Vector<>(size);
-        
-        //ord.add(0,"2020-12-3");
-        //ord.add(1,"2000");
-        //ord.add(2,"startItem");
-        //ord.add(3,"1,300,Iphone 12,5");
-        //ord.add(4,"endOrder");
-       
-        //ord.add(5,"2020-12-3");
-        //ord.add(6,"2000");
-        //ord.add(7,"startItem");
-        //ord.add(8,"1,300,Samsung 12,5");
-        //ord.add(9,"endOrder");
-        //ord.add(10,"end");
+        String in = client.input.readUTF();
+        Vector<String> parsedItems = new Vector<>();
 
-
-        for (int j = 0; j < size; j++) {
-            ord.add(client.input.readUTF());
+        if(in != null){
+            Order o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
+            while(true) {
+                in = client.input.readUTF();
+                while (!in.equals("endOrder")) {
+                    parsedItems.add(in);
+                    in = client.input.readUTF();
+                }
+                o.setItems(parseItems(parsedItems , false) );
+                parsedItems.clear();
+                orders.add(o);
+                in = client.input.readUTF();
+                if(in.equals("end")){
+                    break;
+                }
+                o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
+            }
         }
-        System.out.println(ord);
-        parsing = ord;
     }
 
     public Vector<Order> parseOrders (Vector<String> ord) {
@@ -166,7 +172,7 @@ public class menuController {
     @FXML
     public void gosearch(ActionEvent event) throws IOException {
         fillSearch();
-        i = parseItems(testt);
+        i = parseItems(testt , true);
         // TODO el items ely rg3t fe i hya ely hnzahrha fe el screen
         Parent root = FXMLLoader.load(getClass().getResource("search.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -192,8 +198,6 @@ public class menuController {
     @FXML
     public void gohistory(ActionEvent event) throws IOException {
         fillorders();
-        orders = parseOrders(parsing);
-        
         Parent root = FXMLLoader.load(getClass().getResource("history.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("My History");

@@ -1,4 +1,4 @@
-package parallelProject;
+package socket;
 import java.io.*;
 
 import java.net.Socket;
@@ -123,9 +123,9 @@ public class ServerHandler implements Runnable{
 
             case "viewHistory":
                 client = Customer.getUserInfo(input.readUTF(),conn);
-                ((Customer)client).loadOrders(conn);
-                Vector<String>orderHistory=new Vector<String>();
-                orderHistory=loadOrderDetails(((Customer) client));
+//                ((Customer)client).loadOrders(conn);
+                Vector<String>orderHistory = new Vector<String>();
+                orderHistory = loadOrderDetails(((Customer) client));
                 for (int i = 0; i < orderHistory.size(); i++) {
                     this.output.writeUTF(orderHistory.get(i));
                 }
@@ -293,10 +293,8 @@ public class ServerHandler implements Runnable{
                  * */
                 // TODO send "Item Not Found"
                 // TODO pass the object contains the order in the make order funcn
-
                 // TODO function returns order object given its id
                 // leh bpass el order lama kdh kdh hwa el unconfirmed ?
-
 
                 client = Customer.getUserInfo(input.readUTF(), conn);
                 // function treturn object mn el order given its order id
@@ -319,13 +317,10 @@ public class ServerHandler implements Runnable{
     }
 
     public void sendCart(String username) throws IOException, SQLException {
-
         Order order;
         Vector<Item> items;
-
         order = Customer.loadCart(username, conn);
         items = order.getItems();
-
 //                this.output.writeUTF(String.valueOf(order.getOID()));
         this.output.writeUTF(String.valueOf(order.getODate()));
         this.output.writeUTF(String.valueOf(order.getTotalPrice()));
@@ -344,7 +339,6 @@ public class ServerHandler implements Runnable{
          * item2 details
          * "end"
          * */
-
 
     }
     public Item parseItems(String str){
@@ -421,9 +415,9 @@ public class ServerHandler implements Runnable{
             //  TODO check the password and confirm password are the same
         }
     }
-    // for value of stockOrQty
+    /* for value of stockOrQty
     // set to "stock" to return (iid,price,name,stock)
-    // set to "Qty" to return (iid, price , name , itemQuantity)
+    set to "Qty" to return (iid, price , name , itemQuantity)*/
     public Vector<String> loadItems(Vector <Item>items,String stockOrQty) {
         /*startItem
         * id,price,itemName,stock
@@ -450,13 +444,12 @@ public class ServerHandler implements Runnable{
         return itemDet;
 
     }
-    public static void addVectorToVector(Vector<String>first,Vector<String>second){
+    public static void addVectorToVector(Vector<String>first , Vector<String>second){
         for (int i = 0; i < second.size(); i++) {
             first.add(second.get(i));
         }
     }
-    public Vector<String> loadOrderDetails(Customer client)
-            /*vector of order details
+    /*vector of order details
     format is:
     username
     first order date
@@ -480,19 +473,16 @@ public class ServerHandler implements Runnable{
     end
 
     */
-{
-
+    public Vector<String> loadOrderDetails(Customer client) {
         ((Customer)client).loadOrders(conn);
         Vector <String> ordDet = new Vector<String>();
-
         for (int i = 0; i < client.getOrders().size(); i++) {
             Vector <String> itemDet= loadItems(client.getOrders().get(i).getItems(),"Qty");
             ordDet.add(client.getOrders().get(i).getODate().toString());
             ordDet.add(String.valueOf(client.getOrders().get(i).getTotalPrice()));
-            ordDet.add("startItem");
+//            ordDet.add("startItem"); WE NO LONGER USE START ITEM LINE IN VIEW HISTORY
             addVectorToVector(ordDet,itemDet);
             ordDet.add("endOrder");
-
         }
         ordDet.add("end");
         return ordDet ;

@@ -44,6 +44,11 @@ public class Order {
         this.totalPrice = totalPrice;
         this.isConfirmed = isConfirmed;
     }
+
+    public void setItems(Vector<Item> items) {
+        this.items = items;
+    }
+
     public Order(int OID) {
         this.OID = OID;
         this.ODate = null;

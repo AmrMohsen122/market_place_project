@@ -40,7 +40,7 @@ public class historyController implements Initializable{
 
     @FXML
     public void goback(ActionEvent event) throws IOException {
-
+        orders.clear();
         Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Main Menu");

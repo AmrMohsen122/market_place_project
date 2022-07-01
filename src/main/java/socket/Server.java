@@ -1,4 +1,4 @@
-package parallelProject;
+package socket;
 
 import database.manager.DatabaseManager;
 import java.io.*;

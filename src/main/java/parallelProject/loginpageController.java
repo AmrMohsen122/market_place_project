@@ -9,14 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import socket.Client;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import java.util.Vector;
 import java.sql.Date;
@@ -45,7 +41,7 @@ public class loginpageController {
     public Customer parseCustomers(String str) throws ParseException {
         String[] itemA = str.split(",");
         Customer c;
-        System.out.println(itemA);
+//        System.out.println(itemA);
         // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
         if(!itemA[3].equals("null") && !itemA[4].equals("null")){
             c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
@@ -210,8 +206,8 @@ public class loginpageController {
         getter();
         fillVector();
         cartOrder = parseCart(parseinfo);
-        System.out.println(cartOrder);
-        System.out.println(cartOrder.getItems());
+//        System.out.println(cartOrder);
+//        System.out.println(cartOrder.getItems());
         fcheck = check();
         flag = validation();
 
