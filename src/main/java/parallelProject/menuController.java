@@ -54,12 +54,15 @@ public class menuController {
         Vector <String>vec = new Vector<>(2);
         vec.add(0,"searchByCategory");
         vSearch = vec;
-        //client.send(v2);
+
+        client.send(vSearch);
         initVec();
 
-    }
 
+    }
+// TODO
     public void initVec() throws IOException {
+
         int size = Integer.parseInt(client.input.readUTF());
         Vector<String>it = new Vector<>(size);
         
@@ -67,18 +70,20 @@ public class menuController {
         //it.add(1,"2,900,Iphone 13,1");
         
         for (int j = 0; j < size; j++) {
+
             it.add(client.input.readUTF());
+
         }
+
         testt = it;
     }
 
+// TODO 3ayzeen nn3at el category kman
      public Vector<Item> parseItems (Vector<String>it) {
-         System.out.println(it);
         int j=0;
-        for (int i = 0; i < it.size(); i+=4) {
+        for (int i = 0; i < it.size(); i++) {
               String[] itemobj = it.get(i).split(",");
             Item ii = new Item(Integer.parseInt(itemobj[0]),Double.parseDouble(itemobj[1]),itemobj[2],Integer.parseInt(itemobj[3]));
-
             items.add(j,ii);
             j++;
         }
@@ -120,7 +125,7 @@ public class menuController {
         for (int j = 0; j < size; j++) {
             ord.add(client.input.readUTF());
         }
-
+        System.out.println(ord);
         parsing = ord;
     }
 
@@ -161,7 +166,6 @@ public class menuController {
     public void gosearch(ActionEvent event) throws IOException {
         fillSearch();
         i = parseItems(testt);
-        
         // TODO el items ely rg3t fe i hya ely hnzahrha fe el screen
         Parent root = FXMLLoader.load(getClass().getResource("search.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

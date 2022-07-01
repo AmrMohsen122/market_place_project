@@ -66,7 +66,6 @@ public class ServerHandler implements Runnable{
         String address = null;
         String mobile_number = null;
         Order order = null;
-
         switch(in){
 
 // login returns String on the following format:
@@ -86,13 +85,20 @@ public class ServerHandler implements Runnable{
 
                 client = login(type, username, password, email, bdate,address, mobile_number,conn );
 
-
+                        // TODO send el cart
                     // TODO asend el current balance ll GUI
 //                    String user_name, String password, String email, double current_balance, String address, String mobile_number
-                if (client != null) {
+                        /*Output Format is:
+                        * client details
+                        * startOrder
+                        * cartDetails                /*Output on the following format:
+                                                     * OrderDate
+                                                     * total price
+                                                     * item1 details (iid,price, itemname , quantity)
+                                                     * item2 details
+                                                     * "end
+                         * */
 
-
-                }
                 break;
             case "Signup":
                 //signUp returns string on the following format:
@@ -185,18 +191,26 @@ public class ServerHandler implements Runnable{
 
                 //Category already exists since it is chosen from a menu
 
-                String categoryName = "mobile";
-                Vector<Item>items1 = Item.search_by_3_category(categoryName, conn);
 
-                categoryName = "laptop";
-                Vector<Item>items2 = Item.search_by_3_category(categoryName, conn);
 
-                categoryName = "accessory";
-                Vector<Item>items3 = Item.search_by_3_category(categoryName, conn);
+
+
+                Vector<Item>items1 = Item.search_by_3_category("mobile", conn);
+                for (int i = items1.size(); i < 3; i++)
+                    items1.add(new Item());
+
+
+
+                Vector<Item>items2 = Item.search_by_3_category("laptop", conn);
+                for (int i = items2.size(); i < 2; i++)
+                    items2.add(new Item());
+
+                Vector<Item>items3 = Item.search_by_3_category("accessory", conn);
+                for (int i = items3.size(); i < 3; i++)
+                    items3.add(new Item());
+
                 // TODO return item details to GUI
-
                 itemsFound=loadItems(items1,"stock");
-
                 int size = items1.size()+items2.size()+ items3.size();
                 this.output.writeUTF(String.valueOf(size));
                 for (int i = 0; i < itemsFound.size(); i++) {
@@ -230,7 +244,7 @@ public class ServerHandler implements Runnable{
                 order = Customer.loadCart(username, conn);
                 items = order.getItems();
 
-                this.output.writeUTF(String.valueOf(order.getOID()));
+//                this.output.writeUTF(String.valueOf(order.getOID()));
                 this.output.writeUTF(String.valueOf(order.getODate()));
                 this.output.writeUTF(String.valueOf(order.getTotalPrice()));
 
@@ -242,10 +256,9 @@ public class ServerHandler implements Runnable{
                 }
                 this.output.writeUTF("end");
                 /*Output on the following format:
-                * OrderID
                 * OrderDate
                 * total price
-                * item1 details
+                * item1 details (iid,price, itemname , quantity)
                 * item2 details
                 * "end
                 * */
@@ -263,8 +276,8 @@ public class ServerHandler implements Runnable{
                 int iid = Integer.parseInt(this.input.readUTF());
                 int itemQty = Integer.parseInt(this.input.readUTF());
                 double itemPrice = Double.parseDouble(this.input.readUTF());
+                order = Order.getOrderByID(oid,conn);
 
-                // function treturn el order object
                 order.addItem(iid,itemQty, itemPrice,conn);
 
 
@@ -305,14 +318,42 @@ public class ServerHandler implements Runnable{
         return "";
     }
 
+    public void sendCart(String username) throws IOException, SQLException {
 
+        Order order;
+        Vector<Item> items;
+
+        order = Customer.loadCart(username, conn);
+        items = order.getItems();
+
+//                this.output.writeUTF(String.valueOf(order.getOID()));
+        this.output.writeUTF(String.valueOf(order.getODate()));
+        this.output.writeUTF(String.valueOf(order.getTotalPrice()));
+        Vector<String> itemsFound;
+        if(items.size()!=0){
+            // TODO msh mot2kd mn hean hcall 3la Qty walla stock
+            itemsFound = loadItems(items,"Qty");
+            for (int i = 0; i < itemsFound.size(); i++)
+                this.output.writeUTF(itemsFound.get(i));
+        }
+        this.output.writeUTF("end");
+        /*Output on the following format:
+         * OrderDate
+         * total price
+         * item1 details (iid,price, itemname , quantity)
+         * item2 details
+         * "end"
+         * */
+
+
+    }
     public Item parseItems(String str){
         String[] itemD = str.split(",");
         Item i = new Item(Integer.parseInt(itemD[0]),Double.parseDouble(itemD[1]),itemD[2],itemD[3],Integer.parseInt(itemD[4]),itemD[5],Integer.parseInt(itemD[6]));
         return i;
     }
 //    type, username, password, email, bdate,address, mobile_number,conn
-    public User login(String type, String username, String password,String email, Date bdate, String address, String mobile_number, Connection c) throws IOException {
+    public User login(String type, String username, String password,String email, Date bdate, String address, String mobile_number, Connection c) throws IOException, SQLException {
 
         double balance = -1;
         // TODO case el invalid password btreturn invalid username msh password
@@ -344,9 +385,11 @@ public class ServerHandler implements Runnable{
                     mobile_number = ((Customer) client).getMobile_number();
                     strToBePassed += ',' + current_balance_inStr + ',' + address + ',' + mobile_number;
                 }
+                // username,password,email,bdate,current_balance,address, mobile_number
 
                 this.output.writeUTF(strToBePassed);
-
+                this.output.writeUTF("startOrder");
+                sendCart(username);
 
                 // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
                 return client;

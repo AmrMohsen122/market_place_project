@@ -28,6 +28,12 @@ public class Item {
         this.item_name = item_name;
         this.stock = stock;
     }
+    public Item() {
+        this.iid = 0;
+        this.price = 0.0;
+        this.item_name = "Not Found";
+        this.stock = 0;
+    }
     
     public Item(double price, String item_name) {
         this.price = price;

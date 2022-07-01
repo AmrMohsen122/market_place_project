@@ -21,10 +21,7 @@ public class Order {
         }
     }
 
-    public Order( Date ODate, double totalPrice) {
-        this.ODate = ODate;
-        this.totalPrice = totalPrice;
-    }
+
 
     public void addItemToOrder(Item item){
         items.add(item);

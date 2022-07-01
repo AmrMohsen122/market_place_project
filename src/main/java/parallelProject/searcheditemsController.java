@@ -70,15 +70,15 @@ public class searcheditemsController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
+// TODO
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for(int j=0; j<menuController.i.size(); j++){
-            if (searchController.pars == menuController.i.get(j).getIid())
+        for(int j=0; j<searchController.parseItems(searchController.items).size(); j++){
+            if (searchController.pars == searchController.parseItems(searchController.items).get(j).getIid())
             {
-                itemname.setText(menuController.i.get(j).getItem_name());
-                price.setText(Double.toString(menuController.i.get(j).getPrice()));
-                quantity.setText(Integer.toString(menuController.i.get(j).getStock()));
+                itemname.setText(searchController.parseItems(searchController.items).get(j).getItem_name());
+                price.setText(Double.toString(searchController.parseItems(searchController.items).get(j).getPrice()));
+                quantity.setText(Integer.toString(searchController.parseItems(searchController.items).get(j).getStock()));
             }
         }
     }

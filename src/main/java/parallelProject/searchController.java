@@ -133,6 +133,7 @@ public class searchController implements Initializable {
     Client client = null;
     public static int pars;
     public  int index=-1;
+    public static Vector<String> items;
     
     public void startSearch() throws IOException {
         client = new Client("127.0.0.1",2022);
@@ -143,13 +144,13 @@ public class searchController implements Initializable {
         startS.add(1,itemName.getText());
 
         search = startS;
-        //client.send(search);
+        client.send(search);
 
     }
-
+// TODO
     public int searchh(Vector<Item> v, String name){
         for(int k=0; k<v.size(); k++){
-            if( name .equalsIgnoreCase (v.get(k).getItem_name())){
+            if( name.equalsIgnoreCase(v.get(k).getItem_name())){
                 index=v.get(k).getIid();
                 break;
             }
@@ -268,19 +269,16 @@ public class searchController implements Initializable {
         for (int j = 0; j < search.size(); j++) {
 
             client.output.writeUTF(search.get(j));
-
         }
         String input = client.input.readUTF();
-        Vector<String> items = new Vector<>(2);
+        items = new Vector<>(2);
         while(!input.equals("end")){
-
             items.add(input);
             input = client.input.readUTF();
 
         }
+        int found = searchh(searchController.parseItems(items), itemName.getText());
 
-        int found = searchh(parseItems(items), itemName.getText());
-//        int found = searchh(menuController.i,itemName.getText());
         if(found != -1) {
             Parent root = FXMLLoader.load(getClass().getResource("searcheditems.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
