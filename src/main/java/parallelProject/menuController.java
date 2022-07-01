@@ -92,16 +92,17 @@ public class menuController {
     
     //History Functions
     public void fillorders() throws IOException {
-        //client= new Client("127.0.0.1",2022);
-        //client.initialize();
+
+        client= new Client("127.0.0.1",2022);
+        client.initialize();
 
         Vector <String>vec = new Vector<>();
         vec.add(0,"viewHistory");
         vec.add(1,cust.getUsername());
         vhistory = vec;
 
-        //client.send(vhistory);
-        initVec2();
+        client.send(vhistory);
+        initVec2();  // ely ana bb3to mn el server
     }
     
     public void initVec2() throws IOException {
