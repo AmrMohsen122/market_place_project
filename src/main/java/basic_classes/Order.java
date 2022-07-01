@@ -8,6 +8,11 @@ public class Order {
     protected static final boolean debug = true;
     private Date ODate;
     private double totalPrice;
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     private String isConfirmed;
     private Vector<Item> items = new Vector<Item>();
 

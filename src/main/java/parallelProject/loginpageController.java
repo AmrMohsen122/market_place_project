@@ -113,7 +113,7 @@ public class loginpageController {
         loginfo.add(0,"Ahmed,1234,email,2021-10-02,4000,aaaa,012345");
         loginfo.add(1,"startOrder");
         loginfo.add(2,"2020-5-7");
-        loginfo.add(3,"70000");
+        loginfo.add(3,"700");
         loginfo.add(4,"1,300,Iphone 12,5");
         loginfo.add(5,"end");
 
@@ -151,7 +151,7 @@ public class loginpageController {
         String price;
         Order or;
               store = info.get(l).split(",");
-            //  loggedCustomer = new Customer(store[0],store[1],store[2],Date.valueOf(store[3]),Double.parseDouble(store[4]),store[5],store[6]);
+              loggedCustomer = new Customer(store[0],store[1],store[2],Date.valueOf(store[3]),Double.parseDouble(store[4]),store[5],store[6]);
               l+=2;
               orderDate =info.get(l);
               price = info.get(l + 1);

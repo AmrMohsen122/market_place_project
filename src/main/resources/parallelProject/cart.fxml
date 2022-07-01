@@ -39,7 +39,7 @@
             <Image url="@Images/orangewithbags.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="confirm" layoutX="510.0" layoutY="336.0" mnemonicParsing="false" onAction="#confirm" style="-fx-background-color: white; -fx-background-radius: 5px;" text="Confirm" />
+      <Button fx:id="confirm" layoutX="416.0" layoutY="336.0" mnemonicParsing="false" onAction="#confirm" style="-fx-background-color: white; -fx-background-radius: 5px;" text="Confirm" />
       <Button layoutX="25.0" layoutY="336.0" mnemonicParsing="false" onAction="#goback" prefHeight="22.0" prefWidth="19.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
       <ImageView fitHeight="19.0" fitWidth="13.0" layoutX="28.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -52,5 +52,6 @@
          </font>
       </Label>
       <TreeView fx:id="cartTree" layoutX="62.0" layoutY="118.0" prefHeight="200.0" prefWidth="414.0" style="-fx-border-color: black;" />
+      <Label fx:id="notEnough" layoutX="416.0" layoutY="367.0" prefHeight="18.0" prefWidth="183.0" textFill="#f20202" />
    </children>
 </AnchorPane>

@@ -19,6 +19,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import static parallelProject.loginpageController.cartOrder;
+import static parallelProject.loginpageController.loggedCustomer;
+
 public class searchController implements Initializable {
 
     @FXML
@@ -126,6 +129,9 @@ public class searchController implements Initializable {
     @FXML
     private Button searchByName;
 
+
+   // static double addedPrice =0;
+
    //For the client
     static Vector<String> search = new Vector<>();
     Client client = null;
@@ -161,92 +167,76 @@ public class searchController implements Initializable {
     @FXML
     public void addToCart1 (ActionEvent event) throws IOException{
         if(!(q1.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i1.getText();
-            price = Double.parseDouble(p1.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(1,1,Double.parseDouble(p1.getText()),i1.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
 
     }
     @FXML
     public void addToCart2 (ActionEvent event) throws IOException{
         if(!(q2.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i2.getText();
-            price = Double.parseDouble(p2.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(2,1,Double.parseDouble(p2.getText()),i2.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
     @FXML
     public void addToCart3 (ActionEvent event) throws IOException{
         if(!(q3.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i3.getText();
-            price = Double.parseDouble(p3.getText());
-            Item it = new Item(price,name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(3,1,Double.parseDouble(p3.getText()),i3.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
     @FXML
     public void addToCart4 (ActionEvent event) throws IOException{
         if(!(q4.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i4.getText();
-            price = Double.parseDouble(p4.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(4,1,Double.parseDouble(p4.getText()),i4.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
     @FXML
     public void addToCart5 (ActionEvent event) throws IOException{
         if(!(q5.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i5.getText();
-            price = Double.parseDouble(p5.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(5,1,Double.parseDouble(p5.getText()),i5.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
 
     @FXML
     public void addToCart6 (ActionEvent event) throws IOException{
         if(!(q6.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i6.getText();
-            price = Double.parseDouble(p6.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(6,1,Double.parseDouble(p6.getText()),i6.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
 
     @FXML
     public void addToCart7 (ActionEvent event) throws IOException{
         if(!(q7.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i7.getText();
-            price = Double.parseDouble(p7.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(7,1,Double.parseDouble(p7.getText()),i7.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
     @FXML
     public void addToCart8 (ActionEvent event) throws IOException{
         if(!(q1.getText().equals("Not Found"))) {
-            String name;
-            double price;
-            name = i8.getText();
-            price = Double.parseDouble(p8.getText());
-            Item it = new Item(price, name);
-            addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(8,1,Double.parseDouble(p8.getText()),i8.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
     public static Vector<Item> parseItems(Vector<String> items){
@@ -256,7 +246,6 @@ public class searchController implements Initializable {
 
             String [] str = items.get(i).split(",");
             itemsFound.add(new Item(Integer.parseInt(str[0]), Double.parseDouble(str[1]), str[2],Integer.parseInt(str[3])));
-
         }
 
         return itemsFound;

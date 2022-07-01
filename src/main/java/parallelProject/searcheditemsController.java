@@ -15,7 +15,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static parallelProject.loginpageController.cartOrder;
+
+
+
 public class searcheditemsController implements Initializable {
+    static int indexitem;
     
 
     @FXML
@@ -30,12 +35,10 @@ public class searcheditemsController implements Initializable {
     @FXML
     public void Addtocart(ActionEvent event) throws IOException {
         if(!(quantity.getText().equals("Not Found"))) {
-            String Name;
-            double Price;
-            Name = itemname.getText();
-            Price = Double.parseDouble(price.getText());
-            Item it = new Item(Price, Name);
-            searchController.addcart.add(it);
+            double addedPrice =0;
+            cartOrder.addItemToOrder(new Item(8,1,Double.parseDouble(price.getText()),itemname.getText()));
+            addedPrice += cartOrder.getTotalPrice();
+            cartOrder.setTotalPrice(addedPrice);
         }
     }
     
@@ -70,15 +73,17 @@ public class searcheditemsController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-// TODO
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for(int j=0; j<searchController.parseItems(searchController.items).size(); j++){
-            if (searchController.pars == searchController.parseItems(searchController.items).get(j).getIid())
+        for(int j=0; j<menuController.i.size(); j++){
+            if (searchController.pars == menuController.i.get(j).getIid())
             {
-                itemname.setText(searchController.parseItems(searchController.items).get(j).getItem_name());
-                price.setText(Double.toString(searchController.parseItems(searchController.items).get(j).getPrice()));
-                quantity.setText(Integer.toString(searchController.parseItems(searchController.items).get(j).getStock()));
+                itemname.setText(menuController.i.get(j).getItem_name());
+                price.setText(Double.toString(menuController.i.get(j).getPrice()));
+                quantity.setText(Integer.toString(menuController.i.get(j).getStock()));
+                indexitem =j;
+                break;
             }
         }
     }
