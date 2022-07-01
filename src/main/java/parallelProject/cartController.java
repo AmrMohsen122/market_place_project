@@ -19,6 +19,7 @@ import socket.Client;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ResourceBundle;
@@ -57,11 +58,9 @@ public class cartController implements Initializable {
             vec.add(2, Integer.toString(cartOrder.getOID()));
             confirmVector =vec ;
             client.send(confirmVector);
-
             // TODO CHECK IF STOCK IS ACTUALLY ENOUGH
             ((Customer)cust).setCurrent_balance(((Customer)cust).getCurrent_balance() - cartOrder.getTotalPrice());
-            // TODO CLEAR CART AFTER SENDING IT
-            // THIS WILL PROBABLY NEED TO CALL A NEW LOAD CARD
+            cartOrder = initlog();
             //TODO cartOrder if confirmed is added to vector orders and cartOrder is cleared
         }
 
@@ -125,5 +124,23 @@ public class cartController implements Initializable {
 
         }
 
+    public Order initlog() throws IOException {
+        String in = client.input.readUTF();
+        System.out.println(in);
+        Vector<String> parsedItems = new Vector<>();
+        Order o = null;
+        if (in != null) {
+            o = new Order(Integer.parseInt(in) , Date.valueOf(client.input.readUTF()), Double.parseDouble(client.input.readUTF()) , "UNCONFIRMED");
+            in = client.input.readUTF();
+            while (!in.equals("end")) {
+                parsedItems.add(in);
+                in = client.input.readUTF();
+            }
+            if (parsedItems.size() != 0) {
+                o.setItems(menuController.parseItems(parsedItems, false));
+            }
+        }
+        return o;
 
+    }
 }

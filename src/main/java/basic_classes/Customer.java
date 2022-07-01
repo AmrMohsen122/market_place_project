@@ -195,7 +195,6 @@ public class Customer extends User{
                 }
             }
             items += ")";
-            System.out.println(items);
             String query = "select IID,STOCK from item where IID in " + items;
             Statement stmt = conn.createStatement();
             ResultSet queryResult = stmt.executeQuery(query);

@@ -32,7 +32,7 @@ public class ServerHandler implements Runnable{
 
             this.conn = DatabaseManager.requestConnection();
             this.output = new DataOutputStream(this.socket.getOutputStream());
-
+            System.out.println("ana dakhlt l parse");
             parse(input,conn,client);
             DatabaseManager.releaseConnection(this.conn);
             terminate();
@@ -244,17 +244,17 @@ public class ServerHandler implements Runnable{
                 order = Customer.loadCart(username, conn);
                 items = order.getItems();
 //                this.output.writeUTF(String.valueOf(order.getOID()));
-                this.output.writeUTF(String.valueOf(order.getODate()));
-                this.output.writeUTF(String.valueOf(order.getTotalPrice()));
-
-                if(items.size()!=0){
-                    // TODO msh mot2kd mn hean hcall 3la Qty walla stock
-                    itemsFound = loadItems(items,"Qty");
-                    for (int i = 0; i < itemsFound.size(); i++) {
-                        this.output.writeUTF(itemsFound.get(i));
-                    }
-                }
-                this.output.writeUTF("end");
+//                this.output.writeUTF(String.valueOf(order.getODate()));
+//                this.output.writeUTF(String.valueOf(order.getTotalPrice()));
+                sendCart(username);
+//                if(items.size()!=0){
+//                    // TODO msh mot2kd mn hean hcall 3la Qty walla stock
+//                    itemsFound = loadItems(items,"Qty");
+//                    for (int i = 0; i < itemsFound.size(); i++) {
+//                        this.output.writeUTF(itemsFound.get(i));
+//                    }
+//                }
+//                this.output.writeUTF("end");
                 /*Output on the following format:
                 * OrderDate
                 * total price
@@ -294,11 +294,13 @@ public class ServerHandler implements Runnable{
                 client = Customer.getUserInfo(input.readUTF(), conn);
                 // function treturn object mn el order given its order id
                 Order o = Order.getOrderByID(Integer.parseInt(input.readUTF()) , conn);
+                System.out.println("getOrderById " + o);
                 int valid = ((Customer)client).makeOrder(o,conn);
-                if (valid!=-1)
-                    this.output.writeUTF("Valid Transaction");
-                else
-                    this.output.writeUTF("Invalid Item Stock");
+                sendCart(client.getUsername());
+//                if (valid!=-1)
+//                    this.output.writeUTF("Valid Transaction");
+//                else
+//                    this.output.writeUTF("Invalid Item Stock");
                 // TODO fe el gui msm7losh ykhtar quantity aktar mn el stock ely mwgood
 
                 /*
