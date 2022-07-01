@@ -167,29 +167,33 @@ public class Order {
         PRE_CONDITIONS: THE OID EXISTS IN DATABASE
         POST_CONDITIONS: RETURN AN OBJECT REPRESENTING ORDER WITH THAT OID, RETURN NULL IN CASE THE OID PASSED DOESN'T EXIST OR ORDER IS DOESN'T CONTAIN ANY ITEMS
      */
-    public static Order getOrderByID(int OID , Connection conn){
+    public static Order getOrderByID(int OID , Connection conn) throws SQLException {
         try{
-            String query = "select OID , ODATE, TOTAL_PRICE, IID, ITEM_NAME, PRICE,SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY, UNCONFIRMED from CUST_ORDER natural join CONTAIN natural join ITEM where OID = " +  OID;
+            conn.setAutoCommit(false);
+            String query = "select OID , ODATE, TOTAL_PRICE , UNCONFIRMED from CUST_ORDER  where OID = " +  OID;
             Statement stmt = conn.createStatement();
             ResultSet queryResult = stmt.executeQuery(query);
             Order o = null;
             if(queryResult.next()) {
                 o = new Order(queryResult.getInt("OID"), queryResult.getDate("ODATE"), queryResult.getDouble("TOTAL_PRICE"), queryResult.getString("UNCONFIRMED"));
+
+            }
+            query = "select IID , PRICE , ITEM_NAME , SELLER_NAME , STOCK , CATEGORY , ITEM_QUANTITY from CUST_ORDER natural join CONTAIN natural join ITEM where OID = " +OID;
+            queryResult = stmt.executeQuery(query);
+            while(queryResult.next()){
                 o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
                         , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
-                        queryResult.getInt("STOCK"), queryResult.getString("CATEGORY"), queryResult.getInt("ITEM_QUANTITY")));
-                while(queryResult.next()){
-                    o.addItemToOrder(new Item(queryResult.getInt("IID"), queryResult.getDouble("PRICE")
-                            , queryResult.getString("ITEM_NAME"), queryResult.getString("SELLER_NAME"),
-                            queryResult.getInt("STOCK"), queryResult.getString("CATEGORY") , queryResult.getInt("ITEM_QUANTITY")));
-                }
+                        queryResult.getInt("STOCK"), queryResult.getString("CATEGORY") , queryResult.getInt("ITEM_QUANTITY")));
             }
+            conn.commit();
+            conn.setAutoCommit(true);
             return o;
         }catch (SQLException e){
             if(debug){
                 System.out.println("SQLException: " + e.getMessage());
                 System.out.println("SQLState: " + e.getSQLState());
             }
+            conn.rollback();
         }
         return null;
     }

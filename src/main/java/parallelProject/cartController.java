@@ -1,5 +1,6 @@
 package parallelProject;
 
+import basic_classes.Customer;
 import basic_classes.Item;
 import basic_classes.Order;
 import javafx.event.ActionEvent;
@@ -23,8 +24,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import static parallelProject.loginpageController.cartOrder;
-import static parallelProject.loginpageController.loggedCustomer;
+import static parallelProject.loginpageController.*;
 import static parallelProject.menuController.orders;
 
 
@@ -43,29 +43,27 @@ public class cartController implements Initializable {
     public static Vector<String> confirmVector = new Vector<>();
 
     public void fillCart() throws IOException {
-         client = new Client("127.0.0.1",2022); //TODO uncomment
-          client.initialize();                 //TODO uncomment
-
+         client = new Client("127.0.0.1",2022);
+         client.initialize();
         Vector <String>vec = new Vector<>(10);
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
-        if(loggedCustomer.getCurrent_balance() >= cartOrder.getTotalPrice()) {
-            Order sendOrder = new Order(ordernum, date, cartOrder.getTotalPrice(), "CONFIRMED");
-            for(int i=0; i<cartOrder.getItems().size(); i++)
-            {
-                sendOrder.addItemToOrder(cartOrder.getItems().get(i));
-            }
-            ordernum++;
-            orders.add(sendOrder);
+        if(((Customer)cust).getCurrent_balance() >= cartOrder.getTotalPrice()) {
             vec.add(0, "confirmCart");
-            vec.add(1, loggedCustomer.getUsername());
-            vec.add(2, Integer.toString(sendOrder.getOID()));
-            confirmVector =vec;                                     //TODO confirmVector deh el htakhudha
+            vec.add(1, cust.getUsername());
+            vec.add(2, Integer.toString(cartOrder.getOID()));
+            confirmVector =vec;
+            client.send(confirmVector);
 
+            // TODO CHECK IF STOCK IS ACTUALLY ENOUGH
+            ((Customer)cust).setCurrent_balance(((Customer)cust).getCurrent_balance() - cartOrder.getTotalPrice());
+            // TODO CLEAR CART AFTER SENDING IT
+            // THIS WILL PROBABLY NEED TO CALL A NEW LOAD CARD
         }
         else{
+
             notEnough.setText("Balance is not enough!");
-            Order unsendOrder = new Order(ordernum, date, cartOrder.getTotalPrice(), "UNCONFIRMED");
+//            Order unsendOrder = new Order(ordernum, date, cartOrder.getTotalPrice(), "UNCONFIRMED");
         }
 
     }

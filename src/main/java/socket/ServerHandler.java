@@ -244,23 +244,17 @@ public class ServerHandler implements Runnable{
                 order = Customer.loadCart(username, conn);
                 items = order.getItems();
 //                this.output.writeUTF(String.valueOf(order.getOID()));
-//                System.out.println(order.getOID());
                 this.output.writeUTF(String.valueOf(order.getODate()));
-                System.out.println(order.getODate());
                 this.output.writeUTF(String.valueOf(order.getTotalPrice()));
-                System.out.println(order.getTotalPrice());
 
                 if(items.size()!=0){
                     // TODO msh mot2kd mn hean hcall 3la Qty walla stock
                     itemsFound = loadItems(items,"Qty");
                     for (int i = 0; i < itemsFound.size(); i++) {
                         this.output.writeUTF(itemsFound.get(i));
-                        System.out.println(itemsFound.get(i));
                     }
                 }
                 this.output.writeUTF("end");
-                System.out.println("end");
-
                 /*Output on the following format:
                 * OrderDate
                 * total price
@@ -271,7 +265,6 @@ public class ServerHandler implements Runnable{
                 break;
 
             case "addToCart":
-                System.out.println("ana f addToCart");
                 /*Input on the following format
                 * addToCart
                 * Order ID
@@ -283,7 +276,6 @@ public class ServerHandler implements Runnable{
                 int iid = Integer.parseInt(this.input.readUTF());
                 int itemQty = Integer.parseInt(this.input.readUTF());
                 double itemPrice = Double.parseDouble(this.input.readUTF());
-                System.out.println(oid);
                 order = Order.getOrderByID(oid,conn);
                 order.addItem(iid,itemQty, itemPrice,conn);
                 break;
@@ -299,10 +291,10 @@ public class ServerHandler implements Runnable{
                 // TODO pass the object contains the order in the make order funcn
                 // TODO function returns order object given its id
                 // leh bpass el order lama kdh kdh hwa el unconfirmed ?
-
                 client = Customer.getUserInfo(input.readUTF(), conn);
                 // function treturn object mn el order given its order id
-                int valid = ((Customer)client).makeOrder(order,conn);
+                Order o = Order.getOrderByID(Integer.parseInt(input.readUTF()) , conn);
+                int valid = ((Customer)client).makeOrder(o,conn);
                 if (valid!=-1)
                     this.output.writeUTF("Valid Transaction");
                 else

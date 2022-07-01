@@ -79,6 +79,7 @@ public class searcheditemsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //TODO
         for(int j=0; j<menuController.i.size(); j++){
             if (searchController.pars == menuController.i.get(j).getIid())
             {
