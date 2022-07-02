@@ -118,4 +118,13 @@ public class adminMenuController {
         stage.setScene(scene);
         stage.show();
     }
+    @FXML
+    public void goTransaction(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("transaction.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setTitle("All Transactions");
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 }
