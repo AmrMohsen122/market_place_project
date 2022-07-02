@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.transactionController">
+   <children>
+      <Pane layoutX="-8.0" layoutY="-4.0" prefHeight="58.0" prefWidth="613.0" style="-fx-background-color: black;">
+         <children>
+            <Pane layoutX="50.0" layoutY="12.0" prefHeight="34.0" prefWidth="135.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+               <children>
+                  <Label layoutX="20.0" layoutY="6.0" text="E-MarketPlace">
+                     <font>
+                        <Font name="Berlin Sans FB" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <ImageView fitHeight="350.0" fitWidth="604.0" layoutX="1.0" layoutY="54.0" opacity="0.70858" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/orange.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="346.0" fitWidth="604.0" layoutX="-1.0" layoutY="54.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/orangewithbags.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="58.0" layoutY="94.0" prefHeight="21.0" prefWidth="121.0" text="User Transaction">
+         <font>
+            <Font name="Berlin Sans FB Bold" size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="49.0" layoutY="351.0" mnemonicParsing="false" onAction="#goback" prefHeight="22.0" prefWidth="19.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+      <ImageView fitHeight="19.0" fitWidth="13.0" layoutX="52.0" layoutY="357.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/goback.png" />
+         </image>
+      </ImageView>
+      <TreeView fx:id="transactionTree" layoutX="59.0" layoutY="129.0" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: black;" />
+   </children>
+</AnchorPane>
