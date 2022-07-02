@@ -31,7 +31,6 @@ public class transactionController implements Initializable {
 
     @FXML
     public void goback(ActionEvent event) throws IOException {
-        //ORDER.getChildren().removeAll(branch1);
         Parent root = FXMLLoader.load(getClass().getResource("adminViewUsers.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("All Users");

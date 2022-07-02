@@ -37,8 +37,6 @@ public class searcheditemsController implements Initializable {
     
     @FXML
     public void Addtocart(ActionEvent event) throws IOException {
-        //IID IS searchController.pars
-        //toBeSent.add(Integer.toString(searchController.parseItems(items).get(0).getIid()));
 
         if(!(itemname.getText().equals("Not Found"))) {
             client = new Client("127.0.0.1",2022);
