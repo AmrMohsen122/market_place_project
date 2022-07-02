@@ -323,7 +323,17 @@ public class ServerHandler implements Runnable{
                 order.addItem(iid,itemQty, itemPrice,conn);
                 break;
 
+            case "removeFromCart":
+                int orderId = Integer.valueOf(input.readUTF());
+                int itemId = Integer.valueOf(input.readUTF());
+                int itemQuantity = Integer.valueOf(input.readUTF());
+                double price = Double.valueOf(input.readUTF());
 
+                order = Order.getOrderByID(orderId,conn);
+                order.removeItem(itemId,itemQuantity, price,conn);
+
+
+                break;
             case "confirmCart":
                 /* Input format
                  * confirmCart
