@@ -88,9 +88,7 @@ public class cartController implements Initializable {
         cartItems.getChildren().removeAll(branch11,branch12);
 
     }
-    public void selectItem(){
-     //   TreeItem<String> it = cartTree.getSelectionModel().getSelectedItems();
-    }
+
     @FXML
     public void gocurrent(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("recharge.fxml"));

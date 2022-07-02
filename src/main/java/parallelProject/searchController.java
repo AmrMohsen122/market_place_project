@@ -162,67 +162,134 @@ public class searchController implements Initializable {
         pars=index;
         return index;
     }
-    public void checkBalance(Label q ,Label p , Label i , int itemNumber , int index) throws IOException {
+    public void checkBalance(Label q ,Label p , Label i , int index) throws IOException {
+        boolean found = false;
         if(!(i.getText().equals("Not Found"))) {
-            client = new Client("127.0.0.1",2022);
-            client.initialize();
-            Vector<String> toBeSent = new Vector<>();
-            toBeSent.add("addToCart");
-            toBeSent.add(Integer.toString(cartOrder.getOID()));
-            toBeSent.add(Integer.toString(menuController.i.get(index).getIid()));
-            toBeSent.add(Integer.toString(itemNumber));
-            toBeSent.add(p.getText());
-            client.send(toBeSent);
-            double addedPrice = Double.parseDouble(p.getText());
-            cartOrder.addItemToOrder(new Item(1,itemNumber,Double.parseDouble(p.getText()),i.getText()));
-            addedPrice += cartOrder.getTotalPrice();
-            System.out.println(addedPrice);
-            cartOrder.setTotalPrice(addedPrice);
-        }
-    }
+            for (int y = 0; y < cartOrder.getItems().size(); y++) {
+                if (cartOrder.getItems().get(y).getItem_name().equals(i)) {
+                    int qtyIn = cartOrder.getItems().get(y).getItemQuantity() + 1;
+                    cartOrder.getItems().get(y).setItemQuantity(qtyIn);
+                    found = true;
+                    break;
+                }
+            }
 
-    public static Vector<Item> addcart = new Vector<>();
+                if(!found) {
+                    client = new Client("127.0.0.1", 2022);
+                    client.initialize();
+                    Vector<String> toBeSent = new Vector<>();
+                    toBeSent.add("addToCart");
+                    toBeSent.add(Integer.toString(cartOrder.getOID()));
+                    toBeSent.add(Integer.toString(menuController.i.get(index).getIid()));
+                    toBeSent.add(Integer.toString(1));
+                    toBeSent.add(p.getText());
+                    client.send(toBeSent);
+                    double addedPrice = Double.parseDouble(p.getText());
+                    cartOrder.addItemToOrder(new Item(1, 1, Double.parseDouble(p.getText()), i.getText()));
+                    addedPrice += cartOrder.getTotalPrice();
+                    System.out.println(addedPrice);
+                    cartOrder.setTotalPrice(addedPrice);
+                }
+            }
+        }
+
     @FXML
     public void addToCart1 (ActionEvent event) throws IOException{
-        /*Input on the following format
-         * addToCart
-         * Order ID
-         * item ID
-         * item quantity
-         * item price
-         * */
-        checkBalance(q1,p1,i1,1 , 0);
+        checkBalance(q1,p1,i1, 0);
     }
     @FXML
     public void addToCart2 (ActionEvent event) throws IOException{
-        checkBalance(q2,p2,i2,1,1);
+        checkBalance(q2,p2,i2,1);
     }
     @FXML
     public void addToCart3 (ActionEvent event) throws IOException{
-        checkBalance(q3,p3,i3,1,2);
+        checkBalance(q3,p3,i3,2);
     }
     @FXML
     public void addToCart4 (ActionEvent event) throws IOException{
-        checkBalance(q4,p4,i4,1,3);
+        checkBalance(q4,p4,i4,3);
     }
     @FXML
     public void addToCart5 (ActionEvent event) throws IOException{
-        checkBalance(q5,p5,i5,1,4);
+        checkBalance(q5,p5,i5,4);
     }
 
     @FXML
     public void addToCart6 (ActionEvent event) throws IOException{
-        checkBalance(q6,p6,i6,1,5);
+        checkBalance(q6,p6,i6,5);
     }
 
     @FXML
     public void addToCart7 (ActionEvent event) throws IOException{
-        checkBalance(q7,p7,i7,1,6);
+        checkBalance(q7,p7,i7,6);
     }
     @FXML
     public void addToCart8 (ActionEvent event) throws IOException{
-        checkBalance(q8,p8,i8,1,7);
+        checkBalance(q8,p8,i8,7);
     }
+
+    public void Remove (Label q ,Label p , Label i , int index) throws IOException {
+        for (int y = 0; y < cartOrder.getItems().size(); y++) {
+            if (cartOrder.getItems().get(y).getItem_name().equals(i)) {
+                client = new Client("127.0.0.1", 2022);
+                client.initialize();
+                Vector<String> toBeSent = new Vector<>();
+                toBeSent.add("removeFromCart");
+                toBeSent.add(Integer.toString(cartOrder.getOID()));
+                toBeSent.add(Integer.toString(menuController.i.get(index).getIid()));
+                toBeSent.add(Integer.toString(1));
+                toBeSent.add(p.getText());
+                client.send(toBeSent);
+                double removedPrice = Double.parseDouble(p.getText());
+
+                int qtyOut = (cartOrder.getItems().get(y).getItemQuantity()) - 1;
+                cartOrder.getItems().get(y).setItemQuantity(qtyOut);
+
+                removedPrice = cartOrder.getTotalPrice() - removedPrice;
+                System.out.println(removedPrice);
+                cartOrder.setTotalPrice(removedPrice);
+
+                if(cartOrder.getItems().get(y).getItemQuantity() == 0){
+                    cartOrder.getItems().remove(cartOrder.getItems().get(y));
+                }
+            }
+        }
+    }
+
+    @FXML
+    public void FirstOrderMinus(ActionEvent event) throws IOException{
+        Remove(q1,p1,i1, 0);
+    }
+    @FXML
+    public void SecondOrderMinus (ActionEvent event) throws IOException{
+        Remove(q2,p2,i2 , 1);
+    }
+
+    @FXML
+    public void ThirdOrderMinus (ActionEvent event) throws IOException{
+        Remove(q3,p3,i3 , 2);
+    }
+    @FXML
+    public void FourthOrderMinus (ActionEvent event) throws IOException{
+        Remove(q4,p4,i4, 3);
+    }
+    @FXML
+    public void FifthOrderMinus (ActionEvent event) throws IOException{
+        Remove(q5,p5,i5, 4);
+    }
+    @FXML
+    public void SixthOrderMinus (ActionEvent event) throws IOException{
+        Remove(q6,p6,i6 , 5);
+    }
+    @FXML
+    public void SeventhOrderMinus (ActionEvent event) throws IOException{
+        Remove(q7,p7,i7 , 6);
+    }
+    @FXML
+    public void EighthOrderMinus (ActionEvent event) throws IOException{
+        Remove(q8,p8,i8 , 7);
+    }
+
     public static Vector<Item> parseItems(Vector<String> items){
 //        id,price,itemName,stock
         Vector<Item> itemsFound = new Vector<>();
