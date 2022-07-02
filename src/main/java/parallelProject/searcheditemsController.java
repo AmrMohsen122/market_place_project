@@ -39,7 +39,7 @@ public class searcheditemsController implements Initializable {
     public void Addtocart(ActionEvent event) throws IOException {
 
         if(!(itemname.getText().equals("Not Found"))) {
-            client = new Client("127.0.0.1",2022);
+            client = new Client("192.168.1.7",2022);
             client.initialize();
             Vector<String> toBeSent = new Vector<>();
             toBeSent.add("addToCart");

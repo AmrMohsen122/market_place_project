@@ -1,15 +1,6 @@
 package socket;
 
 import database.manager.DatabaseManager;
-import javafx.application.Application;
-import javafx.event.Event;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import parallelProject.App;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;

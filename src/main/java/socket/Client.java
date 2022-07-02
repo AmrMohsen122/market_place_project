@@ -46,7 +46,7 @@ public class Client {
 
 
 
-            Client client = new Client("127.0.0.1", 2022);
+            Client client = new Client("192.168.1.7", 2022);
 
             try {
 

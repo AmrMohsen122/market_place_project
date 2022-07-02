@@ -43,7 +43,7 @@ public class menuController {
 
     //Search Functions
     public void fillSearch() throws IOException {
-        client= new Client("127.0.0.1",2022);
+        client= new Client("192.168.1.7",2022);
         client.initialize();
 
         Vector <String>vec = new Vector<>(2);
@@ -94,7 +94,7 @@ public class menuController {
     //History Functions
     public void fillorders() throws IOException {
 
-        client= new Client("127.0.0.1",2022);
+        client= new Client("192.168.1.7",2022);
         client.initialize();
 
         Vector <String>vec = new Vector<>();

@@ -39,7 +39,7 @@ public class adminMenuController {
      * "end" -----> end of transaction
      * */
     public void loadAllUser() throws IOException {
-        client = new Client("127.0.0.1",2022);
+        client = new Client("192.168.1.7",2022);
         client.initialize();
         Customer cust = null;
         allUsers = new Vector<>();
@@ -99,7 +99,7 @@ public class adminMenuController {
     }
     @FXML
     public void goSystem(ActionEvent event) throws IOException {
-        client = new Client("127.0.0.1",2022);
+        client = new Client("192.168.1.7",2022);
         client.initialize();
         allItems = new Vector<>();
         client.output.writeUTF("sendAllItems");

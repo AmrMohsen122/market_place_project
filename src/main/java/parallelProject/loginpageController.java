@@ -89,7 +89,7 @@ public class loginpageController {
     }
 
     public void fillVector() throws IOException {
-        client= new Client("127.0.0.1",2022);
+        client= new Client("192.168.1.7",2022);
         client.initialize();
         Vector <String>vec = new Vector<>(10);
         vec.add(0,Login);

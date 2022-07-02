@@ -139,7 +139,7 @@ public class searchController implements Initializable {
     public static Vector<String> items;
     
     public void startSearch() throws IOException {
-        client = new Client("127.0.0.1",2022);
+        client = new Client("192.168.1.7",2022);
         client.initialize();
 
         Vector <String> startS = new Vector<>(2);
@@ -173,7 +173,7 @@ public class searchController implements Initializable {
             }
 
                 if(!found) {
-                    client = new Client("127.0.0.1", 2022);
+                    client = new Client("192.168.1.7", 2022);
                     client.initialize();
                     Vector<String> toBeSent = new Vector<>();
                     toBeSent.add("addToCart");
@@ -229,7 +229,7 @@ public class searchController implements Initializable {
     public void Remove (Label q ,Label p , Label i , int index) throws IOException {
         for (int y = 0; y < cartOrder.getItems().size(); y++) {
             if (cartOrder.getItems().get(y).getItem_name().equals(i.getText())) {
-                client = new Client("127.0.0.1", 2022);
+                client = new Client("192.168.1.7", 2022);
                 client.initialize();
                 Vector<String> toBeSent = new Vector<>();
                 toBeSent.add("removeFromCart");

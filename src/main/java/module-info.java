@@ -5,4 +5,6 @@ module parallelProject {
 
     opens parallelProject to javafx.fxml;
     exports parallelProject;
+    exports socket;
+    opens socket to javafx.fxml;
 }
