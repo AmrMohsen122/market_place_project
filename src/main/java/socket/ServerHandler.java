@@ -55,7 +55,7 @@ public class ServerHandler implements Runnable{
     }
 // TODO aghyar parse akhleha void
     public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
-
+        Vector<String>orderHistory;
         Vector<Item> items=null;
         Vector <String>itemsFound=null;
         String in = input.readUTF();
@@ -93,14 +93,29 @@ public class ServerHandler implements Runnable{
 
                 break;
             case "sendAllUsers":
-
                 Vector<Customer> customers = Customer.getAllCustomers(conn);
                 Vector<String> sendUsers = loadAllUsers(customers);
                 for (int i = 0; i < sendUsers.size() ; i++) {
                     output.writeUTF(sendUsers.get(i));
-                }
-                this.output.writeUTF("end");
+                    orderHistory = loadOrderDetails(customers.get(i));
+                    for (int j = 0; j < orderHistory.size(); j++) {
+                        this.output.writeUTF(orderHistory.get(j));
 
+                    }
+                    this.output.writeUTF("endUser");
+                }
+
+                this.output.writeUTF("endAll");
+
+
+                /*
+                * User1deatils (String user_name, String password, String email, double current_balance, String address, String mobile_number
+                * user1orders
+                * "endUser"
+                *
+                *
+                * "end"
+                * */
 
                 break;
 
@@ -152,7 +167,7 @@ public class ServerHandler implements Runnable{
             case "viewHistory":
                 client = Customer.getUserInfo(input.readUTF(),conn);
 //                ((Customer)client).loadOrders(conn);
-                Vector<String>orderHistory = new Vector<String>();
+                orderHistory = new Vector<String>();
                 orderHistory = loadOrderDetails(((Customer) client));
                 for (int i = 0; i < orderHistory.size(); i++) {
                     this.output.writeUTF(orderHistory.get(i));

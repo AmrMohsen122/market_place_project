@@ -13,27 +13,99 @@ import javafx.stage.Stage;
 import socket.Client;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.Vector;
+
+import static parallelProject.menuController.parseItems;
 
 public class adminMenuController {
     public static Vector<Customer> allUsers = null;
     public static Vector<Item> allItems = null;
     Client client = null;
 
+    public void initVec2(Vector<Order> orders) throws IOException {
+        String in = client.input.readUTF();
 
+        Vector<String> parsedItems = new Vector<>();
+
+        if(in != null && !in.equals("end")){
+            Order o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
+            while(true) {
+                in = client.input.readUTF();
+                while (!in.equals("endOrder")) {
+                    parsedItems.add(in);
+                    in = client.input.readUTF();
+                }
+                o.setItems(parseItems(parsedItems , false) );
+                parsedItems.clear();
+                orders.add(o);
+                in = client.input.readUTF();
+                if(in.equals("end")){
+                    break;
+                }
+                o = new Order(Date.valueOf(in), Double.parseDouble(client.input.readUTF()));
+            }
+        }
+    }
     @FXML
     public void goViewUsers(ActionEvent event) throws IOException {
         client = new Client("127.0.0.1",2022);
         client.initialize();
+        Customer cust = null;
         allUsers = new Vector<>();
         client.output.writeUTF("sendAllUsers");
-        String in = client.input.readUTF();
-        String[] parsed;
-        while(!in.equals("end")){
-            parsed = in.split(",");
-            allUsers.add(new Customer(parsed[0] , parsed[1] , parsed[2] , Double.valueOf(parsed[3]) , parsed[4] , parsed[5]));
-            in = client.input.readUTF();
+        while(true) {
+            String in = client.input.readUTF();
+            if(in.equals("endAll")) {
+
+                for (int i = 0; i < allUsers.size(); i++) {
+                    System.out.println(allUsers.get(i));
+                    for (Order o: allUsers.get(i).getOrders()
+                    ) {
+                        o.printOrderItem();
+
+                    }
+                    System.out.println("**************New User********************");
+
+
+
+                }
+                break;
+            }
+
+            System.out.println(in);
+            String[] parsed;
+            while (!in.equals("endUser")) {
+                parsed = in.split(",");
+               cust = new Customer(parsed[0], parsed[1], parsed[2], Double.valueOf(parsed[3]), parsed[4], parsed[5]);
+                initVec2(cust.getOrders());
+                System.out.println(cust.getOrders());
+                // read orders
+                in = client.input.readUTF();
+            }
+
+            allUsers.add(cust);
+
         }
+        /*to be sent to gui
+         * orderdate
+         * totalprice
+         * "startItem"
+         * item1 details  (iid, price, itemname, quantity)
+         * item2 details
+         * "endOrder"  ------> end of first order
+         * orderdate
+         * totalprice
+         * "startItem"
+         * item1 details
+         * item2 details
+         * "endOrder"
+         * "end" -----> end of transaction
+         * */
+
+
+
+
         Parent root = FXMLLoader.load(getClass().getResource("adminViewUsers.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("All Users");
