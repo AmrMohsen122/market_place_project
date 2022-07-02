@@ -1,6 +1,15 @@
 package socket;
 
 import database.manager.DatabaseManager;
+import javafx.application.Application;
+import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import parallelProject.App;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,11 +17,15 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class Server extends Thread{
     private ServerSocket serverSocket= null;
 
     public Server(int port) throws IOException {
     serverSocket=new ServerSocket(port);
+
+    }
+    public Server(){
+
 
     }
 
@@ -29,7 +42,9 @@ public class Server {
         threadPool.execute(serverHandler);
 
     }
-    public static void main(String[] args) {
+
+    @Override
+    public void run() {
         try {
             Server server = new Server(2022);
             Server.dbInitialize();  // initializes a connection from server to the database
@@ -45,5 +60,4 @@ public class Server {
             e.printStackTrace();
         }
     }
-
 }
