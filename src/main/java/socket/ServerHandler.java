@@ -35,7 +35,6 @@ public class ServerHandler implements Runnable{
             parse(input,conn,client);
             DatabaseManager.releaseConnection(this.conn);
             terminate();
-            //momken acall el terminate hena badal m a3mlha case lw7dha fe el parse
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,12 +47,10 @@ public class ServerHandler implements Runnable{
     public void terminate() throws IOException {
         socket.close();
         input.close();
-        // TODO msh mot2kd hena hcall el output.close walla la
         output.close();
 
     }
-// TODO aghyar parse akhleha void
-    public String parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
+    public void parse(DataInputStream input, Connection conn, User client) throws IOException, SQLException {
         Vector<String>orderHistory;
         Vector<Item> items=null;
         Vector <String>itemsFound=null;
@@ -127,8 +124,6 @@ public class ServerHandler implements Runnable{
 
                 client = login(type, username, password, email, bdate,address, mobile_number,conn );
 
-                        // TODO send el cart
-                    // TODO asend el current balance ll GUI
 //                    String user_name, String password, String email, double current_balance, String address, String mobile_number
                         /*Output Format is:
                         * client details
@@ -156,16 +151,13 @@ public class ServerHandler implements Runnable{
                 bdate = Date.valueOf(input.readUTF());
                 String newPassword=input.readUTF();
 
-//                String newUserName, String newPassword, String email,Date bdate ,String address, String mobileNumber, Connection conn
                 signUp(newUserName,newPassword,email,bdate,address,mobile_number,conn);
-                // TODO check en el password w el confirm password text boxes contain same password
 
                 break;
 
 
             case "viewHistory":
                 client = Customer.getUserInfo(input.readUTF(),conn);
-//                ((Customer)client).loadOrders(conn);
                 orderHistory = new Vector<String>();
                 orderHistory = loadOrderDetails(((Customer) client));
                 for (int i = 0; i < orderHistory.size(); i++) {
@@ -199,7 +191,6 @@ public class ServerHandler implements Runnable{
                 double amount = Double.parseDouble(input.readUTF());
                 client = Customer.getUserInfo(input.readUTF(), conn);
                 ((Customer)client).rechargeBalance(amount, conn);
-                // TODO display message "Successful balance recharge"
 
                 break;
 
@@ -211,7 +202,6 @@ public class ServerHandler implements Runnable{
                  * searchByName
                  * itemName
                  * */
-                // TODO azwd fe el GUI eno ycall searchByName bas lw feh 7aga maktoba gowa el Search Box
                 String itemName = input.readUTF();
                 if(Item.itemExists(itemName, conn)!=0)
 
@@ -221,7 +211,6 @@ public class ServerHandler implements Runnable{
                 for (int i = 0; i < itemsFound.size(); i++) {
                     this.output.writeUTF(itemsFound.get(i));
                 }
-                // TODO return item details to GUI
                 this.output.writeUTF("end");
                 break;
 
@@ -232,10 +221,6 @@ public class ServerHandler implements Runnable{
                  * */
 
                 //Category already exists since it is chosen from a menu
-
-
-
-
 
                 Vector<Item>items1 = Item.search_by_3_category("mobile", conn);
                 for (int i = items1.size(); i < 3; i++)
@@ -251,7 +236,6 @@ public class ServerHandler implements Runnable{
                 for (int i = items3.size(); i < 3; i++)
                     items3.add(new Item());
 
-                // TODO return item details to GUI
                 itemsFound=loadItems(items1,"stock");
                 int size = items1.size()+items2.size()+ items3.size();
                 this.output.writeUTF(String.valueOf(size));
@@ -273,7 +257,6 @@ public class ServerHandler implements Runnable{
 
             case "exit":
                 this.terminate();
-                //ana khalet el parse non-static hena
                 break;
 
             case "loadCart":
@@ -285,18 +268,9 @@ public class ServerHandler implements Runnable{
                 username = input.readUTF();
                 order = Customer.loadCart(username, conn);
                 items = order.getItems();
-//                this.output.writeUTF(String.valueOf(order.getOID()));
-//                this.output.writeUTF(String.valueOf(order.getODate()));
-//                this.output.writeUTF(String.valueOf(order.getTotalPrice()));
+
                 sendCart(username);
-//                if(items.size()!=0){
-//                    // TODO msh mot2kd mn hean hcall 3la Qty walla stock
-//                    itemsFound = loadItems(items,"Qty");
-//                    for (int i = 0; i < itemsFound.size(); i++) {
-//                        this.output.writeUTF(itemsFound.get(i));
-//                    }
-//                }
-//                this.output.writeUTF("end");
+
                 /*Output on the following format:
                 * OrderDate
                 * total price
@@ -339,21 +313,14 @@ public class ServerHandler implements Runnable{
                  * client ID
                  * orderID
                  * */
-                // TODO send "Item Not Found"
-                // TODO pass the object contains the order in the make order funcn
-                // TODO function returns order object given its id
-                // leh bpass el order lama kdh kdh hwa el unconfirmed ?
+
                 client = Customer.getUserInfo(input.readUTF(), conn);
-                // function treturn object mn el order given its order id
+
                 Order o = Order.getOrderByID(Integer.parseInt(input.readUTF()) , conn);
                 System.out.println("getOrderById " + o);
                 int valid = ((Customer)client).makeOrder(o,conn);
                 sendCart(client.getUsername());
-//                if (valid!=-1)
-//                    this.output.writeUTF("Valid Transaction");
-//                else
-//                    this.output.writeUTF("Invalid Item Stock");
-                // TODO fe el gui msm7losh ykhtar quantity aktar mn el stock ely mwgood
+
 
                 /*
                 * Ouptut on the following format
@@ -363,7 +330,7 @@ public class ServerHandler implements Runnable{
                 break;
         }
 
-        return "";
+
     }
 
     public void sendCart(String username) throws IOException, SQLException {
@@ -376,7 +343,6 @@ public class ServerHandler implements Runnable{
         this.output.writeUTF(String.valueOf(order.getTotalPrice()));
         Vector<String> itemsFound;
         if(items.size()!=0){
-            // TODO msh mot2kd mn hean hcall 3la Qty walla stock
             itemsFound = loadItems(items,"Qty");
             for (int i = 0; i < itemsFound.size(); i++) {
                 this.output.writeUTF(itemsFound.get(i));
@@ -402,7 +368,6 @@ public class ServerHandler implements Runnable{
     public User login(String type, String username, String password,String email, Date bdate, String address, String mobile_number, Connection c) throws IOException, SQLException {
 
         double balance = -1;
-        // TODO case el invalid password btreturn invalid username msh password
         if(User.userExists(username, c)!=0) {
             if (type.equals("Admin"))
                 client = (Admin)Admin.getUserInfo(username, c);
@@ -413,7 +378,6 @@ public class ServerHandler implements Runnable{
         if (client!=null) {
             String str = User.getPassword(username, conn);
             if (!str.equals(password)) {
-                //TODO Print error message "Invalid password"
 
                 this.output.writeUTF("Invalid Password");
 
@@ -438,12 +402,10 @@ public class ServerHandler implements Runnable{
                     this.output.writeUTF(strToBePassed);
                 }
                 // username,password,email,bdate,current_balance,address, mobile_number
-                // TODO transfer user to new homescreen w lw el user Customer call getBalance "Valid"
                 return client;
             }
         }
         else{
-            //TODO print Admin or Customer doesn't exist error message "Invalid Username"
 
             this.output.writeUTF("Invalid Username");
 
@@ -465,7 +427,6 @@ public class ServerHandler implements Runnable{
 
             this.output.writeUTF("Invalid");
 
-            //  TODO check the password and confirm password are the same
         }
     }
     public Vector<String> loadAllUsers(Vector <Customer> customers) {
@@ -534,8 +495,6 @@ public class ServerHandler implements Runnable{
                     str+=String.valueOf(items.get(i).getStock());
             else
                 str+= String.valueOf(items.get(i).getItemQuantity());
-            // TODO shelna startItem mn hena 3ayzenha ta7t fe loadOrderDetails
-//            itemDet.add("startItem");
             itemDet.add(str);
 
         }

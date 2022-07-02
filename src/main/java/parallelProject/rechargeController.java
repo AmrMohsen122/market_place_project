@@ -54,7 +54,6 @@ public class rechargeController implements  Initializable{
 
 
         Current = String.valueOf(((Customer) cust).getCurrent_balance());
-        //currentBalance.setText(Current);
     }
 
     public void filling() throws IOException {
@@ -94,7 +93,7 @@ public class rechargeController implements  Initializable{
             wrong.setText("Please enter amount!");
         }
         
-        client.terminate();
+//        client.terminate();
     }
 
     @FXML
@@ -120,11 +119,7 @@ public class rechargeController implements  Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) throws NullPointerException{
-        /*Amount = amount.getText();
-        if(Amount == ""){
-            rechargeBalance.setDisable(true);
 
-        }*/
 
         Current = String.valueOf(((Customer) cust).getCurrent_balance());
         currentBalance.setText(Current);

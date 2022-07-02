@@ -130,7 +130,6 @@ public class searchController implements Initializable {
     private Button searchByName;
 
 
-   // static double addedPrice =0;
 
    //For the client
     static Vector<String> search = new Vector<>();
@@ -151,7 +150,6 @@ public class searchController implements Initializable {
         client.send(search);
 
     }
-// TODO
     public int searchh(Vector<Item> v, String name){
         for(int k=0; k<v.size(); k++){
             if( name.equalsIgnoreCase(v.get(k).getItem_name())){

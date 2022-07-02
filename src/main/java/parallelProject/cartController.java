@@ -58,10 +58,8 @@ public class cartController implements Initializable {
             vec.add(2, Integer.toString(cartOrder.getOID()));
             confirmVector =vec ;
             client.send(confirmVector);
-            // TODO CHECK IF STOCK IS ACTUALLY ENOUGH
             ((Customer)cust).setCurrent_balance(((Customer)cust).getCurrent_balance() - cartOrder.getTotalPrice());
             cartOrder = initlog();
-            //TODO cartOrder if confirmed is added to vector orders and cartOrder is cleared
         }
 
         else{

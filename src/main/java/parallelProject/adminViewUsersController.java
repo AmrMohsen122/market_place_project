@@ -40,7 +40,6 @@ public class adminViewUsersController implements Initializable {
         stage.show();
     }
 
-    //TODO Not finished yet
     @FXML
     public void gotransaction(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("transaction.fxml"));
@@ -51,10 +50,7 @@ public class adminViewUsersController implements Initializable {
         stage.show();
     }
 
-    public void selectUser(){
-        //TODO save the index of the selected into indexUser
 
-    }
 
     private ContextMenu addMenu = new ContextMenu();
 
@@ -65,7 +61,6 @@ public class adminViewUsersController implements Initializable {
             public void handle(Event t) {
                 TreeItem newEmployee =
                         new TreeItem<String>("New Employee");
-                // getTreeItem().getChildren().add(newEmployee);
             }
         });
     }

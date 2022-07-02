@@ -18,8 +18,6 @@ import java.sql.Date;
 
 import static parallelProject.loginpageController.cust;
 
-// TODO search items lama bkhoshaha marten wara ba3d btdy error 3ayz asl7ha
-// TODO 3ayz arbot search by name gui bl backend
 public class menuController {
 
     @FXML
@@ -57,14 +55,12 @@ public class menuController {
 
 
     }
-// TODO
     public void initVec() throws IOException {
 
         int size = Integer.parseInt(client.input.readUTF());
         Vector<String>it = new Vector<>(size);
         
-        //it.add(0,"1,800,Iphone 12,5");
-        //it.add(1,"2,900,Iphone 13,1");
+
         
         for (int j = 0; j < size; j++) {
 
@@ -74,7 +70,6 @@ public class menuController {
 
         testt = it;
     }
-    //TODO 3ayzeen nn3at el category kman msh lazem delwa2ty
     //useStock is 0 when we want to use quantity
      public static Vector<Item> parseItems(Vector<String> it, boolean useStock) {
         int j=0;
@@ -173,15 +168,12 @@ public class menuController {
     public void gosearch(ActionEvent event) throws IOException {
         fillSearch();
         i = parseItems(testt , true);
-        // TODO el items ely rg3t fe i hya ely hnzahrha fe el screen
         Parent root = FXMLLoader.load(getClass().getResource("search.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Search");
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        // TODO msh mot2ked h7tag aterminate el connection hena walla la
-        client.terminate();
     }
 
     @FXML
@@ -219,7 +211,6 @@ public class menuController {
 
     @FXML
     public void gocurrent(ActionEvent event) throws IOException {
-        // TODO hena lama bdos current balance lw kont 3mlt update fe el databae b recharge balance el update msh byzhar hena
         Parent root = FXMLLoader.load(getClass().getResource("recharge.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("My Balance");

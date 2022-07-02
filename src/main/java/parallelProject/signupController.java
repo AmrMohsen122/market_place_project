@@ -1,6 +1,4 @@
 package parallelProject;
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +50,6 @@ public class signupController  {
         Confirm = confirm.getText();
         Bdate = bdate.getValue().toString();
 
-        //Date firstDate1 = new Date(year, month, day);
 
     }
 
@@ -119,7 +116,7 @@ public class signupController  {
             stage.setScene(scene);
             stage.show();
         }
-        client.terminate();
+//        client.terminate();
     }
 
 

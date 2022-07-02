@@ -18,7 +18,6 @@ import java.util.Vector;
 import java.sql.Date;
 public class loginpageController {
     public static Vector<String> i1 = new Vector<>();
-    //TODO CONTAINS CART
      public static  Order cartOrder;
     String user,pass,Login,Admin,validate;
     @FXML
@@ -39,7 +38,7 @@ public class loginpageController {
     public Customer parseCustomers(String str) throws ParseException {
         String[] itemA = str.split(",");
         Customer c;
-//        System.out.println(itemA);
+
         // SENT FORMAT :username+','+password+','+email+','+bdate+','+address+','+mobile_number+','+current_balance_inStr
         if(!itemA[3].equals("null") && !itemA[4].equals("null")){
             c = new Customer(itemA[0],itemA[1],itemA[2], Date.valueOf(itemA[3]),Double.parseDouble(itemA[4]),itemA[5],itemA[6]);
@@ -120,7 +119,7 @@ public class loginpageController {
     }
 
     public Order parseCart (Vector<String> info) {
-        //System.out.println(orders);
+
         Order inf;
         int l=0;
         String[] store;
@@ -128,7 +127,6 @@ public class loginpageController {
         String price;
         Order or;
               store = info.get(l).split(",");
-              //TODO deh el mafrud tb2a cust ?
               loggedCustomer = new Customer(store[0],store[1],store[2],Date.valueOf(store[3]),Double.parseDouble(store[4]),store[5],store[6]);
               l+=2;
               orderDate =info.get(l);
@@ -178,7 +176,6 @@ public class loginpageController {
 
     }
     @FXML
-    // TODO nsheel 7war en awl m ndos login ykhosh 3la tool
     public void gologin(ActionEvent event) throws IOException, ParseException {
         boolean fcheck,flag;
         getter();
@@ -203,10 +200,6 @@ public class loginpageController {
             }
         else if(Admin.equals("Admin")){
             cust = parseAdmin(validate);
-            //TODO mafrud hna b2a t3mlo haga zy initlog() trga3 ll admin kul el users fi vector of users, w kul el items
-            //TODO allUsers da el vector el 3yzako tmluh bl users w da static
-            //TODO allItems da el vector el 3yzako tmluh bl items w da static brdo
-            // TODO el mfrood dol ytghyro yb2o 7agat el admin
             Parent root = FXMLLoader.load(getClass().getResource("adminMenu.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("Home Page");
@@ -214,16 +207,6 @@ public class loginpageController {
             stage.setScene(scene);
             stage.show();
         }
-
-        else{
-            /*Parent root = FXMLLoader.load(getClass().getResource("menu.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("Home Page");
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();*/
-        }
-     //   client.terminate(); //TODO msh fakra ento ely 3mlnha comment wla ehna
     }
 
 
