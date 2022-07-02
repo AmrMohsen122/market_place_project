@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.adminViewUsersController">
    <children>
-      <Pane layoutX="-11.0" layoutY="-4.0" prefHeight="58.0" prefWidth="614.0" style="-fx-background-color: black;">
+      <Pane layoutX="-12.0" layoutY="-4.0" prefHeight="58.0" prefWidth="614.0" style="-fx-background-color: black;">
          <children>
             <Pane layoutX="50.0" layoutY="12.0" prefHeight="34.0" prefWidth="135.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
                <children>
@@ -46,6 +46,5 @@
             <Image url="@Images/goback.png" />
          </image>
       </ImageView>
-      <Button layoutX="373.0" layoutY="351.0" mnemonicParsing="false" onAction="#gotransaction" text="Button" />
    </children>
 </AnchorPane>

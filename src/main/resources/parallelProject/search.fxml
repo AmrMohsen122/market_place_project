@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylee.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.searchController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylee.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="parallelProject.searchController">
    <children>
       <Pane layoutX="-4.0" layoutY="-1.0" prefHeight="58.0" prefWidth="604.0" style="-fx-background-color: black;">
          <children>
@@ -122,6 +122,21 @@
                               <Image url="@Images/cartbut.jpg" />
                            </image>
                         </ImageView>
+                        <Button fx:id="minus1" layoutX="166.0" layoutY="146.0" mnemonicParsing="false" onAction="#FirstOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="minus2" layoutX="312.0" layoutY="148.0" mnemonicParsing="false" onAction="#SecondOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="minus3" layoutX="462.0" layoutY="148.0" mnemonicParsing="false" onAction="#ThirdOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>
@@ -166,6 +181,16 @@
                         <Label fx:id="q4" layoutX="85.0" layoutY="180.0" text="Not Found" />
                         <Label fx:id="p5" layoutX="329.0" layoutY="166.0" text="950" />
                         <Label fx:id="q5" layoutX="329.0" layoutY="180.0" text="Not Found" />
+                        <Button fx:id="minus4" layoutX="181.0" layoutY="148.0" mnemonicParsing="false" onAction="#FourthOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="minus5" layoutX="420.0" layoutY="148.0" mnemonicParsing="false" onAction="#FifthOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -213,8 +238,8 @@
                               <Image url="@Images/cartbut.jpg" />
                            </image>
                         </ImageView>
-                        <Button fx:id="cart8" layoutX="429.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart8" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
-                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="434.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
+                        <Button fx:id="cart8" layoutX="425.0" layoutY="163.0" mnemonicParsing="false" onAction="#addToCart8" prefHeight="26.0" prefWidth="30.0" style="-fx-background-color: white; -fx-background-radius: 5px;" />
+                        <ImageView fitHeight="26.0" fitWidth="42.0" layoutX="430.0" layoutY="163.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@Images/cartbut.jpg" />
                            </image>
@@ -227,6 +252,21 @@
                         <Label fx:id="q7" layoutX="198.0" layoutY="192.0" text="Not Found" />
                         <Label fx:id="p8" layoutX="374.0" layoutY="180.0" text="70" />
                         <Label fx:id="q8" layoutX="374.0" layoutY="192.0" text="Not Found" />
+                        <Button fx:id="minus6" layoutX="123.0" layoutY="163.0" mnemonicParsing="false" onAction="#SixthOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="minus7" layoutX="300.0" layoutY="163.0" mnemonicParsing="false" onAction="#SeventhOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="minus8" layoutX="460.0" layoutY="163.0" mnemonicParsing="false" onAction="#EighthOrderMinus" prefHeight="26.0" prefWidth="25.0" style="-fx-background-color: white; -fx-background-radius: 5px;" text="-">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
                      </children></AnchorPane>
                </content>
             </Tab>

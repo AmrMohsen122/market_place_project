@@ -52,6 +52,6 @@
          </font>
       </Label>
       <TreeView fx:id="cartTree" layoutX="62.0" layoutY="118.0" prefHeight="200.0" prefWidth="414.0" style="-fx-border-color: black;" />
-      <Label fx:id="notEnough" layoutX="416.0" layoutY="367.0" prefHeight="18.0" prefWidth="183.0" text="hbhb" textFill="#f20202" />
+      <Label fx:id="notEnough" layoutX="416.0" layoutY="367.0" prefHeight="18.0" prefWidth="183.0" textFill="#f20202" />
    </children>
 </AnchorPane>
