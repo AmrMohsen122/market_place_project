@@ -56,30 +56,14 @@ public class adminMenuController {
         client.output.writeUTF("sendAllUsers");
         while(true) {
             String in = client.input.readUTF();
-            if(in.equals("endAll")) {
-
-                for (int i = 0; i < allUsers.size(); i++) {
-                    System.out.println(allUsers.get(i));
-                    for (Order o: allUsers.get(i).getOrders()
-                    ) {
-                        o.printOrderItem();
-
-                    }
-                    System.out.println("**************New User********************");
-
-
-
-                }
+            if(in.equals("endAll"))
                 break;
-            }
 
-            System.out.println(in);
             String[] parsed;
             while (!in.equals("endUser")) {
                 parsed = in.split(",");
                cust = new Customer(parsed[0], parsed[1], parsed[2], Double.valueOf(parsed[3]), parsed[4], parsed[5]);
                 initVec2(cust.getOrders());
-                System.out.println(cust.getOrders());
                 // read orders
                 in = client.input.readUTF();
             }
