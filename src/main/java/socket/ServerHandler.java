@@ -46,7 +46,6 @@ public class ServerHandler implements Runnable{
     }
 
     public void terminate() throws IOException {
-
         socket.close();
         input.close();
         // TODO msh mot2kd hena hcall el output.close walla la

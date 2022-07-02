@@ -1,29 +1,22 @@
 package parallelProject;
 
-import basic_classes.Customer;
-import basic_classes.User;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import socket.Client;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.util.ResourceBundle;
-import java.util.Vector;
-import static parallelProject.adminMenuController.allUsers;  //TODO uncomment when finishing
-//TODO mafrud hnakhud allUsers deh mn login
+
+import static parallelProject.adminMenuController.allUsers;
 
 public class adminViewUsersController implements Initializable {
 
@@ -79,20 +72,18 @@ public class adminViewUsersController implements Initializable {
   
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-  TreeItem<String> Users = new TreeItem<>("All Users:");
+        TreeItem<String> Users = new TreeItem<>("All Users:");
         usersTree.setRoot(Users);
         String branchO = "User ";
-        for(int o=0 ; o<allUsers.size() ; o++) {
-            indexUser =o;
+        for (int o = 0; o < allUsers.size(); o++) {
             TreeItem<String> branch1 = new TreeItem<>(branchO + (Integer.toString(o + 1)));
             Users.getChildren().addAll(branch1);
-
             TreeItem<String> branch11 = new TreeItem<>("- Username: " + (allUsers.get(o).getUsername()).toString());
             TreeItem<String> branch12 = new TreeItem<>("- Email: " + allUsers.get(o).getEmail());
             TreeItem<String> branch13 = new TreeItem<>("- Mobile Number: " + allUsers.get(o).getMobile_number());
             TreeItem<String> branch14 = new TreeItem<>("- Current Balance: " + allUsers.get(o).getCurrent_balance());
-            branch1.getChildren().addAll(branch11,branch12,branch13,branch14);
+            branch1.getChildren().addAll(branch11, branch12, branch13, branch14);
         }
 
-
+    }
 }

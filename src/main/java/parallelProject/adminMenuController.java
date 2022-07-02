@@ -23,6 +23,46 @@ public class adminMenuController {
     public static Vector<Item> allItems = null;
     Client client = null;
 
+    /*to be sent to gui
+     * orderdate
+     * totalprice
+     * "startItem"
+     * item1 details  (iid, price, itemname, quantity)
+     * item2 details
+     * "endOrder"  ------> end of first order
+     * orderdate
+     * totalprice
+     * "startItem"
+     * item1 details
+     * item2 details
+     * "endOrder"
+     * "end" -----> end of transaction
+     * */
+    public void loadAllUser() throws IOException {
+        client = new Client("127.0.0.1",2022);
+        client.initialize();
+        Customer cust = null;
+        allUsers = new Vector<>();
+        client.output.writeUTF("sendAllUsers");
+        while(true) {
+            String in = client.input.readUTF();
+            if(in.equals("endAll"))
+                break;
+
+            String[] parsed;
+            while (!in.equals("endUser")) {
+                parsed = in.split(",");
+                cust = new Customer(parsed[0], parsed[1], parsed[2], Double.valueOf(parsed[3]), parsed[4], parsed[5]);
+                initVec2(cust.getOrders());
+                // read orders
+                in = client.input.readUTF();
+            }
+
+            allUsers.add(cust);
+
+        }
+
+    }
     public void initVec2(Vector<Order> orders) throws IOException {
         String in = client.input.readUTF();
 
@@ -49,47 +89,7 @@ public class adminMenuController {
     }
     @FXML
     public void goViewUsers(ActionEvent event) throws IOException {
-        client = new Client("127.0.0.1",2022);
-        client.initialize();
-        Customer cust = null;
-        allUsers = new Vector<>();
-        client.output.writeUTF("sendAllUsers");
-        while(true) {
-            String in = client.input.readUTF();
-            if(in.equals("endAll"))
-                break;
-
-            String[] parsed;
-            while (!in.equals("endUser")) {
-                parsed = in.split(",");
-               cust = new Customer(parsed[0], parsed[1], parsed[2], Double.valueOf(parsed[3]), parsed[4], parsed[5]);
-                initVec2(cust.getOrders());
-                // read orders
-                in = client.input.readUTF();
-            }
-
-            allUsers.add(cust);
-
-        }
-        /*to be sent to gui
-         * orderdate
-         * totalprice
-         * "startItem"
-         * item1 details  (iid, price, itemname, quantity)
-         * item2 details
-         * "endOrder"  ------> end of first order
-         * orderdate
-         * totalprice
-         * "startItem"
-         * item1 details
-         * item2 details
-         * "endOrder"
-         * "end" -----> end of transaction
-         * */
-
-
-
-
+        loadAllUser();
         Parent root = FXMLLoader.load(getClass().getResource("adminViewUsers.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("All Users");
@@ -97,7 +97,6 @@ public class adminMenuController {
         stage.setScene(scene);
         stage.show();
     }
-
     @FXML
     public void goSystem(ActionEvent event) throws IOException {
         client = new Client("127.0.0.1",2022);
@@ -120,6 +119,7 @@ public class adminMenuController {
     }
     @FXML
     public void goTransaction(ActionEvent event) throws IOException {
+        loadAllUser();
         Parent root = FXMLLoader.load(getClass().getResource("transaction.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("All Transactions");

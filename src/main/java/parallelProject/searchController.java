@@ -230,7 +230,7 @@ public class searchController implements Initializable {
 
     public void Remove (Label q ,Label p , Label i , int index) throws IOException {
         for (int y = 0; y < cartOrder.getItems().size(); y++) {
-            if (cartOrder.getItems().get(y).getItem_name().equals(i)) {
+            if (cartOrder.getItems().get(y).getItem_name().equals(i.getText())) {
                 client = new Client("127.0.0.1", 2022);
                 client.initialize();
                 Vector<String> toBeSent = new Vector<>();
@@ -241,14 +241,12 @@ public class searchController implements Initializable {
                 toBeSent.add(p.getText());
                 client.send(toBeSent);
                 double removedPrice = Double.parseDouble(p.getText());
-
                 int qtyOut = (cartOrder.getItems().get(y).getItemQuantity()) - 1;
                 cartOrder.getItems().get(y).setItemQuantity(qtyOut);
 
                 removedPrice = cartOrder.getTotalPrice() - removedPrice;
                 System.out.println(removedPrice);
                 cartOrder.setTotalPrice(removedPrice);
-
                 if(cartOrder.getItems().get(y).getItemQuantity() == 0){
                     cartOrder.getItems().remove(cartOrder.getItems().get(y));
                 }
