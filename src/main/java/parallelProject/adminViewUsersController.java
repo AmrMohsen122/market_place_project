@@ -27,12 +27,11 @@ import static parallelProject.adminMenuController.allUsers;  //TODO uncomment wh
 
 public class adminViewUsersController implements Initializable {
 
-    public static int indexUser;
+
 
     @FXML
     private TreeView<String> usersTree;
 
-    public Vector<String> parse = new Vector<>();
     Client client;
 
 
@@ -77,53 +76,23 @@ public class adminViewUsersController implements Initializable {
             }
         });
     }
-    public int o;
+  
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TreeItem<String> Users = new TreeItem<>("All Users:");
+  TreeItem<String> Users = new TreeItem<>("All Users:");
         usersTree.setRoot(Users);
         String branchO = "User ";
-        for(o=0 ; o<allUsers.size() ; o++) {
+        for(int o=0 ; o<allUsers.size() ; o++) {
             indexUser =o;
             TreeItem<String> branch1 = new TreeItem<>(branchO + (Integer.toString(o + 1)));
             Users.getChildren().addAll(branch1);
-            TreeItem<String> branchT = new TreeItem<>("Transaction");
-            Button button = new Button("Click to view");
-            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    parse.add("viewHistory");
-                    System.out.println(o);
-                    parse.add(allUsers.get(o).getUsername());
-                    Parent root = null;
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("transaction.fxml"));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                    stage.setTitle("My Cart");
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                }
-            });
-
-            branchT.setGraphic(button);
 
             TreeItem<String> branch11 = new TreeItem<>("- Username: " + (allUsers.get(o).getUsername()).toString());
             TreeItem<String> branch12 = new TreeItem<>("- Email: " + allUsers.get(o).getEmail());
             TreeItem<String> branch13 = new TreeItem<>("- Mobile Number: " + allUsers.get(o).getMobile_number());
             TreeItem<String> branch14 = new TreeItem<>("- Current Balance: " + allUsers.get(o).getCurrent_balance());
-            branch1.getChildren().addAll(branchT,branch11,branch12,branch13,branch14);
+            branch1.getChildren().addAll(branch11,branch12,branch13,branch14);
         }
-        /*Users.setExpanded(true);
-        usersTree.setCellFactory(
-                (TreeView<String> p) -> new EditableItem()
-        );
 
-*/
-
-    }
 
 }
