@@ -71,14 +71,8 @@ public class rechargeController implements  Initializable{
     @FXML
     public void Ok(ActionEvent event) throws IOException {
         getAmount();
-        rechargeBalance.setDisable(false);
-        if(Double.parseDouble(Amount) < 0){
 
-            rechargeBalance.setDisable(true);
-
-        }
-
-        if(!Amount.isEmpty()) {
+        if((!Amount.isEmpty()) && Double.parseDouble(Amount) >= 0) {
             double amountt = Double.parseDouble(Amount);
             double currentt = Double.parseDouble(Current);
             currentt = currentt + amountt;
@@ -93,9 +87,13 @@ public class rechargeController implements  Initializable{
             lll.setText("The Amount is added to your balance successfully!");
         }
 
-        else{
+        else if(Double.parseDouble(Amount) < 0){
+            wrong.setText("Please enter positive amount!");
+        }
+        else {
             wrong.setText("Please enter amount!");
         }
+        
         client.terminate();
     }
 
